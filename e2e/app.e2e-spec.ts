@@ -1,9 +1,14 @@
-import { PoseidonPage } from './app.po';
+import { AppPage } from './app.po';
 
-describe('poseidon App', function() {
-  let page: PoseidonPage;
+describe('bonusclub-poseidon App', () => {
+  let page: AppPage;
 
   beforeEach(() => {
-    page = new PoseidonPage();
+    page = new AppPage();
+  });
+
+  it('should display welcome message', () => {
+    page.navigateTo();
+    expect(page.getParagraphText()).toEqual('Welcome to app!');
   });
 });
