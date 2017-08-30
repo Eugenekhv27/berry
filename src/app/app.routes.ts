@@ -12,7 +12,7 @@ import { ModuleWithProviders } from '@angular/core';
 // import {EmptyDemo} from './demo/view/emptydemo';
 // import {ChartsDemo} from './demo/view/chartsdemo';
 // import {FileDemo} from './demo/view/filedemo';
-// import {UtilsDemo} from './demo/view/utilsdemo';
+import { AppSetComponent } from './admin/settings/appset.component';
 // import {Documentation} from './demo/view/documentation';
 
 export const routes: Routes = [
@@ -28,7 +28,7 @@ export const routes: Routes = [
   // { path: 'empty', component: EmptyDemo },
   // { path: 'charts', component: ChartsDemo },
   // { path: 'file', component: FileDemo },
-  // { path: 'utils', component: UtilsDemo },
+  { path: 'settings', component: AppSetComponent },
   // { path: 'documentation', component: Documentation }
 ];
 

@@ -48,6 +48,7 @@ export class AdminNavComponent implements OnInit {
               { label: 'Deep Purple', icon: 'fa fa-fw fa-paint-brush', command: (event) => { this.changeTheme('deep-purple') } }
             ]
           },
+          { label: 'Реф. проценты', icon: 'fa fa-fw fa-percent', routerLink: ['/settings'] },
         ]
       },
       { label: 'Документация', icon: 'fa fa-fw fa-book', routerLink: ['/documentation'] },

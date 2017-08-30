@@ -8,6 +8,8 @@ import { AdminNavComponent, AdminNavMenuComponent } from './admin/nav.component'
 import { AdminTopBarComponent } from './admin/top-bar.component';
 import { AdminFooterComponent } from './admin/footer.component';
 
+import { AppSetComponent } from './admin/settings/appset.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -20,6 +22,7 @@ import { AdminFooterComponent } from './admin/footer.component';
     AdminNavMenuComponent,
     AdminTopBarComponent,
     AdminFooterComponent,
+    AppSetComponent
   ],
   providers: [
 
