@@ -4,13 +4,13 @@ import { AdminComponent } from './admin.component';
 @Component({
   selector: 'app-footer',
   template: `
-        <div class="footer">
-            <div class="card clearfix">
-                <span class="footer-text-left">BONUS CLUB</span>
-                <span class="footer-text-right"><span class="ui-icon ui-icon-copyright"></span>  <span>All Rights Reserved</span></span>
-            </div>
-        </div>
-    `
+    <div class="footer">
+      <div class="card clearfix">
+        <span class="footer-text-left">BONUS CLUB <span class="fa fa-fw fa-copyright"></span> все права защищены</span>
+        <span class="footer-text-right">телефон: +7 (4212) 62-08-28<br>email: hello@progrepublic.ru, Skype: Vassil2010</span>
+      </div>
+    </div>
+  `
 })
 export class AdminFooterComponent {
 
