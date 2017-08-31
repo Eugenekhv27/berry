@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
-// import {DashboardDemo} from './demo/view/dashboarddemo';
+import {AdminDashboardComponent} from './admin/dashboard/dashboard.component';
 // import {SampleDemo} from './demo/view/sampledemo';
 // import {FormsDemo} from './demo/view/formsdemo';
 // import {DataDemo} from './demo/view/datademo';
@@ -16,7 +16,7 @@ import { AppSetComponent } from './admin/settings/appset.component';
 // import {Documentation} from './demo/view/documentation';
 
 export const routes: Routes = [
-  // { path: '', component: DashboardDemo },
+  { path: 'dashboard', component: AdminDashboardComponent },
   // { path: 'sample', component: SampleDemo },
   // { path: 'forms', component: FormsDemo },
   // { path: 'data', component: DataDemo },

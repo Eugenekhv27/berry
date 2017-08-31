@@ -21,7 +21,7 @@ export class AdminNavComponent implements OnInit {
 
   ngOnInit() {
     this.model = [
-      { label: 'Dashboard', icon: 'fa fa-fw fa-dashboard', routerLink: ['/'] },
+      { label: 'Dashboard', icon: 'fa fa-fw fa-dashboard', routerLink: ['/dashboard'] },
       { label: 'Участники', icon: 'fa fa-fw fa-users', routerLink: ['/'] },
       { label: 'Рассылки', icon: 'fa fa-fw fa-bullhorn', routerLink: ['/'] },
       { label: 'Начисление бонусов', icon: 'fa fa-fw fa-star', routerLink: ['/'] },
