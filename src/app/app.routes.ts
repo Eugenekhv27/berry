@@ -1,5 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
+
 import { AdminDashboardComponent } from './admin/dashboard/dashboard.component';
 import { AdminParticipantsListComponent } from './admin/participants/participants-list.component';
 // import {FormsDemo} from './demo/view/formsdemo';
