@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CarService } from '../services/car.service';
-// import {EventService} from '../service/eventservice';
-import { Car } from '../domain/car';
-import { SelectItem } from 'primeng/primeng';
+import { CarService } from '../../mocks/services/car.service';
+import { Car } from '../../mocks/shared/car';
+// import { SelectItem } from 'primeng/primeng';
 
 @Component({
   templateUrl: './dashboard.component.html'

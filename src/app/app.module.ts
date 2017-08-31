@@ -58,7 +58,8 @@ import { AdminDashboardComponent } from './admin/dashboard/dashboard.component';
 import { AdminParticipantsListComponent } from './admin/participants/participants-list.component';
 import { AppSetComponent } from './admin/settings/appset.component';
 
-import { CarService } from './admin/services/car.service';
+// моки (модули-подделки)
+import { CarService } from './mocks/services/car.service';
 
 @NgModule({
   imports: [
