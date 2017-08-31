@@ -2,20 +2,25 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 // import { Response } from '@angular/http';
 // import 'rxjs/add/operator/catch';
 
-import { SelectItem } from 'primeng/primeng';
-import { OverlayPanelModule, OverlayPanel, DataTable } from 'primeng/primeng';
-import { TooltipModule } from 'primeng/primeng';
-import { Message, MessagesModule } from 'primeng/primeng';
-import { MultiSelectModule, MenuItem } from 'primeng/primeng';
+// import { SelectItem } from 'primeng/primeng';
+// import { OverlayPanelModule, OverlayPanel, DataTable } from 'primeng/primeng';
+// import { TooltipModule } from 'primeng/primeng';
+// import { Message, MessagesModule } from 'primeng/primeng';
+// import { MultiSelectModule, MenuItem } from 'primeng/primeng';
+import {
+  DataTable,
+  Message,
+  MenuItem,
+} from 'primeng/primeng';
 
 import { Buyer } from './buyer';
 // import { DataService } from '../services/data.service';
-
+import { DataService } from '../../mocks/services/data.service';
 
 @Component({
   selector: 'app-participants-list',
   templateUrl: './participants-list.component.html',
-// providers: [DataService]
+  providers: [DataService]
 })
 
 export class AdminParticipantsListComponent implements OnInit {
@@ -35,7 +40,7 @@ export class AdminParticipantsListComponent implements OnInit {
 
   selectedBuyerLine: any; // заглушка (свойство используется в шаблоне)
 
-//  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
     /// для кнопки удалить

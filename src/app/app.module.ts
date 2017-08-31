@@ -60,6 +60,7 @@ import { AppSetComponent } from './admin/settings/appset.component';
 
 // моки (модули-подделки)
 import { CarService } from './mocks/services/car.service';
+import { DataService } from './mocks/services/data.service';
 
 @NgModule({
   imports: [
@@ -87,10 +88,11 @@ import { CarService } from './mocks/services/car.service';
     AdminFooterComponent,
     AdminDashboardComponent,
     AdminParticipantsListComponent,
-    AppSetComponent
+    AppSetComponent,
   ],
   providers: [
     CarService,
+    DataService,
   ],
   bootstrap: [
     AdminComponent,
