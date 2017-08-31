@@ -14,7 +14,7 @@ import { AdminParticipantsListComponent } from './admin/participants/participant
 // import {ChartsDemo} from './demo/view/chartsdemo';
 // import {FileDemo} from './demo/view/filedemo';
 import { AppSetComponent } from './admin/settings/appset.component';
-// import {Documentation} from './demo/view/documentation';
+import { AdminDocumentationComponent } from './admin/documentation/documentation.component';
 
 export const routes: Routes = [
   { path: 'dashboard', component: AdminDashboardComponent },
@@ -30,7 +30,7 @@ export const routes: Routes = [
   // { path: 'charts', component: ChartsDemo },
   // { path: 'file', component: FileDemo },
   { path: 'settings', component: AppSetComponent },
-  // { path: 'documentation', component: Documentation }
+  { path: 'documentation', component: AdminDocumentationComponent }
 ];
 
 export const AppRoutes: ModuleWithProviders = RouterModule.forRoot(routes);

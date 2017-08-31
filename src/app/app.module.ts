@@ -57,6 +57,7 @@ import { AdminFooterComponent } from './admin/footer.component';
 import { AdminDashboardComponent } from './admin/dashboard/dashboard.component';
 import { AdminParticipantsListComponent } from './admin/participants/participants-list.component';
 import { AppSetComponent } from './admin/settings/appset.component';
+import { AdminDocumentationComponent } from './admin/documentation/documentation.component';
 
 // моки (модули-подделки)
 import { CarService } from './mocks/services/car.service';
@@ -89,6 +90,7 @@ import { DataService } from './mocks/services/data.service';
     AdminDashboardComponent,
     AdminParticipantsListComponent,
     AppSetComponent,
+    AdminDocumentationComponent,
   ],
   providers: [
     CarService,
