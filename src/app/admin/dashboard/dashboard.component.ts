@@ -9,7 +9,7 @@ import { SelectItem } from 'primeng/primeng';
 })
 export class AdminDashboardComponent implements OnInit {
 
-  cities: SelectItem[];
+  // cities: SelectItem[];
 
   cars: Car[];
 
@@ -17,7 +17,7 @@ export class AdminDashboardComponent implements OnInit {
 
   events: any[];
 
-  selectedCity: any;
+  // selectedCity: any;
 
   //    constructor(private carService: CarService, private eventService: EventService) { }
   constructor(private carService: CarService) { }
