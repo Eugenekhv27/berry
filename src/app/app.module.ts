@@ -1,56 +1,60 @@
 // системные
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutes } from './app.routes';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 // библиотечные
 import {
   PanelModule,
   DataTableModule,
   ChartModule,
-  // InputTextModule,
-  // MegaMenuModule,
-  // MenubarModule,
-  // MenuItem,
-  // SharedModule,
-  // DialogModule,
-  // ButtonModule,
-  // DropdownModule,
-  // SelectItem,
-  // FieldsetModule,
-  // ListboxModule,
-  // SplitButtonModule,
-  // AutoCompleteModule,
-  // CheckboxModule,
-  // SpinnerModule,
-  // SelectButtonModule,
-  // TabViewModule,
-  // InputSwitchModule,
-  // OverlayPanelModule,
-  // CalendarModule,
-  // TooltipModule,
-  // GrowlModule,
-  // MessagesModule,
-  // MultiSelectModule,
-  // InputMaskModule,
-  // DataScrollerModule,
-  // RadioButtonModule,
-  // ToolbarModule,
-  // InputTextareaModule,
-  // TriStateCheckboxModule,
-  // AccordionModule,
-  // DataListModule
+  GrowlModule,
+  MessagesModule,
+  SplitButtonModule,
+  InputMaskModule,
+  /*
+  InputTextModule,
+  MegaMenuModule,
+  MenubarModule,
+  MenuItem,
+  SharedModule,
+  DialogModule,
+  ButtonModule,
+  DropdownModule,
+  SelectItem,
+  FieldsetModule,
+  ListboxModule,
+  AutoCompleteModule,
+  CheckboxModule,
+  SpinnerModule,
+  SelectButtonModule,
+  TabViewModule,
+  InputSwitchModule,
+  OverlayPanelModule,
+  CalendarModule,
+  TooltipModule,
+  MultiSelectModule,
+  DataScrollerModule,
+  RadioButtonModule,
+  ToolbarModule,
+  InputTextareaModule,
+  TriStateCheckboxModule,
+  AccordionModule,
+  DataListModule
+*/
 } from 'primeng/primeng';
+
+// раутинг
+import { AppRoutes } from './app.routes';
 
 // наши
 import { AdminComponent } from './admin/admin.component';
 import { AdminNavComponent, AdminNavMenuComponent } from './admin/nav.component';
 import { AdminTopBarComponent } from './admin/top-bar.component';
 import { AdminFooterComponent } from './admin/footer.component';
-
 import { AdminDashboardComponent } from './admin/dashboard/dashboard.component';
-
+import { AdminParticipantsListComponent } from './admin/participants/participants-list.component';
 import { AppSetComponent } from './admin/settings/appset.component';
 
 @NgModule({
@@ -58,11 +62,17 @@ import { AppSetComponent } from './admin/settings/appset.component';
     // Angular
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutes,
+    FormsModule,
     // PrimeNG
     PanelModule,
     DataTableModule,
     ChartModule,
+    GrowlModule,
+    MessagesModule,
+    SplitButtonModule,
+    InputMaskModule,
+    // routing
+    AppRoutes,
   ],
   declarations: [
     AdminComponent,
@@ -71,6 +81,7 @@ import { AppSetComponent } from './admin/settings/appset.component';
     AdminTopBarComponent,
     AdminFooterComponent,
     AdminDashboardComponent,
+    AdminParticipantsListComponent,
     AppSetComponent
   ],
   providers: [
