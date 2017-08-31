@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
 // библиотечные
 import {
@@ -57,12 +58,15 @@ import { AdminDashboardComponent } from './admin/dashboard/dashboard.component';
 import { AdminParticipantsListComponent } from './admin/participants/participants-list.component';
 import { AppSetComponent } from './admin/settings/appset.component';
 
+import { CarService } from './admin/services/car.service';
+
 @NgModule({
   imports: [
     // Angular
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    HttpModule,
     // PrimeNG
     PanelModule,
     DataTableModule,
@@ -85,7 +89,7 @@ import { AppSetComponent } from './admin/settings/appset.component';
     AppSetComponent
   ],
   providers: [
-
+    CarService,
   ],
   bootstrap: [
     AdminComponent,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-// import {CarService} from '../service/carservice';
+import { CarService } from '../services/car.service';
 // import {EventService} from '../service/eventservice';
-// import {Car} from '../domain/car';
+import { Car } from '../domain/car';
 import { SelectItem } from 'primeng/primeng';
 
 @Component({
@@ -11,7 +11,7 @@ export class AdminDashboardComponent implements OnInit {
 
   cities: SelectItem[];
 
-  //    cars: Car[];
+  cars: Car[];
 
   chartData: any;
 
@@ -20,9 +20,10 @@ export class AdminDashboardComponent implements OnInit {
   selectedCity: any;
 
   //    constructor(private carService: CarService, private eventService: EventService) { }
+  constructor(private carService: CarService) { }
 
   ngOnInit() {
-    // this.carService.getCarsSmall().then(cars => this.cars = cars);
+    this.carService.getCarsSmall().then(cars => this.cars = cars);
 
     // this.eventService.getEvents().then(events => {this.events = events;});
 
