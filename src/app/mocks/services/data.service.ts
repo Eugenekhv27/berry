@@ -8,6 +8,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { SelectItem } from 'primeng/primeng';
 
+import { participants_json } from '../data/participants';
+
 @Injectable()
 export class DataService {
   restServerUrl: string;
@@ -18,21 +20,26 @@ export class DataService {
   }
 
   getGridData(className: string, query: string = '', accountEncryptParam = '') {
-    let accountEncrypt: any; // Шифрованный индефикатор аккаунта
-    if (accountEncryptParam !== '') {
-      accountEncrypt = accountEncryptParam;
-    } else {
-      accountEncrypt = localStorage.getItem('accountEncrypt');
+    if (className === 'ent.Buyer') {
+      return JSON.parse(participants_json).children;
     }
-    const auth = localStorage.getItem('loginpassword');
-    const headers = new Headers({ Authorization: 'Basic ' + auth });
-    const queryToUrl = encodeURIComponent(query).replace(new RegExp('%', 'g'), '~');
-    return this.http.get(
-      'http://' + this.restServerUrl +
-      '/csp/bonusclubrest2/' + accountEncrypt +
-      '/grid/' + className + '/' + queryToUrl,
-      { headers }
-    );
+
+    // let accountEncrypt: any; // Шифрованный индефикатор аккаунта
+    // if (accountEncryptParam !== '') {
+    //   accountEncrypt = accountEncryptParam;
+    // } else {
+    //   accountEncrypt = localStorage.getItem('accountEncrypt');
+    // }
+    // const auth = localStorage.getItem('loginpassword');
+    // const headers = new Headers({ Authorization: 'Basic ' + auth });
+    // const queryToUrl = encodeURIComponent(query).replace(new RegExp('%', 'g'), '~');
+
+    // return this.http.get(
+    //   'http://' + this.restServerUrl +
+    //   '/csp/bonusclubrest2/' + accountEncrypt +
+    //   '/grid/' + className + '/' + queryToUrl,
+    //   { headers }
+    // );
   }
 
   getObjectData(className: string, ID: string, Aka?: string) {

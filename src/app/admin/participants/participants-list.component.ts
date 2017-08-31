@@ -53,6 +53,8 @@ export class AdminParticipantsListComponent implements OnInit {
       }
     ];
 
+    this.data = this.dataService.getGridData('ent.Buyer');
+
     // this.dataService.getGridData('ent.Buyer')
     //   .subscribe((resp: Response) => {
     //     this.data = resp.json().children;
