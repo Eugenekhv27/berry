@@ -7,7 +7,7 @@ import { AdminComponent } from './admin.component';
         <div class="topbar clearfix">
             <div class="topbar-left">
                 <div class="logo">
-                    <img src="assets/layout/images/logo-black.png" alt="Logo">
+                    <a href="/"><img src="assets/layout/images/logo-black.png" alt="Logo"></a>
                 </div>
             </div>
 
