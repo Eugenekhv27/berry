@@ -56,7 +56,7 @@ import { AdminTopBarComponent } from './admin/top-bar.component';
 import { AdminFooterComponent } from './admin/footer.component';
 import { AdminDashboardComponent } from './admin/dashboard/dashboard.component';
 import { AdminParticipantsListComponent } from './admin/participants/participants-list.component';
-import { AppSetComponent } from './admin/settings/appset.component';
+import { AdminReferralSettingsComponent } from './admin/settings/referral-settings.component';
 import { AdminDocumentationComponent } from './admin/documentation/documentation.component';
 
 // моки (модули-подделки)
@@ -89,7 +89,7 @@ import { DataService } from './mocks/services/data.service';
     AdminFooterComponent,
     AdminDashboardComponent,
     AdminParticipantsListComponent,
-    AppSetComponent,
+    AdminReferralSettingsComponent,
     AdminDocumentationComponent,
   ],
   providers: [

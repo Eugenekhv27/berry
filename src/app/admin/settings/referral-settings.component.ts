@@ -7,15 +7,15 @@ import { Input, Component, EventEmitter, Output, OnInit } from '@angular/core';
 
 // import { Message } from 'primeng/primeng';
 // import { SelectItem } from 'primeng/primeng';
-import { AppSet } from './appset';
+import { AppSet } from './referral-settings';
 // import { DataService } from './data/data.service';
 
 @Component({
-  selector: 'app-my-appset',
-  templateUrl: '/appset.component.html',
+  selector: 'app-referral-settings',
+  templateUrl: './referral-settings.component.html',
 //  providers: [DataService]
 })
-export class AppSetComponent implements OnInit {
+export class AdminReferralSettingsComponent implements OnInit {
   @Input()
   object: AppSet = new AppSet(null, 'hello@progrepublic.ru', null, '5', '3', '2');
 

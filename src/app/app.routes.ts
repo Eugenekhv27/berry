@@ -13,7 +13,7 @@ import { AdminParticipantsListComponent } from './admin/participants/participant
 // import {EmptyDemo} from './demo/view/emptydemo';
 // import {ChartsDemo} from './demo/view/chartsdemo';
 // import {FileDemo} from './demo/view/filedemo';
-import { AppSetComponent } from './admin/settings/appset.component';
+import { AdminReferralSettingsComponent } from './admin/settings/referral-settings.component';
 import { AdminDocumentationComponent } from './admin/documentation/documentation.component';
 
 export const routes: Routes = [
@@ -29,7 +29,7 @@ export const routes: Routes = [
   // { path: 'empty', component: EmptyDemo },
   // { path: 'charts', component: ChartsDemo },
   // { path: 'file', component: FileDemo },
-  { path: 'settings', component: AppSetComponent },
+  { path: 'settings', component: AdminReferralSettingsComponent },
   { path: 'documentation', component: AdminDocumentationComponent }
 ];
 
