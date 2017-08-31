@@ -5,7 +5,7 @@ import {
   InputTextModule, MegaMenuModule, MenuItem, OverlayPanelModule, OverlayPanel
 } from 'primeng/primeng';
 import { Message, MessagesModule } from 'primeng/primeng';
-import { DataService } from './data/data.service';
+import { DataService } from '../mocks/services/data.service';
 
 @Component({
   selector: 'app-my-user',

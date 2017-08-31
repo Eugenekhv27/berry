@@ -8,8 +8,8 @@ import { TooltipModule } from 'primeng/primeng';
 import { Message, MessagesModule } from 'primeng/primeng';
 import { MultiSelectModule, MenuItem } from 'primeng/primeng';
 
-import { Buyer } from './data/buyer';
-import { DataService } from './data/data.service';
+import { Buyer } from '../participants/buyer';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-my-app',
