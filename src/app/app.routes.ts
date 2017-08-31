@@ -16,7 +16,7 @@ import { AdminParticipantsListComponent } from './admin/participants/participant
 import { AdminReferralSettingsComponent } from './admin/settings/referral-settings.component';
 import { AdminDocumentationComponent } from './admin/documentation/documentation.component';
 
-export const routes: Routes = [
+const routes: Routes = [
   { path: 'dashboard', component: AdminDashboardComponent },
   { path: 'participants-list', component: AdminParticipantsListComponent },
   // { path: 'forms', component: FormsDemo },
