@@ -58,8 +58,8 @@ export class AdminNavComponent implements OnInit {
   }
 
   changeTheme(theme) {
-    let themeLink: HTMLLinkElement = <HTMLLinkElement>document.getElementById('theme-css');
-    let layoutLink: HTMLLinkElement = <HTMLLinkElement>document.getElementById('layout-css');
+    const themeLink: HTMLLinkElement = <HTMLLinkElement>document.getElementById('theme-css');
+    const layoutLink: HTMLLinkElement = <HTMLLinkElement>document.getElementById('layout-css');
 
     themeLink.href = 'assets/theme/theme-' + theme + '.css';
     layoutLink.href = 'assets/layout/css/layout-' + theme + '.css';
@@ -68,27 +68,7 @@ export class AdminNavComponent implements OnInit {
 
 @Component({
   selector: '[app-nav-menu]',
-  template: `
-        <ng-template ngFor let-child let-i="index" [ngForOf]="(root ? item : item.items)">
-            <li [ngClass]="{'active-menuitem': isActive(i)}" [class]="child.badgeStyleClass" *ngIf="child.visible === false ? false : true">
-                <a [href]="child.url||'#'" (click)="itemClick($event,child,i)" *ngIf="!child.routerLink" [attr.tabindex]="!visible ? '-1' : null"  [attr.target]="child.target">
-                    <i [ngClass]="child.icon"></i>
-                    <span>{{child.label}}</span>
-                    <span class="menuitem-badge" *ngIf="child.badge">{{child.badge}}</span>
-                    <i class="fa fa-fw fa-angle-down" *ngIf="child.items"></i>
-                </a>
-
-                <a (click)="itemClick($event,child,i)" *ngIf="child.routerLink" [attr.target]="child.target"
-                    [routerLink]="child.routerLink" routerLinkActive="active-menuitem-routerlink" [routerLinkActiveOptions]="{exact: true}">
-                    <i [ngClass]="child.icon"></i>
-                    <span>{{child.label}}</span>
-                    <span class="menuitem-badge" *ngIf="child.badge">{{child.badge}}</span>
-                    <i class="fa fa-fw fa-angle-down" *ngIf="child.items"></i>
-                </a>
-                <ul app-nav-menu [item]="child" *ngIf="child.items" [@children]="isActive(i) ? 'visible' : 'hidden'" [visible]="isActive(i)" [reset]="reset"></ul>
-            </li>
-        </ng-template>
-    `,
+  templateUrl: './nav.component.html',
   animations: [
     trigger('children', [
       state('hidden', style({
@@ -117,31 +97,32 @@ export class AdminNavMenuComponent {
   constructor( @Inject(forwardRef(() => AdminComponent)) public app: AdminComponent, public router: Router, public location: Location) { }
 
   itemClick(event: Event, item: MenuItem, index: number) {
-    //avoid processing disabled items
+    // avoid processing disabled items
     if (item.disabled) {
       event.preventDefault();
       return true;
     }
 
-    //activate current item and deactivate active sibling if any
+    // activate current item and deactivate active sibling if any
     this.activeIndex = (this.activeIndex === index) ? null : index;
 
-    //execute command
+    // execute command
     if (item.command) {
       item.command({ originalEvent: event, item: item });
     }
 
-    //prevent hash change
+    // prevent hash change
     if (item.items || (!item.url && !item.routerLink)) {
       event.preventDefault();
     }
 
-    //hide menu
+    // hide menu
     if (!item.items) {
-      if (this.app.isHorizontal())
+      if (this.app.isHorizontal()) {
         this.app.resetMenu = true;
-      else
+      } else {
         this.app.resetMenu = false;
+      }
 
       this.app.overlayMenuActive = false;
       this.app.staticMenuMobileActive = false;
