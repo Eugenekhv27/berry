@@ -4,6 +4,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { AuthGuard } from './auth.guard';
 
 import { AdminLoginComponent} from './admin/login/login.component';
+import { AdminHelpComponent } from './admin/help/help.component';
 import { AdminDashboardComponent } from './admin/dashboard/dashboard.component';
 import { AdminParticipantsListComponent } from './admin/participants/participants-list.component';
 import { AdminReferralSettingsComponent } from './admin/settings/referral-settings.component';
@@ -15,6 +16,7 @@ const adminRoutes: Routes = [
   { path: 'settings', component: AdminReferralSettingsComponent, canActivate: [AuthGuard]  },
   { path: 'documentation', component: AdminDocumentationComponent },
   { path: 'login', component: AdminLoginComponent },
+  { path: 'help', component: AdminHelpComponent },
   { path: '**', component: AdminLoginComponent }
 ];
 
