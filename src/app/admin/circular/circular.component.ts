@@ -54,10 +54,11 @@ export class AdminCircularComponent implements OnInit {
       }
     ];
 
-    this.dataService.getGridData('ent.Buyer')
-      .subscribe((resp: Response) => {
-        this.data = resp.json().children;
-      });
+    this.data = this.dataService.getGridData('ent.Buyer');
+    // this.dataService.getGridData('ent.Buyer')
+    //   .subscribe((resp: Response) => {
+    //     this.data = resp.json().children;
+    //   });
   }
 
   addLine() {
