@@ -20,7 +20,7 @@ export class AdminComponent implements AfterViewInit, OnDestroy {
 
   layoutCompact = false;
 
-  layoutMode: MenuOrientation = MenuOrientation.STATIC;
+  layoutMode = MenuOrientation.STATIC;
 
   rotateMenuButton: boolean;
 
