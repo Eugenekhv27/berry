@@ -1,6 +1,6 @@
 // системные
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -59,11 +59,13 @@ import { AdminCircularComponent } from './circular/circular.component';
 import { AdminReferralSettingsComponent } from './settings/referral-settings.component';
 import { AdminDocumentationComponent } from './documentation/documentation.component';
 
+import { AdminRoutingModule } from './admin-routing.module';
+
 @NgModule({
   imports: [
     // Angular
     CommonModule,
-    BrowserAnimationsModule,
+//    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     // PrimeNG
@@ -74,8 +76,8 @@ import { AdminDocumentationComponent } from './documentation/documentation.compo
     MessagesModule,
     SplitButtonModule,
     InputMaskModule,
-    // // routing
-    // AppRoutingModule,
+    // routing
+    AdminRoutingModule,
   ],
   declarations: [
     AdminComponent,
