@@ -1,7 +1,7 @@
 /**
  * Данный компонент реализует пользовательский интерфейс администратора
  */
-import { Component, AfterViewInit, ElementRef, Renderer, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Renderer, ViewChild, OnDestroy } from '@angular/core';
 
 enum MenuOrientation {
   STATIC,
@@ -16,11 +16,11 @@ declare var jQuery;
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements AfterViewInit {
+export class AdminComponent implements AfterViewInit, OnDestroy {
 
   layoutCompact = false;
 
-  layoutMode: MenuOrientation = MenuOrientation.STATIC;
+  layoutMode = MenuOrientation.STATIC;
 
   rotateMenuButton: boolean;
 
@@ -84,16 +84,13 @@ export class AdminComponent implements AfterViewInit {
 
     if (this.layoutMode === MenuOrientation.OVERLAY) {
       this.overlayMenuActive = !this.overlayMenuActive;
-    }
-    else {
+    } else {
       if (this.isDesktop()) {
         this.staticMenuDesktopInactive = !this.staticMenuDesktopInactive;
-      }
-      else {
+      } else {
         if (this.staticMenuMobileActive) {
           this.staticMenuMobileActive = false;
-        }
-        else {
+        } else {
           this.staticMenuMobileActive = true;
         }
       }

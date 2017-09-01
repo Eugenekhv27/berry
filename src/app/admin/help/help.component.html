@@ -1,0 +1,13 @@
+<div class="ui-g">
+  <div class="ui-g-6">
+    Задать вопрос в техподдержку:
+    <textarea pInputTextarea [(ngModel)]="messageForSupport" style="width:100%"></textarea>
+    <button pButton
+      type="text"
+      icon="fa fa-envelope-o"
+      label="Отправить сообщение"
+      style="width:100%"
+      (click)="sendToSupport()">
+    </button>
+  </div>
+</div>
