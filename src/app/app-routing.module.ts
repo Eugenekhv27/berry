@@ -1,8 +1,7 @@
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ModuleWithProviders } from '@angular/core';
 
 import { AuthGuard } from './auth.guard';
-
 import { AdminLoginComponent} from './admin/login/login.component';
 import { AdminHelpComponent } from './admin/help/help.component';
 import { AdminDashboardComponent } from './admin/dashboard/dashboard.component';
@@ -27,4 +26,12 @@ export const routes: Routes = [
   { path: 'admin', children: adminRoutes }
 ];
 
-export const AppRoutes: ModuleWithProviders = RouterModule.forRoot(routes);
+@NgModule({
+  imports: [
+    RouterModule.forRoot(routes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AppRoutingModule { }

@@ -46,9 +46,6 @@ import {
 */
 } from 'primeng/primeng';
 
-// раутинг
-import { AppRoutes } from './app.routes';
-
 // наши
 import { AuthGuard } from './auth.guard';
 import { AdminComponent } from './admin/admin.component';
@@ -62,6 +59,9 @@ import { AdminParticipantsListComponent } from './admin/participants/participant
 import { AdminCircularComponent } from './admin/circular/circular.component';
 import { AdminReferralSettingsComponent } from './admin/settings/referral-settings.component';
 import { AdminDocumentationComponent } from './admin/documentation/documentation.component';
+
+// раутинг
+import { AppRoutingModule } from './app-routing.module';
 
 // моки (модули-подделки)
 import { CarService } from './mocks/services/car.service';
@@ -83,7 +83,7 @@ import { DataService } from './mocks/services/data.service';
     SplitButtonModule,
     InputMaskModule,
     // routing
-    AppRoutes,
+    AppRoutingModule,
   ],
   declarations: [
     AdminComponent,
