@@ -13,11 +13,12 @@ export class AuthGuard implements CanActivate {
     activatedRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
-    if (localStorage.getItem('accountEncrypt')) {
-      // logged in so return true
-      return true;
-    }
-    this.router.navigate(['/admin/login']);
-    return false;
+    // if (localStorage.getItem('accountEncrypt')) {
+    //   // logged in so return true
+    //   return true;
+    // }
+    // this.router.navigate(['/admin/login']);
+    // return false;
+    return true;
   }
 }

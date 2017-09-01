@@ -50,7 +50,9 @@ import {
 import { AppRoutes } from './app.routes';
 
 // наши
+import { AuthGuard } from './auth.guard';
 import { AdminComponent } from './admin/admin.component';
+import { AdminLoginComponent } from './admin/login/login.component';
 import { AdminNavComponent, AdminNavMenuComponent } from './admin/nav.component';
 import { AdminTopBarComponent } from './admin/top-bar.component';
 import { AdminFooterComponent } from './admin/footer.component';
@@ -83,6 +85,7 @@ import { DataService } from './mocks/services/data.service';
   ],
   declarations: [
     AdminComponent,
+    AdminLoginComponent,
     AdminNavComponent,
     AdminNavMenuComponent,
     AdminTopBarComponent,
@@ -93,6 +96,7 @@ import { DataService } from './mocks/services/data.service';
     AdminDocumentationComponent,
   ],
   providers: [
+    AuthGuard,
     CarService,
     DataService,
   ],
