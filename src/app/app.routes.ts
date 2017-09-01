@@ -9,13 +9,17 @@ import { AdminParticipantsListComponent } from './admin/participants/participant
 import { AdminReferralSettingsComponent } from './admin/settings/referral-settings.component';
 import { AdminDocumentationComponent } from './admin/documentation/documentation.component';
 
-const routes: Routes = [
+const adminRoutes: Routes = [
   { path: 'dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard]  },
   { path: 'participants-list', component: AdminParticipantsListComponent, canActivate: [AuthGuard]  },
   { path: 'settings', component: AdminReferralSettingsComponent, canActivate: [AuthGuard]  },
   { path: 'documentation', component: AdminDocumentationComponent },
   { path: 'login', component: AdminLoginComponent },
   { path: '**', component: AdminLoginComponent }
+];
+
+export const routes: Routes = [
+  { path: 'admin', children: adminRoutes }
 ];
 
 export const AppRoutes: ModuleWithProviders = RouterModule.forRoot(routes);

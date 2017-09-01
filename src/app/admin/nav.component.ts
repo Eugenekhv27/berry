@@ -21,11 +21,12 @@ export class AdminNavComponent implements OnInit {
 
   ngOnInit() {
     this.model = [
-      { label: 'Dashboard', icon: 'fa fa-fw fa-dashboard', routerLink: ['/dashboard'] },
-      { label: 'Участники', icon: 'fa fa-fw fa-users', routerLink: ['/participants-list'] },
-      { label: 'Рассылки', icon: 'fa fa-fw fa-bullhorn', routerLink: ['/'] },
-      { label: 'Начисление бонусов', icon: 'fa fa-fw fa-star', routerLink: ['/'] },
-      { label: 'Настройки', icon: 'fa fa-fw fa-gear',
+      { label: 'Dashboard', icon: 'fa fa-fw fa-dashboard', routerLink: ['/admin/dashboard'] },
+      { label: 'Участники', icon: 'fa fa-fw fa-users', routerLink: ['/admin/participants-list'] },
+      { label: 'Рассылки', icon: 'fa fa-fw fa-bullhorn', routerLink: ['/admin/circular'] },
+      { label: 'Начисление бонусов', icon: 'fa fa-fw fa-star', routerLink: ['/admin/bonus-accounting'] },
+      {
+        label: 'Настройки', icon: 'fa fa-fw fa-gear',
         items: [
           {
             label: 'Главное меню', icon: 'fa fa-fw fa-bars',
@@ -48,11 +49,11 @@ export class AdminNavComponent implements OnInit {
               { label: 'Deep Purple', icon: 'fa fa-fw fa-paint-brush', command: (event) => { this.changeTheme('deep-purple') } }
             ]
           },
-          { label: 'Реф. проценты', icon: 'fa fa-fw fa-percent', routerLink: ['/settings'] },
+          { label: 'Реф. проценты', icon: 'fa fa-fw fa-percent', routerLink: ['/admin/settings'] },
         ]
       },
-      { label: 'Документация', icon: 'fa fa-fw fa-book', routerLink: ['/documentation'] },
-      { label: 'Помощь', icon: 'fa fa-fw fa-life-ring', routerLink: ['/help'] },
+      { label: 'Документация', icon: 'fa fa-fw fa-book', routerLink: ['/admin/documentation'] },
+      { label: 'Помощь', icon: 'fa fa-fw fa-life-ring', routerLink: ['/admin/help'] },
     ];
   }
 
@@ -115,7 +116,7 @@ export class AdminNavMenuComponent {
 
   constructor( @Inject(forwardRef(() => AdminComponent)) public app: AdminComponent, public router: Router, public location: Location) { }
 
-  itemClick(event: Event, item: MenuItem, index: number)  {
+  itemClick(event: Event, item: MenuItem, index: number) {
     //avoid processing disabled items
     if (item.disabled) {
       event.preventDefault();
