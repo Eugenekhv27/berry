@@ -9,7 +9,8 @@ import {
 } from 'primeng/primeng';
 
 import { Buyer } from '../participants/buyer';
-import { DataService } from '../services/data.service';
+// import { DataService } from '../services/data.service';
+import { DataService } from '../../mocks/services/data.service';
 
 @Component({
   selector: 'app-circular',
@@ -53,10 +54,11 @@ export class AdminCircularComponent implements OnInit {
       }
     ];
 
-    this.dataService.getGridData('ent.Buyer')
-      .subscribe((resp: Response) => {
-        this.data = resp.json().children;
-      });
+    this.data = this.dataService.getGridData('ent.Buyer');
+    // this.dataService.getGridData('ent.Buyer')
+    //   .subscribe((resp: Response) => {
+    //     this.data = resp.json().children;
+    //   });
   }
 
   addLine() {

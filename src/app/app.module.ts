@@ -1,103 +1,34 @@
-// системные
+/**
+ * Корневой модуль  Angular-приложения
+ *
+ * BrowserAnimationsModule можно импортировать только в корневом модуле приложения
+ * (он нужен для библиотеки PrimeNG в AdminModule, но импортировать его приходится здесь)
+ */
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-// библиотечные
-import {
-  PanelModule,
-  DataTableModule,
-  ChartModule,
-  GrowlModule,
-  MessagesModule,
-  SplitButtonModule,
-  InputMaskModule,
-  /*
-  InputTextModule,
-  MegaMenuModule,
-  MenubarModule,
-  MenuItem,
-  SharedModule,
-  DialogModule,
-  ButtonModule,
-  DropdownModule,
-  SelectItem,
-  FieldsetModule,
-  ListboxModule,
-  AutoCompleteModule,
-  CheckboxModule,
-  SpinnerModule,
-  SelectButtonModule,
-  TabViewModule,
-  InputSwitchModule,
-  OverlayPanelModule,
-  CalendarModule,
-  TooltipModule,
-  MultiSelectModule,
-  DataScrollerModule,
-  RadioButtonModule,
-  ToolbarModule,
-  InputTextareaModule,
-  TriStateCheckboxModule,
-  AccordionModule,
-  DataListModule
-*/
-} from 'primeng/primeng';
-
-// раутинг
-import { AppRoutes } from './app.routes';
-
-// наши
-import { AuthGuard } from './auth.guard';
-import { AdminComponent } from './admin/admin.component';
-import { AdminLoginComponent } from './admin/login/login.component';
-import { AdminHelpComponent } from './admin/help/help.component';
-import { AdminNavComponent, AdminNavMenuComponent } from './admin/nav.component';
-import { AdminTopBarComponent } from './admin/top-bar.component';
-import { AdminFooterComponent } from './admin/footer.component';
-import { AdminDashboardComponent } from './admin/dashboard/dashboard.component';
-import { AdminParticipantsListComponent } from './admin/participants/participants-list.component';
-import { AdminCircularComponent } from './admin/circular/circular.component';
-import { AdminReferralSettingsComponent } from './admin/settings/referral-settings.component';
-import { AdminDocumentationComponent } from './admin/documentation/documentation.component';
-
-// моки (модули-подделки)
+// Глобальные сервисы
+import { AuthGuard } from './admin/services/auth.guard';
 import { CarService } from './mocks/services/car.service';
 import { DataService } from './mocks/services/data.service';
 
+// корневой компонент Angular-приложения
+import { AppComponent } from './app.component';
+
+// Routing (прикладные Angular-модули загружаются через lazy-loading)
+import { AppRoutingModule } from './app-routing.module';
+
 @NgModule({
   imports: [
-    // Angular
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
     HttpModule,
-    // PrimeNG
-    PanelModule,
-    DataTableModule,
-    ChartModule,
-    GrowlModule,
-    MessagesModule,
-    SplitButtonModule,
-    InputMaskModule,
-    // routing
-    AppRoutes,
+    AppRoutingModule,
   ],
   declarations: [
-    AdminComponent,
-    AdminLoginComponent,
-    AdminHelpComponent,
-    AdminNavComponent,
-    AdminNavMenuComponent,
-    AdminTopBarComponent,
-    AdminFooterComponent,
-    AdminDashboardComponent,
-    AdminParticipantsListComponent,
-    AdminCircularComponent,
-    AdminReferralSettingsComponent,
-    AdminDocumentationComponent,
+    AppComponent,
   ],
   providers: [
     AuthGuard,
@@ -105,7 +36,7 @@ import { DataService } from './mocks/services/data.service';
     DataService,
   ],
   bootstrap: [
-    AdminComponent,
+    AppComponent,
   ]
 })
 export class AppModule { }

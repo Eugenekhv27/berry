@@ -3,7 +3,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/primeng';
-import { AdminComponent } from './admin.component';
+import { AdminComponent } from '../admin.component';
 
 @Component({
   selector: 'app-nav',

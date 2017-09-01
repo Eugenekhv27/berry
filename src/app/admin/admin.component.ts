@@ -12,7 +12,7 @@ enum MenuOrientation {
 declare var jQuery;
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
