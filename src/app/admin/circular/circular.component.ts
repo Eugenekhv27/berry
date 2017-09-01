@@ -9,7 +9,8 @@ import {
 } from 'primeng/primeng';
 
 import { Buyer } from '../participants/buyer';
-import { DataService } from '../services/data.service';
+// import { DataService } from '../services/data.service';
+import { DataService } from '../../mocks/services/data.service';
 
 @Component({
   selector: 'app-circular',
