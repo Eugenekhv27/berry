@@ -2,7 +2,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 // библиотечные
 import {
@@ -65,7 +64,6 @@ import { AdminRoutingModule } from './admin-routing.module';
     // Angular
     CommonModule,
     FormsModule,
-    HttpModule,
     // PrimeNG
     PanelModule,
     DataTableModule,
