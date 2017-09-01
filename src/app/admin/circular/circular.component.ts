@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Response } from '@angular/http';
 import 'rxjs/add/operator/catch';
 
-import { SelectItem } from 'primeng/primeng';
-import { OverlayPanelModule, OverlayPanel, DataTable } from 'primeng/primeng';
-import { TooltipModule } from 'primeng/primeng';
-import { Message, MessagesModule } from 'primeng/primeng';
-import { MultiSelectModule, MenuItem } from 'primeng/primeng';
+import {
+  DataTable,
+  Message, MessagesModule,
+  MultiSelectModule, MenuItem
+} from 'primeng/primeng';
 
 import { Buyer } from '../participants/buyer';
 import { DataService } from '../services/data.service';
@@ -19,8 +19,7 @@ import { DataService } from '../services/data.service';
   templateUrl: './circular.component.html',
   providers: [DataService]
 })
-
-export class CircularComponent implements OnInit {
+export class AdminCircularComponent implements OnInit {
 
   @ViewChild('dataTable') dt: DataTable;
 

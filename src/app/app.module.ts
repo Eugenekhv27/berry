@@ -59,6 +59,7 @@ import { AdminTopBarComponent } from './admin/top-bar.component';
 import { AdminFooterComponent } from './admin/footer.component';
 import { AdminDashboardComponent } from './admin/dashboard/dashboard.component';
 import { AdminParticipantsListComponent } from './admin/participants/participants-list.component';
+import { AdminCircularComponent } from './admin/circular/circular.component';
 import { AdminReferralSettingsComponent } from './admin/settings/referral-settings.component';
 import { AdminDocumentationComponent } from './admin/documentation/documentation.component';
 
@@ -94,6 +95,7 @@ import { DataService } from './mocks/services/data.service';
     AdminFooterComponent,
     AdminDashboardComponent,
     AdminParticipantsListComponent,
+    AdminCircularComponent,
     AdminReferralSettingsComponent,
     AdminDocumentationComponent,
   ],
