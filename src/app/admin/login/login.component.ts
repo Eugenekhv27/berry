@@ -1,10 +1,8 @@
-import { OnInit, OnDestroy, Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { Http, Response, Headers } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Http, Headers } from '@angular/http';
 
-import { InputTextModule, PasswordModule, Message, InputMaskModule } from 'primeng/primeng';
-import { DataScrollerModule } from 'primeng/primeng';
+import { Message } from 'primeng/primeng';
 
 @Component({
   selector: 'app-login',
@@ -17,17 +15,12 @@ export class AdminLoginComponent implements OnInit {
   notCall: string[] = [];
   /// сюда выводим ошибки
   errors: Message[] = [];
-  display = false;
 
   constructor(private router: Router, private http: Http) { }
 
   ngOnInit() {
     localStorage.setItem('accountEncrypt', '');
     this.restServerUrl = 'base.progrepublic.ru';
-  }
-
-  showDialog() {
-    this.display = true;
   }
 
   doLogin() {
