@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 
 // Глобальные сервисы
+import { AuthService } from './admin/services/auth.service';
 import { AuthGuard } from './admin/services/auth-guard.service';
 import { CarService } from './mocks/services/car.service';
 import { DataService } from './mocks/services/data.service';
@@ -31,6 +32,7 @@ import { AppRoutingModule } from './app-routing.module';
     AppComponent,
   ],
   providers: [
+    AuthService,
     AuthGuard,
     CarService,
     DataService,
