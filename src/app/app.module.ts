@@ -10,7 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 
 // Глобальные сервисы
-import { AuthGuard } from './admin/services/auth.guard';
+import { AuthGuard } from './admin/services/auth-guard.service';
 import { CarService } from './mocks/services/car.service';
 import { DataService } from './mocks/services/data.service';
 
