@@ -1,5 +1,3 @@
-
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { Notice } from './notice.model';
@@ -7,8 +5,7 @@ import { Notice } from './notice.model';
 @Injectable()
 export class NotifierService {
 
-  private message$: Subject<Notice> = new Subject<Notice>();
-  private cancel$: Subject<any> = new Subject<any>();
+  public noticesQueue = new Subject<Notice>();
   private idHead = 0;
 
   constructor() {
@@ -37,21 +34,9 @@ export class NotifierService {
 
   private createMessage(severity: string, summary: string, detail: string, additionalProperties?: any): void {
     if (additionalProperties) {
-      this.message$.next({ id: this.getNextID(), severity, summary, detail, additionalProperties });
+      this.noticesQueue.next({ id: this.getNextID(), severity, summary, detail, additionalProperties });
     } else {
-      this.message$.next({ id: this.getNextID(), severity, summary, detail });
+      this.noticesQueue.next({ id: this.getNextID(), severity, summary, detail });
     }
-  }
-
-  public clearMessages(): void {
-    this.cancel$.next();
-  }
-
-  public getMessageStream(): Observable<Notice> {
-    return this.message$.asObservable();
-  }
-
-  public getCancelStream(): Observable<boolean> {
-    return this.cancel$.asObservable();
   }
 }
