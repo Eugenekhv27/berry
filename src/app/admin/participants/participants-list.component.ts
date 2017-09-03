@@ -23,7 +23,7 @@ import { DataService } from '../../mocks/services/data.service';
   providers: [DataService]
 })
 
-export class AdminParticipantsListComponent implements OnInit {
+export class ParticipantsListComponent implements OnInit {
 
   @ViewChild('dataTable') dt: DataTable;
 

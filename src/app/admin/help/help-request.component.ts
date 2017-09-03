@@ -15,7 +15,7 @@ import { NotifierService } from '../notifier/notifier.service';
   templateUrl: './help-request.component.html',
   providers: [DataService]
 })
-export class AdminHelpComponent implements OnInit {
+export class HelpRequestComponent implements OnInit {
   helpRequest: string;
   accountEncrypt: string;
   drawPublicButton: string;

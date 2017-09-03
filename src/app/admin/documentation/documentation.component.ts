@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-documentation',
   templateUrl: './documentation.component.html'
 })
-export class AdminDocumentationComponent implements OnInit {
+export class DocumentationComponent implements OnInit {
 
   constructor() { }
 

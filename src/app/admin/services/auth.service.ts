@@ -35,7 +35,7 @@ export class AuthService {
 //   selector: 'app-login',
 //   templateUrl: './login.component.html'
 // })
-// export class AdminLoginComponent implements OnInit {
+// export class LoginComponent implements OnInit {
 //   restServerUrl;
 //   login: string;
 //   password: string;

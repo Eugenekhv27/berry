@@ -6,7 +6,7 @@ import { Car } from '../../mocks/shared/car';
 @Component({
   templateUrl: './dashboard.component.html'
 })
-export class AdminDashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   cars: Car[];
   chartData: any;
 

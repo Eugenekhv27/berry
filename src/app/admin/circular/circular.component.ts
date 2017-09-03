@@ -20,7 +20,7 @@ import { DataService } from '../../mocks/services/data.service';
   templateUrl: './circular.component.html',
   providers: [DataService]
 })
-export class AdminCircularComponent implements OnInit {
+export class CircularComponent implements OnInit {
 
   @ViewChild('dataTable') dt: DataTable;
 

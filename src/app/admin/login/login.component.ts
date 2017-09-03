@@ -5,7 +5,7 @@ import { AuthService } from '../services/auth.service';
   selector: 'app-login',
   templateUrl: './login.component.html'
 })
-export class AdminLoginComponent {
+export class LoginComponent {
   login = '';
   password = '';
 

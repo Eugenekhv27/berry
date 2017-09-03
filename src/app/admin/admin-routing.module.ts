@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AdminComponent} from './admin.component';
-import { AdminLoginComponent} from './login/login.component';
-import { AdminHelpComponent } from './help/help-request.component';
-import { AdminDashboardComponent } from './dashboard/dashboard.component';
-import { AdminParticipantsListComponent } from './participants/participants-list.component';
-import { AdminCircularComponent } from './circular/circular.component';
-import { AdminReferralSettingsComponent } from './settings/referral-settings.component';
-import { AdminDocumentationComponent } from './documentation/documentation.component';
+import { LoginComponent} from './login/login.component';
+import { HelpRequestComponent } from './help/help-request.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ParticipantsListComponent } from './participants/participants-list.component';
+import { CircularComponent } from './circular/circular.component';
+import { ReferralSettingsComponent } from './settings/referral-settings.component';
+import { DocumentationComponent } from './documentation/documentation.component';
 
 import { AuthGuard } from './services/auth-guard.service';
 
@@ -16,20 +16,20 @@ const routes: Routes = [{
     path: '',
     component: AdminComponent,
     children: [
-      { path: 'documentation', component: AdminDocumentationComponent },
-      { path: 'login', component: AdminLoginComponent },
+      { path: 'documentation', component: DocumentationComponent },
+      { path: 'login', component: LoginComponent },
       { path: '',
         canActivate: [AuthGuard],
         children: [
-          { path: 'dashboard', component: AdminDashboardComponent  },
-          { path: 'participants-list', component: AdminParticipantsListComponent },
-          { path: 'circular', component: AdminCircularComponent },
-          { path: 'bonus-accounting', component: AdminParticipantsListComponent },
-          { path: 'settings', component: AdminReferralSettingsComponent },
-          { path: 'help', component: AdminHelpComponent },
+          { path: 'dashboard', component: DashboardComponent  },
+          { path: 'participants-list', component: ParticipantsListComponent },
+          { path: 'circular', component: CircularComponent },
+          { path: 'bonus-accounting', component: ParticipantsListComponent },
+          { path: 'settings', component: ReferralSettingsComponent },
+          { path: 'help', component: HelpRequestComponent },
         ]
       }
-//      { path: '**', component: AdminLoginComponent }
+//      { path: '**', component: LoginComponent }
     ]
 }];
 
