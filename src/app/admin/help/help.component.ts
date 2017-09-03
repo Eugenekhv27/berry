@@ -4,9 +4,12 @@ import { Subscription } from 'rxjs/Subscription';
 import {
   InputTextModule, MegaMenuModule,
   MenuItem, OverlayPanelModule,
-  OverlayPanel, Message, MessagesModule
+  OverlayPanel
 } from 'primeng/primeng';
 import { DataService } from '../../mocks/services/data.service';
+
+
+import { NotifierService } from '../notifier/notifier.service';
 
 @Component({
   selector: 'app-ask-for-help',
@@ -14,23 +17,20 @@ import { DataService } from '../../mocks/services/data.service';
   providers: [DataService]
 })
 export class AdminHelpComponent implements OnInit {
-  messageForSupport: string;
-  calcurl: string;
+  helpRequest: string;
   accountEncrypt: string;
   drawPublicButton: string;
   hideCalcPane = true;
-  /// сюда выводим ошибки
-  errors: Message[] = [];
 
   private routeSubscription: Subscription;
 
   constructor(
     private router: Router,
     private dataService: DataService,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private notifier: NotifierService
   ) {
     this.accountEncrypt = localStorage.getItem('accountEncrypt');
-    this.calcurl = 'data-url=\'http://base.spidercalc.ru/calc;ae=' + this.accountEncrypt + '\'';
     this.hideCalcPane = activateRoute.snapshot.params['hideCalcPane'];
   }
 
@@ -40,45 +40,29 @@ export class AdminHelpComponent implements OnInit {
   sendToSupport() {
     this.accountEncrypt = localStorage.getItem('accountEncrypt');
 
+    if (!this.helpRequest) {
+      this.notifier.warning('Напишите ваш вопрос в поле для ввода текста', 'Пустое сообщение!');
+      return;
+    }
+
     if (!this.accountEncrypt) {
-      this.errors.push({
-        severity: 'error',
-        summary: 'Зарегистрируйтесь!',
-        detail: 'Для начала стоит зарегистрирваться в системе'
-      });
+      this.notifier.warning('Только зарегистрированные пользователи могут отправлять запросы в службу поддержки', 'Зарегистрируйтесь!');
       return;
     }
 
-    if (!this.messageForSupport) {
-      this.errors.push({
-        severity: 'error',
-        summary: 'Пустое сообщение!',
-        detail: 'Напишите подробней ваш вопрос'
-      });
-      return;
-    }
-
-    this.dataService.sendToSupport(this.messageForSupport)
+    this.dataService.sendToSupport(this.helpRequest)
       .subscribe(
       (data: Response) => {
         console.log(data);
         console.log(data.status);
         if (data.status.toString() === 'OK') {
-          this.errors.push({
-            severity: 'warn',
-            summary: 'Сообщение отправлено!',
-            detail: 'Максимальное время ответа 24 часа.'
-          });
+          this.notifier.success('Максимальное время ответа 24 часа', 'Сообщение отправлено!');
         } else {
-          this.errors.push({
-            severity: 'error',
-            summary: 'Ой, не получилось!',
-            detail: data.status.toString()
-          });
+          this.notifier.error(data.status.toString(), 'Не удалось отправить!');
         }
       },
       (error) => {
-        this.errors.push({ severity: 'error', summary: 'Ой, не получилось!', detail: error });
+        this.notifier.error(error, 'Не удалось отправить!');
         console.log(error);
       }
       );
