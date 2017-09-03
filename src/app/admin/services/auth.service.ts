@@ -21,10 +21,6 @@ export class AuthService {
   }
 }
 
-// куда-то надо выводить сообщения об ошибках:
-// <p-growl [value]="errors" [life]="6000"></p-growl>
-// см. массив errors: Message[]
-
 // import { Component, OnInit } from '@angular/core';
 // import { Router, ActivatedRoute, Params } from '@angular/router';
 // import { Http, Headers } from '@angular/http';
