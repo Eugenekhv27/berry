@@ -19,7 +19,7 @@ export class HelpRequestComponent implements OnInit {
 
   sendToSupport() {
     if (!this.helpRequest) {
-      this.notifier.warning('Напишите ваш вопрос в поле для ввода текста', 'Пустое сообщение!');
+      this.notifier.warning('Пустое сообщение!', 'Напишите ваш вопрос в поле для ввода текста');
       return;
     }
 
@@ -29,13 +29,13 @@ export class HelpRequestComponent implements OnInit {
         console.log(data);
         console.log(data.status);
         if (data.status.toString() === 'OK') {
-          this.notifier.success('Максимальное время ответа 24 часа', 'Сообщение отправлено!');
+          this.notifier.success('Сообщение отправлено!', 'Максимальное время ответа 24 часа');
         } else {
-          this.notifier.error(data.status.toString(), 'Не удалось отправить!');
+          this.notifier.error('Не удалось отправить!', data.status.toString());
         }
       },
       (error) => {
-        this.notifier.error(error, 'Не удалось отправить!');
+        this.notifier.error('Не удалось отправить!', error);
         console.log(error);
       }
       );
