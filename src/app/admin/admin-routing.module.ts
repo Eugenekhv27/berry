@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminComponent} from './admin.component';
 import { AdminLoginComponent} from './login/login.component';
-import { AdminHelpComponent } from './help/help.component';
+import { AdminHelpComponent } from './help/help-request.component';
 import { AdminDashboardComponent } from './dashboard/dashboard.component';
 import { AdminParticipantsListComponent } from './participants/participants-list.component';
 import { AdminCircularComponent } from './circular/circular.component';

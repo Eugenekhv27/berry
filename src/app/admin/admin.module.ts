@@ -47,7 +47,7 @@ import {
 // наши
 import { AdminComponent } from './admin.component';
 import { AdminLoginComponent } from './login/login.component';
-import { AdminHelpComponent } from './help/help.component';
+import { AdminHelpComponent } from './help/help-request.component';
 import { AdminNavComponent, AdminNavMenuComponent } from './nav/nav.component';
 import { AdminTopBarComponent } from './top-bar/top-bar.component';
 import { AdminFooterComponent } from './footer/footer.component';

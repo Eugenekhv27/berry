@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import {
   InputTextModule, MegaMenuModule,
@@ -12,26 +11,22 @@ import { DataService } from '../../mocks/services/data.service';
 import { NotifierService } from '../notifier/notifier.service';
 
 @Component({
-  selector: 'app-ask-for-help',
-  templateUrl: './help.component.html',
+  selector: 'app-help-request',
+  templateUrl: './help-request.component.html',
   providers: [DataService]
 })
 export class AdminHelpComponent implements OnInit {
   helpRequest: string;
   accountEncrypt: string;
   drawPublicButton: string;
-  hideCalcPane = true;
 
   private routeSubscription: Subscription;
 
   constructor(
-    private router: Router,
     private dataService: DataService,
-    private activateRoute: ActivatedRoute,
     private notifier: NotifierService
   ) {
     this.accountEncrypt = localStorage.getItem('accountEncrypt');
-    this.hideCalcPane = activateRoute.snapshot.params['hideCalcPane'];
   }
 
   ngOnInit() {
