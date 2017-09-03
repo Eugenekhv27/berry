@@ -3,5 +3,4 @@ export interface Notice {
     severity: string;
     summary: string;
     detail: string;
-    additionalProperties?: any;
 }
