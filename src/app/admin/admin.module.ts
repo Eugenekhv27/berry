@@ -57,8 +57,8 @@ import { AdminCircularComponent } from './circular/circular.component';
 import { AdminReferralSettingsComponent } from './settings/referral-settings.component';
 import { AdminDocumentationComponent } from './documentation/documentation.component';
 
-import { NoticeComponent } from './notices/notice.component';
-import { NotifierService } from './notices/notifier.service';
+import { NoticeComponent } from './notifier/notice.component';
+import { NotifierService } from './notifier/notifier.service';
 
 import { AdminRoutingModule } from './admin-routing.module';
 

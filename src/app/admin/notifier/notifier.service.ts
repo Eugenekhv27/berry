@@ -15,7 +15,8 @@ export class NotifierService {
   }
 
   private getNextID() {
-    return String(this.idHead++);
+    this.idHead += 1;
+    return String(this.idHead);
   }
 
   public success(messageContent: string, summary: string, additionalProperties?: any): void {
