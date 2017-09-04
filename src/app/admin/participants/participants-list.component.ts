@@ -37,24 +37,12 @@ export class ParticipantsListComponent implements OnInit {
   /// сюда выводим ошибки
   errors: Message[] = [];
   msgs: Message[] = [];
-  /// для кнопки удалить
-  items: MenuItem[];
 
   selectedBuyerLine: any; // заглушка (свойство используется в шаблоне)
 
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    /// для кнопки удалить
-    this.items = [
-      {
-        label: 'Удалить', icon: 'fa-close', command: () => { this.delete(); }
-      }, {
-        label: 'Отменить', icon: 'fa fa-hand-o-left',
-        command: () => { this.displayDialog = false; this.msgs = []; }
-      }
-    ];
-
     this.participantsList = this.dataService.getGridData('ent.Participant');
 
     // this.dataService.getGridData('ent.Participant')
@@ -166,9 +154,6 @@ export class ParticipantsListComponent implements OnInit {
 }
 
 
-
-// Object.assign(target, ...sources)
-
 // export class DataTableCrudDemo implements OnInit {
 
 //       displayDialog: boolean;
@@ -225,9 +210,4 @@ export class ParticipantsListComponent implements OnInit {
 //       findSelectedCarIndex(): number {
 //           return this.cars.indexOf(this.selectedCar);
 //       }
-//   }
-
-//   class PrimeCar implements Car {
-
-//       constructor(public vin?, public year?, public brand?, public color?) {}
 //   }
