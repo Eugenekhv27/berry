@@ -13,7 +13,7 @@ import {
   MenuItem,
 } from 'primeng/primeng';
 
-import { Buyer } from './buyer';
+import { Participant } from './participant.model';
 // import { DataService } from '../services/data.service';
 import { DataService } from '../../mocks/services/data.service';
 
@@ -28,9 +28,9 @@ export class ParticipantsListComponent implements OnInit {
   @ViewChild('dataTable') dt: DataTable;
 
   displayDialog: boolean;
-  object: Buyer;
-  selectedLine: Buyer;
-  data: Buyer[] = [];
+  object: Participant;
+  selectedLine: Participant;
+  data: Participant[] = [];
   lines: any[] = [];
   /// сюда выводим ошибки
   errors: Message[] = [];
@@ -53,9 +53,9 @@ export class ParticipantsListComponent implements OnInit {
       }
     ];
 
-    this.data = this.dataService.getGridData('ent.Buyer');
+    this.data = this.dataService.getGridData('ent.Participant');
 
-    // this.dataService.getGridData('ent.Buyer')
+    // this.dataService.getGridData('ent.Participant')
     //   .subscribe((resp: Response) => {
     //     this.data = resp.json().children;
     //   });
@@ -66,7 +66,7 @@ export class ParticipantsListComponent implements OnInit {
   }
 
   showDialogToAdd() {
-    this.object = new Buyer(new Buyer());
+    this.object = new Participant(new Participant());
     this.lines = [];
     this.displayDialog = true;
   }
@@ -78,7 +78,7 @@ export class ParticipantsListComponent implements OnInit {
     // this.msgs = [];
     // const sendJson = { object: this.object };
     // console.log(sendJson);
-    // this.dataService.saveObject('ent.Buyer', sendJson).subscribe(
+    // this.dataService.saveObject('ent.Participant', sendJson).subscribe(
     //   (data: Response) => {
     //     console.log(data);
     //     console.log(data.status);
@@ -107,7 +107,7 @@ export class ParticipantsListComponent implements OnInit {
 
   delete() {
     // this.msgs = [];
-    // this.dataService.deleteObject('ent.Buyer', this.object.objectId)
+    // this.dataService.deleteObject('ent.Participant', this.object.objectId)
     //   .subscribe((data: Response) => {
     //     if (data.json().status === 'OK') {
     //       this.object = null;
@@ -125,7 +125,7 @@ export class ParticipantsListComponent implements OnInit {
 
   onRowDblclickBuyer(event: any) {
     // console.log(event.data);
-    // this.dataService.getObjectData('ent.Buyer', event.data.ID)
+    // this.dataService.getObjectData('ent.Participant', event.data.ID)
     //   .subscribe((resp: Response) => {
     //     console.log(resp);
     //     console.log(resp.json());

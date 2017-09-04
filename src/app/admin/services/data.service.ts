@@ -35,10 +35,10 @@ export class DataService {
     );
   }
 
-  getObjectData(className: string, ID: string, Aka?: string) {
+  getObjectData(className: string, ID: string, phone?: string) {
     const accountEncrypt = localStorage.getItem('accountEncrypt');
 
-    const akaToUrl = encodeURIComponent(Aka).replace(new RegExp('%', 'g'), '~');
+    const akaToUrl = encodeURIComponent(phone).replace(new RegExp('%', 'g'), '~');
     const auth = localStorage.getItem('loginpassword');
     const headers = new Headers({ Authorization: 'Basic ' + auth });
     return this.http.get(
