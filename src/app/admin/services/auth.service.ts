@@ -1,88 +1,54 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/delay';
+import { OnInit, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Http, Headers } from '@angular/http';
+import { NotifierService } from '../notifier/notifier.service';
 
 @Injectable()
-export class AuthService {
-  isLoggedIn = false;
+export class AuthService implements OnInit {
 
-  // store the URL so we can redirect after logging in
-  redirectUrl: string;
+  constructor(
+    private router: Router,
+    private http: Http,
+    private notifier: NotifierService
+  ) { }
 
-  login({ login = '', password = '' }): Observable<boolean> {
-    console.log('login: ' + login + '  password: ' + password);
-    return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
+  ngOnInit() {
+    localStorage.setItem('accountEncrypt', '');
+  }
+
+  isLoggedIn(): boolean {
+    return Boolean(localStorage.getItem('accountEncrypt'));
   }
 
   logout(): void {
-    this.isLoggedIn = false;
+    localStorage.setItem('accountEncrypt', '');
+  }
+
+  login({ login = '', password = '' }) {
+    const auth = btoa(login + ':' + password);
+    localStorage.setItem('loginpassword', auth);
+    const headers = new Headers({ Authorization: 'Basic ' + auth });
+
+    this.http
+      .get('http://base.progrepublic.ru/csp/bonusclubrest2/getAE',
+      { headers }
+      )
+      .subscribe(
+      (resp: any) => {
+        console.log(resp.status);
+        console.log(resp.json());
+        if (resp.json().status === 'OK') {
+          this.notifier.success('Вход выполнен.', login);
+          localStorage.setItem('accountEncrypt', resp.json().result);
+          this.router.navigate(['/admin/circular']);
+        } else {
+          this.notifier.error('Не получилось войти! 1', resp.json().status);
+        }
+      },
+      (error) => {
+        console.log(error);
+        this.notifier.error('Не получилось войти! 3', error);
+      }
+      );
   }
 }
-
-// import { Component, OnInit } from '@angular/core';
-// import { Router, ActivatedRoute, Params } from '@angular/router';
-// import { Http, Headers } from '@angular/http';
-
-// import { Message } from 'primeng/primeng';
-
-// @Component({
-//   selector: 'app-login',
-//   templateUrl: './login.component.html'
-// })
-// export class LoginComponent implements OnInit {
-//   restServerUrl;
-//   login: string;
-//   password: string;
-//   notCall: string[] = [];
-//   /// сюда выводим ошибки
-//   errors: Message[] = [];
-
-//   constructor(private router: Router, private http: Http) { }
-
-//   ngOnInit() {
-//     localStorage.setItem('accountEncrypt', '');
-//     this.restServerUrl = 'base.progrepublic.ru';
-//   }
-
-//   doLogin() {
-//     const auth = btoa(this.login + ':' + this.password);
-//     localStorage.setItem('loginpassword', auth);
-//     const headers = new Headers({ Authorization: 'Basic ' + auth });
-//     this.http
-//       .get('http://' + this.restServerUrl + '/csp/bonusclubrest2/getAE',
-//       { headers }
-//       )
-//       .subscribe(
-//       (resp: any) => {
-//         console.log(resp.json());
-//         console.log(resp.json().status);
-//         if (resp.json().status === 'OK') {
-//           console.log('OK');
-//           const accountEncrypt = resp.json().result;
-//           console.log(accountEncrypt);
-//           localStorage.setItem('accountEncrypt', accountEncrypt);
-//           this.router.navigate(['/admin/buyers']);
-//         } else {
-//           console.log(resp.json().status);
-//           console.log(resp.status);
-//           this.errors.push({
-//             severity: 'error',
-//             summary: 'Не получилось войти! 1',
-//             detail: resp.json().status
-//           });
-//         }
-//       },
-//       (error) => {
-//         console.log(error);
-//         this.errors.push({
-//           severity: 'error',
-//           summary: 'Не получилось войти! 3',
-//           detail: error
-//         });
-//         console.log(error);
-//       }
-//       );
-//   }
-// }
