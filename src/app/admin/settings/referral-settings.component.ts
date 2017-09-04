@@ -15,7 +15,7 @@ import { AppSet } from './referral-settings';
   templateUrl: './referral-settings.component.html',
 //  providers: [DataService]
 })
-export class AdminReferralSettingsComponent implements OnInit {
+export class ReferralSettingsComponent implements OnInit {
   @Input()
   object: AppSet = new AppSet(null, 'hello@progrepublic.ru', null, '5', '3', '2');
 

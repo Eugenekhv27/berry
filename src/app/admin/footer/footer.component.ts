@@ -12,6 +12,6 @@ import { AdminComponent } from '../admin.component';
     </div>
   `
 })
-export class AdminFooterComponent {
+export class FooterComponent {
 
 }

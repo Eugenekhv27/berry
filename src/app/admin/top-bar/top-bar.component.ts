@@ -5,7 +5,7 @@ import { AdminComponent } from '../admin.component';
   selector: 'app-topbar',
   templateUrl: './top-bar.component.html'
 })
-export class AdminTopBarComponent {
+export class TopBarComponent {
 
   constructor( @Inject(forwardRef(() => AdminComponent)) public app: AdminComponent) { }
 

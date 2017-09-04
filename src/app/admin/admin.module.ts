@@ -12,13 +12,13 @@ import {
   MessagesModule,
   SplitButtonModule,
   InputMaskModule,
+  DialogModule,
   /*
   InputTextModule,
   MegaMenuModule,
   MenubarModule,
   MenuItem,
   SharedModule,
-  DialogModule,
   ButtonModule,
   DropdownModule,
   SelectItem,
@@ -46,16 +46,19 @@ import {
 
 // наши
 import { AdminComponent } from './admin.component';
-import { AdminLoginComponent } from './login/login.component';
-import { AdminHelpComponent } from './help/help.component';
-import { AdminNavComponent, AdminNavMenuComponent } from './nav/nav.component';
-import { AdminTopBarComponent } from './top-bar/top-bar.component';
-import { AdminFooterComponent } from './footer/footer.component';
-import { AdminDashboardComponent } from './dashboard/dashboard.component';
-import { AdminParticipantsListComponent } from './participants/participants-list.component';
-import { AdminCircularComponent } from './circular/circular.component';
-import { AdminReferralSettingsComponent } from './settings/referral-settings.component';
-import { AdminDocumentationComponent } from './documentation/documentation.component';
+import { LoginComponent } from './login/login.component';
+import { HelpRequestComponent } from './help/help-request.component';
+import { NavComponent, NavMenuComponent } from './nav/nav.component';
+import { TopBarComponent } from './top-bar/top-bar.component';
+import { FooterComponent } from './footer/footer.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ParticipantsListComponent } from './participants/participants-list.component';
+import { CircularComponent } from './circular/circular.component';
+import { ReferralSettingsComponent } from './settings/referral-settings.component';
+import { DocumentationComponent } from './documentation/documentation.component';
+
+import { NoticeComponent } from './notifier/notice.component';
+import { NotifierService } from './notifier/notifier.service';
 
 import { AdminRoutingModule } from './admin-routing.module';
 
@@ -72,22 +75,27 @@ import { AdminRoutingModule } from './admin-routing.module';
     MessagesModule,
     SplitButtonModule,
     InputMaskModule,
+    DialogModule,
     // routing
     AdminRoutingModule,
   ],
   declarations: [
     AdminComponent,
-    AdminLoginComponent,
-    AdminHelpComponent,
-    AdminNavComponent,
-    AdminNavMenuComponent,
-    AdminTopBarComponent,
-    AdminFooterComponent,
-    AdminDashboardComponent,
-    AdminParticipantsListComponent,
-    AdminCircularComponent,
-    AdminReferralSettingsComponent,
-    AdminDocumentationComponent,
+    LoginComponent,
+    HelpRequestComponent,
+    NavComponent,
+    NavMenuComponent,
+    TopBarComponent,
+    FooterComponent,
+    DashboardComponent,
+    ParticipantsListComponent,
+    CircularComponent,
+    ReferralSettingsComponent,
+    DocumentationComponent,
+    NoticeComponent
+  ],
+  providers: [
+    NotifierService
   ]
 })
 export class AdminModule { }

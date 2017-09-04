@@ -8,7 +8,7 @@ import {
   MultiSelectModule, MenuItem
 } from 'primeng/primeng';
 
-import { Buyer } from '../participants/buyer';
+import { Participant } from '../participants/participant.model';
 // import { DataService } from '../services/data.service';
 import { DataService } from '../../mocks/services/data.service';
 
@@ -20,14 +20,14 @@ import { DataService } from '../../mocks/services/data.service';
   templateUrl: './circular.component.html',
   providers: [DataService]
 })
-export class AdminCircularComponent implements OnInit {
+export class CircularComponent implements OnInit {
 
   @ViewChild('dataTable') dt: DataTable;
 
   displayDialog: boolean;
-  object: Buyer;
-  selectedLine: Buyer;
-  data: Buyer[] = [];
+  object: Participant;
+  selectedLine: Participant;
+  data: Participant[] = [];
   lines: any[] = [];
   /// сюда выводим ошибки
   errors: Message[] = [];
@@ -54,8 +54,8 @@ export class AdminCircularComponent implements OnInit {
       }
     ];
 
-    this.data = this.dataService.getGridData('ent.Buyer');
-    // this.dataService.getGridData('ent.Buyer')
+    this.data = this.dataService.getGridData('ent.Participant');
+    // this.dataService.getGridData('ent.Participant')
     //   .subscribe((resp: Response) => {
     //     this.data = resp.json().children;
     //   });
@@ -66,7 +66,7 @@ export class AdminCircularComponent implements OnInit {
   }
 
   showDialogToAdd() {
-    this.object = new Buyer(new Buyer());
+    this.object = new Participant(new Participant());
     this.lines = [];
     this.displayDialog = true;
   }
@@ -78,7 +78,7 @@ export class AdminCircularComponent implements OnInit {
     this.msgs = [];
     const sendJson = { object: this.object };
     console.log(sendJson);
-    this.dataService.saveObject('ent.Buyer', sendJson).subscribe(
+    this.dataService.saveObject('ent.Participant', sendJson).subscribe(
       (data: Response) => {
         console.log(data);
         console.log(data.status);
@@ -101,7 +101,7 @@ export class AdminCircularComponent implements OnInit {
 
   delete() {
     this.msgs = [];
-    this.dataService.deleteObject('ent.Buyer', this.object.objectId)
+    this.dataService.deleteObject('ent.Participant', this.object.objectId)
       .subscribe((data: Response) => {
         if (data.json().status === 'OK') {
           this.object = null;
@@ -118,7 +118,7 @@ export class AdminCircularComponent implements OnInit {
   onRowDblclickBuyer(event: any) {
     // this.newLine = false;
     console.log(event.data);
-    this.dataService.getObjectData('ent.Buyer', event.data.ID)
+    this.dataService.getObjectData('ent.Participant', event.data.ID)
       .subscribe((resp: Response) => {
         console.log(resp);
         console.log(resp.json());

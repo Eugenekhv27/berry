@@ -13,24 +13,26 @@ import {
   MenuItem,
 } from 'primeng/primeng';
 
-import { Buyer } from './buyer';
+import { Participant } from './participant.model';
 // import { DataService } from '../services/data.service';
 import { DataService } from '../../mocks/services/data.service';
 
 @Component({
   selector: 'app-participants-list',
-  templateUrl: './participants-list.component.html',
-  providers: [DataService]
+  templateUrl: './participants-list.component.html'
 })
 
-export class AdminParticipantsListComponent implements OnInit {
+export class ParticipantsListComponent implements OnInit {
 
   @ViewChild('dataTable') dt: DataTable;
 
+  maxRowsPerPage = 11;
+
   displayDialog: boolean;
-  object: Buyer;
-  selectedLine: Buyer;
-  data: Buyer[] = [];
+  participantToEdit: Participant;  // имя свойства было object
+  participantToEditIsNew = false;
+  selectedLine: Participant;
+  participantsList: Participant[] = [];
   lines: any[] = [];
   /// сюда выводим ошибки
   errors: Message[] = [];
@@ -53,32 +55,37 @@ export class AdminParticipantsListComponent implements OnInit {
       }
     ];
 
-    this.data = this.dataService.getGridData('ent.Buyer');
+    this.participantsList = this.dataService.getGridData('ent.Participant');
 
-    // this.dataService.getGridData('ent.Buyer')
+    // this.dataService.getGridData('ent.Participant')
     //   .subscribe((resp: Response) => {
-    //     this.data = resp.json().children;
+    //     this.participantsList = resp.json().children;
     //   });
   }
 
-  addLine() {
-    this.lines.push({ RubSum: '100' });
-  }
-
   showDialogToAdd() {
-    this.object = new Buyer(new Buyer());
-    this.lines = [];
+    this.participantToEdit = new Participant();
+    this.participantToEditIsNew = true;
     this.displayDialog = true;
   }
 
+  cancel() {
+    console.log('---');
+    console.log(this.participantToEdit);
+    this.participantToEditIsNew = false;
+    this.displayDialog = false;
+  }
+
   save() {
+    console.log('save() - сохранялка');
+    this.cancel();
     // console.log('save()');
     // console.log(this.object);
     // console.log(this.object.LinesForDel);
     // this.msgs = [];
     // const sendJson = { object: this.object };
     // console.log(sendJson);
-    // this.dataService.saveObject('ent.Buyer', sendJson).subscribe(
+    // this.dataService.saveObject('ent.Participant', sendJson).subscribe(
     //   (data: Response) => {
     //     console.log(data);
     //     console.log(data.status);
@@ -106,8 +113,10 @@ export class AdminParticipantsListComponent implements OnInit {
   }
 
   delete() {
+    console.log('delete() - удалялка');
+    this.cancel();
     // this.msgs = [];
-    // this.dataService.deleteObject('ent.Buyer', this.object.objectId)
+    // this.dataService.deleteObject('ent.Participant', this.object.objectId)
     //   .subscribe((data: Response) => {
     //     if (data.json().status === 'OK') {
     //       this.object = null;
@@ -123,9 +132,20 @@ export class AdminParticipantsListComponent implements OnInit {
     //   });
   }
 
-  onRowDblclickBuyer(event: any) {
-    // console.log(event.data);
-    // this.dataService.getObjectData('ent.Buyer', event.data.ID)
+  getParticipantByPhone(phone: string): Participant {
+    return this.participantsList.find(p => p.phone === phone);
+  }
+
+  onRowDoubleClick({ data }) {
+    console.log('доппель-клик');
+    console.log(data);
+    this.participantToEditIsNew = false;
+    this.participantToEdit = Object.assign(
+      new Participant(),
+      this.getParticipantByPhone(data.phone)
+    );
+    this.displayDialog = true;
+    // this.dataService.getObjectData('ent.Participant', event.data.ID)
     //   .subscribe((resp: Response) => {
     //     console.log(resp);
     //     console.log(resp.json());
@@ -143,18 +163,71 @@ export class AdminParticipantsListComponent implements OnInit {
     //     }
     //   });
   }
-
-  deleteLine(line: any) {
-    // console.log(line);
-    // if (!this.object.LinesForDel) {
-    //   this.object.LinesForDel = [];
-    // }
-    // this.object.LinesForDel.push(line);
-    // const index = this.lines.indexOf(line);
-    // this.lines.splice(index, 1);
-  }
-
-  onEditInitTable() {
-    console.log('BuyerComponent::onEditInitTable()');
-  }
 }
+
+
+
+// Object.assign(target, ...sources)
+
+// export class DataTableCrudDemo implements OnInit {
+
+//       displayDialog: boolean;
+
+//       car: Car = new PrimeCar();
+
+//       selectedCar: Car;
+
+//       newCar: boolean;
+
+//       cars: Car[];
+
+//       constructor(private carService: CarService) { }
+
+//       ngOnInit() {
+//           this.carService.getCarsSmall().then(cars => this.cars = cars);
+//       }
+
+
+
+//       save() {
+//           let cars = [...this.cars];
+//           if(this.newCar)
+//               cars.push(this.car);
+//           else
+//               cars[this.findSelectedCarIndex()] = this.car;
+
+//           this.cars = cars;
+//           this.car = null;
+//           this.displayDialog = false;
+//       }
+
+//       delete() {
+//           let index = this.findSelectedCarIndex();
+//           this.cars = this.cars.filter((val,i) => i!=index);
+//           this.car = null;
+//           this.displayDialog = false;
+//       }
+
+//       onRowSelect(event) {
+//           this.newCar = false;
+//           this.car = this.cloneCar(event.data);
+//           this.displayDialog = true;
+//       }
+
+//       cloneCar(c: Car): Car {
+//           let car = new PrimeCar();
+//           for(let prop in c) {
+//               car[prop] = c[prop];
+//           }
+//           return car;
+//       }
+
+//       findSelectedCarIndex(): number {
+//           return this.cars.indexOf(this.selectedCar);
+//       }
+//   }
+
+//   class PrimeCar implements Car {
+
+//       constructor(public vin?, public year?, public brand?, public color?) {}
+//   }
