@@ -56,9 +56,7 @@ import { ParticipantsListComponent } from './participants/participants-list.comp
 import { CircularComponent } from './circular/circular.component';
 import { ReferralSettingsComponent } from './settings/referral-settings.component';
 import { DocumentationComponent } from './documentation/documentation.component';
-
 import { NoticeComponent } from './notifier/notice.component';
-import { NotifierService } from './notifier/notifier.service';
 
 import { AdminRoutingModule } from './admin-routing.module';
 
@@ -93,9 +91,6 @@ import { AdminRoutingModule } from './admin-routing.module';
     ReferralSettingsComponent,
     DocumentationComponent,
     NoticeComponent
-  ],
-  providers: [
-    NotifierService
   ]
 })
 export class AdminModule { }
