@@ -10,26 +10,20 @@
     <input #gb type="text" pInputText size="50" placeholder="Поиск">
 </div>
 
-<!--
-
-
--->
-
 <p-dataTable *ngIf="!displayDialog"
+  selectionMode="single"
   [responsive]="true"
-  [editable]="true"
   [value]="data"
   [paginator]="true"
   [rows]="maxRowsPerPage"
-  [selectionMode]="rowsSelectionMode"
   [(selection)]="selectedLine"
   (onRowClick)="onRowClick($event)"
   (onRowDblclick)="onRowDoubleClick($event)"
   [globalFilter]="gb">
-    <p-column field="phone" header="Номер" [editable]="true"></p-column>
-    <p-column field="Name" header="Имя" [editable]="true"></p-column>
-    <p-column field="Comment" header="Коментарий" [editable]="true"></p-column>
-    <p-column field="Bonus" header="Бонусы" [style]="{'text-align':'right'}" [editable]="true"></p-column>
+    <p-column field="phone" header="Номер" [sortable]="true"></p-column>
+    <p-column field="Name" header="Имя" [sortable]="true"></p-column>
+    <p-column field="Comment" header="Коментарий" [sortable]="true"></p-column>
+    <p-column field="Bonus" header="Бонусы" [sortable]="{'text-align':'right'}" [editable]="true"></p-column>
 	<p-footer>
         <div class="ui-helper-clearfix" style="width:100%">
             <button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Создать запись"></button>
