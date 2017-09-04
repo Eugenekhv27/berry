@@ -1,92 +1,76 @@
+<div class="ui-g">
+  <div class="ui-g-12">
+    <p-growl [value]="errors" [life]="6000"></p-growl>
+    <p-messages [value]="msgs"></p-messages>
 
-
-<p-growl [value]="errors" [life]="6000"></p-growl>
-<p-messages [value]="msgs"></p-messages>
-
-<h2 *ngIf="!displayDialog" class="first">Участники бонусной программы</h2>
-
-<div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
-    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-    <input #gb type="text" pInputText size="50" placeholder="Глобальный поиск">
+    <p-dataTable
+      selectionMode="single"
+      [responsive]="true"
+      [value]="participantsList"
+      [paginator]="true"
+      [rows]="maxRowsPerPage"
+      [(selection)]="selectedLine"
+      (onRowDblclick)="onRowDoubleClick($event)"
+      [globalFilter]="gb">
+      <p-header>Участники бонусной программы</p-header>
+      <p-column field="phone" header="Номер" [sortable]="true"></p-column>
+      <p-column field="Name" header="Имя" [sortable]="true"></p-column>
+      <p-column field="Comment" header="Коментарий"></p-column>
+      <p-column field="Bonus" header="Бонусы" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
+      <p-footer>
+        <div class="ui-g">
+          <div class="ui-g-6">
+            <button pButton
+              type="button"
+              icon="fa-plus"
+              style="float:left"
+              (click)="showDialogToAdd()"
+              label="Создать">
+            </button>
+          </div>
+          <div class="ui-g-6">
+            <i class="fa fa-filter" style="margin:4px 4px 0 0"></i>
+            <input #gb type="text" pInputText size="50" placeholder="значение фильтра...">
+          </div>
+        </div>
+      </p-footer>
+    </p-dataTable>
+  </div>
 </div>
 
-<p-dataTable *ngIf="!displayDialog" [value]="data" selectionMode="single" [(selection)]="selectedLine" (onRowDblclick)="onRowDblclickBuyer($event)" [paginator]="true" rows="15" [responsive]="true" [globalFilter]="gb">
-    <p-column field="Aka" header="Номер"></p-column>
-    <p-column field="Name" header="Имя"></p-column>
-    <p-column field="Comment" header="Коментарий"></p-column>
-    <p-column field="Bonus" header="Бонусы" [style]="{'text-align':'right'}"></p-column>
-	<p-footer>
-        <div class="ui-helper-clearfix" style="width:100%">
-            <button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Создать запись"></button>
-        </div>
-    </p-footer>
-</p-dataTable>
 
-<p-panel *ngIf="displayDialog">
-      <p-header>
-        <div class="ui-toolbar-group-left">
-            <button pButton type="button" label="Назад" icon="fa fa-hand-o-left" (click)="displayDialog = false;
-         msgs = [];"></button>
-        </div>
-        <div class="ui-helper-clearfix">
-            <p-splitButton [style]="{float:'right'}" label="Сохранить" icon="fa-check" (onClick)="save()" [model]="items"></p-splitButton>
-        </div>
-    </p-header>
-    <h3 class="first">Участник</h3>
-
-    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="object">
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label>Номер</label></div>
-            <div class="ui-grid-col-4"><label>Имя</label></div>
-            <div class="ui-grid-col-4" *ngIf="object.SuperBuyer"><label>Кто привлек</label></div>
-
-        </div>
-        <div class="ui-grid-row">
-
-            <div class="ui-grid-col-4">
-                <p-inputMask [(ngModel)]="object.Aka" mask="+7(999)9999999"></p-inputMask>
-            </div>
-            <div class="ui-grid-col-4">
-                <input type="text" [(ngModel)]="object.Name" />
-            </div>
-            <div class="ui-grid-col-4">
-                <input *ngIf="object.SuperBuyer" type="text" [(ngModel)]="object.SuperBuyer.Aka" />
-            </div>
-
-
-        </div>
-
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-4"><label for="priceGrid">Коментарий</label></div>
-        </div>
-         <div class="ui-grid-row">
-            <div class="ui-grid-col-12">
-                <textarea pInputTextarea [(ngModel)]="object.Comment" ></textarea>
-            </div>
-        </div>
-
-    <div style="  padding-top: 1em;    padding-bottom: 0.25em;">
-        <button id="btNapr" type="text" pButton label="Добавить запись" (click)="addLine();" icon="fa-plus" ></button>
+<p-dialog [(visible)]="displayDialog" [responsive]="true"
+  showEffect="fade" [modal]="true" minWidth=400>
+  <p-header>
+    {{ participantToEditIsNew ? 'Новый участник' : 'Участник' }}
+  </p-header>
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="participantToEdit">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4"><label for="phone">Телефон</label></div>
+      <div class="ui-grid-col-8"><input pInputText id="phone" [(ngModel)]="participantToEdit.phone" /></div>
     </div>
-    <div style="width:100%">
-    <p-dataTable  [value]="object.BonusOperations" [editable]="true" resizableColumns="true"  [(selection)]="selectedBuyerLine" (onEditInit)="onEditInitTable($event)"  >
-        <!--
-        <p-column  [style]="{'width':'35px'}">
-            <template pTemplate="header">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </template>
-            <template let-line="rowData" pTemplate="body">
-                <button type="button" pButton (click)="deleteLine(line)" icon="fa fa-times"></button>
-            </template>
-        </p-column>
-      -->
-        <p-column field="DocDate" header="Дата операции"  [editable]="false" ></p-column>
-        <p-column field="RubSum" header="Сумма, руб."  [editable]="false"></p-column>
-        <p-column field="PointsSum" header="Бонусы, руб."  [editable]="false"></p-column>
-        <p-column field="Comment" header="Коментарий"  [editable]="false" ></p-column>
-    </p-dataTable>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4"><label for="name">Имя</label></div>
+      <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="participantToEdit.Name" /></div>
     </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4"><label for="referrer">Кто привлек</label></div>
+      <div class="ui-grid-col-8"><input pInputText id="referrer" [(ngModel)]="participantToEdit.referrer" /></div>
     </div>
-
-</p-panel>
-
+    <div class="ui-grid-row">
+      <textarea pInputTextarea class="ui-grid-col-12" [(ngModel)]="participantToEdit.Comment" placeholder="Комментарий">
+      </textarea>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button pButton type="button" icon="fa-check" (click)="save()" label="Сохранить">
+      </button>
+      <button pButton type="button" icon="fa-close" class="ui-button-secondary" (click)="cancel()" label="Отмена">
+      </button>
+      <button *ngIf="!participantToEditIsNew" pButton type="button" icon="fa-trash" class="ui-button-warning" (click)="delete()"
+        label="Удалить">
+      </button>
+    </div>
+  </p-footer>
+</p-dialog>

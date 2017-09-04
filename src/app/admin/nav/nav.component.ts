@@ -11,7 +11,7 @@ import { AdminComponent } from '../admin.component';
         <ul app-nav-menu [item]="model" root="true" class="layout-menu clearfix" [reset]="reset" visible="true"></ul>
     `
 })
-export class AdminNavComponent implements OnInit {
+export class NavComponent implements OnInit {
 
   @Input() reset: boolean;
 
@@ -55,7 +55,7 @@ export class AdminNavComponent implements OnInit {
     ])
   ]
 })
-export class AdminNavMenuComponent {
+export class NavMenuComponent {
 
   @Input() item: MenuItem;
 
