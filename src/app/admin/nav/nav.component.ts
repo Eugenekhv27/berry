@@ -21,37 +21,10 @@ export class AdminNavComponent implements OnInit {
 
   ngOnInit() {
     this.model = [
-      { label: 'Dashboard', icon: 'fa fa-fw fa-dashboard', routerLink: ['/admin/dashboard'] },
-      { label: 'Участники', icon: 'fa fa-fw fa-users', routerLink: ['/admin/participants-list'] },
+      { label: 'Показатели', icon: 'fa fa-fw fa-dashboard', routerLink: ['/admin/dashboard'] },
+      { label: 'Участники бонус-клуба', icon: 'fa fa-fw fa-users', routerLink: ['/admin/participants-list'] },
       { label: 'Рассылки', icon: 'fa fa-fw fa-bullhorn', routerLink: ['/admin/circular'] },
       { label: 'Начисление бонусов', icon: 'fa fa-fw fa-star', routerLink: ['/admin/bonus-accounting'] },
-      {
-        label: 'Настройки', icon: 'fa fa-fw fa-gear',
-        items: [
-          {
-            label: 'Главное меню', icon: 'fa fa-fw fa-bars',
-            items: [
-              { label: 'Слева', icon: 'fa fa-fw fa-bars', command: () => this.app.changeToStaticMenu() },
-              { label: 'Оверлей', icon: 'fa fa-fw fa-bars', command: () => this.app.changeToOverlayMenu() },
-              { label: 'Горизонтально', icon: 'fa fa-fw fa-bars', command: () => this.app.changeToHorizontalMenu() }
-            ]
-          },
-          {
-            label: 'Цветовая гамма', icon: 'fa fa-fw fa-paint-brush',
-            items: [
-              { label: 'Turquoise', icon: 'fa fa-fw fa-paint-brush', command: (event) => { this.changeTheme('turquoise') } },
-              { label: 'Blue', icon: 'fa fa-fw fa-paint-brush', command: (event) => { this.changeTheme('blue') } },
-              { label: 'Purple', icon: 'fa fa-fw fa-paint-brush', command: (event) => { this.changeTheme('purple') } },
-              { label: 'Orange', icon: 'fa fa-fw fa-paint-brush', command: (event) => { this.changeTheme('orange') } },
-              { label: 'Pink', icon: 'fa fa-fw fa-paint-brush', command: (event) => { this.changeTheme('pink') } },
-              { label: 'Light Blue', icon: 'fa fa-fw fa-paint-brush', command: (event) => { this.changeTheme('light-blue') } },
-              { label: 'Green', icon: 'fa fa-fw fa-paint-brush', command: (event) => { this.changeTheme('green') } },
-              { label: 'Deep Purple', icon: 'fa fa-fw fa-paint-brush', command: (event) => { this.changeTheme('deep-purple') } }
-            ]
-          },
-          { label: 'Реф. проценты', icon: 'fa fa-fw fa-percent', routerLink: ['/admin/settings'] },
-        ]
-      },
       { label: 'Документация', icon: 'fa fa-fw fa-book', routerLink: ['/admin/documentation'] },
       { label: 'Помощь', icon: 'fa fa-fw fa-life-ring', routerLink: ['/admin/help'] },
     ];
