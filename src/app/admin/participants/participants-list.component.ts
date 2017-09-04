@@ -27,6 +27,9 @@ export class ParticipantsListComponent implements OnInit {
 
   @ViewChild('dataTable') dt: DataTable;
 
+  maxRowsPerPage = 10;
+  rowsSelectionMode = 'single';
+
   displayDialog: boolean;
   object: Participant;
   selectedLine: Participant;
@@ -123,8 +126,16 @@ export class ParticipantsListComponent implements OnInit {
     //   });
   }
 
-  onRowDblclickBuyer(event: any) {
-    // console.log(event.data);
+  public onRowClick(event: any) {
+    console.log('клик');
+    console.log(event.data);
+    this.selectedLine = event.data;
+  }
+
+  onRowDoubleClick(event: any) {
+    console.log('доппель-клик');
+    console.log(event.data);
+    this.rowsSelectionMode = '';
     // this.dataService.getObjectData('ent.Participant', event.data.ID)
     //   .subscribe((resp: Response) => {
     //     console.log(resp);

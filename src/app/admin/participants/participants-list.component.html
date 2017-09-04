@@ -7,14 +7,29 @@
 
 <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
     <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-    <input #gb type="text" pInputText size="50" placeholder="Глобальный поиск">
+    <input #gb type="text" pInputText size="50" placeholder="Поиск">
 </div>
 
-<p-dataTable *ngIf="!displayDialog" [value]="data" selectionMode="single" [(selection)]="selectedLine" (onRowDblclick)="onRowDblclickBuyer($event)" [paginator]="true" rows="15" [responsive]="true" [globalFilter]="gb">
-    <p-column field="phone" header="Номер"></p-column>
-    <p-column field="Name" header="Имя"></p-column>
-    <p-column field="Comment" header="Коментарий"></p-column>
-    <p-column field="Bonus" header="Бонусы" [style]="{'text-align':'right'}"></p-column>
+<!--
+
+
+-->
+
+<p-dataTable *ngIf="!displayDialog"
+  [responsive]="true"
+  [editable]="true"
+  [value]="data"
+  [paginator]="true"
+  [rows]="maxRowsPerPage"
+  [selectionMode]="rowsSelectionMode"
+  [(selection)]="selectedLine"
+  (onRowClick)="onRowClick($event)"
+  (onRowDblclick)="onRowDoubleClick($event)"
+  [globalFilter]="gb">
+    <p-column field="phone" header="Номер" [editable]="true"></p-column>
+    <p-column field="Name" header="Имя" [editable]="true"></p-column>
+    <p-column field="Comment" header="Коментарий" [editable]="true"></p-column>
+    <p-column field="Bonus" header="Бонусы" [style]="{'text-align':'right'}" [editable]="true"></p-column>
 	<p-footer>
         <div class="ui-helper-clearfix" style="width:100%">
             <button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Создать запись"></button>
