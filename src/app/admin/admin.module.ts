@@ -12,13 +12,13 @@ import {
   MessagesModule,
   SplitButtonModule,
   InputMaskModule,
+  DialogModule,
   /*
   InputTextModule,
   MegaMenuModule,
   MenubarModule,
   MenuItem,
   SharedModule,
-  DialogModule,
   ButtonModule,
   DropdownModule,
   SelectItem,
@@ -75,6 +75,7 @@ import { AdminRoutingModule } from './admin-routing.module';
     MessagesModule,
     SplitButtonModule,
     InputMaskModule,
+    DialogModule,
     // routing
     AdminRoutingModule,
   ],
