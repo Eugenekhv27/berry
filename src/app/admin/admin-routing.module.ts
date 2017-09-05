@@ -24,6 +24,8 @@ const routes: Routes = [{
     { path: 'bonus-accounting', component: ParticipantsListComponent, canActivate: [AuthGuard] },
     { path: 'settings', component: ReferralSettingsComponent, canActivate: [AuthGuard] },
     { path: 'help', component: HelpRequestComponent, canActivate: [AuthGuard] },
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: '**', redirectTo: 'dashboard' }
   ]
 }];
 
