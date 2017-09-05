@@ -109,6 +109,12 @@ export class DataService {
     );
   }
 
+  /**
+   * Метод не вполне отлажен в части обработки ответа сервера,
+   * т.к. сервер не понимает запрос sendToSupport и не выдает ответ
+   *
+   * @param textToSend - текст сообщения, отправляемого в техподдержку
+   */
   sendToSupport(textToSend: string): Observable<boolean> {
     return this.http
       .post(
@@ -116,7 +122,14 @@ export class DataService {
         textToSend,
         this.getRequestOptionsArgs()
       )
-      .map(resp => true)
+      .map(resp => {
+        console.log('Статус ответа: ' + resp.status);
+        if (resp.status.toString() !== 'OK') {
+          throw Error('Получен отрицательный ответ: ' + resp.status.toString());
+        }
+        console.log(resp);
+        return true;
+      })
       .catch(error => {
         console.error(error);
         return Observable.of(false);

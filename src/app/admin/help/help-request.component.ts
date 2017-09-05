@@ -24,25 +24,10 @@ export class HelpRequestComponent {
       .subscribe(sendSuccess => {
         if (sendSuccess) {
           this.notifier.success('Сообщение отправлено!', 'Максимальное время ответа 24 часа');
+          this.helpRequest = '';
         } else {
           this.notifier.error('Ошибка!', 'Не удалось отправить сообщение.');
         }
       });
-
-      // .subscribe(
-      // (data: Response) => {
-      //   console.log(data);
-      //   console.log(data.status);
-      //   if (data.status.toString() === 'OK') {
-      //     this.notifier.success('Сообщение отправлено!', 'Максимальное время ответа 24 часа');
-      //   } else {
-      //     this.notifier.error('Не удалось отправить!', data.status.toString());
-      //   }
-      // },
-      // (error) => {
-      //   this.notifier.error('Не удалось отправить!', error);
-      //   console.log(error);
-      // }
-      // );
   }
 }
