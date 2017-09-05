@@ -1,16 +1,12 @@
 import { OnInit, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Http, Headers } from '@angular/http';
-import { NotifierService } from '../notifier/notifier.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 @Injectable()
 export class AuthService implements OnInit {
 
-  constructor(
-    private router: Router,
-    private http: Http,
-    private notifier: NotifierService
-  ) { }
+  constructor(private http: Http) { }
 
   ngOnInit() {
     localStorage.setItem('accountEncrypt', '');
@@ -24,31 +20,27 @@ export class AuthService implements OnInit {
     localStorage.setItem('accountEncrypt', '');
   }
 
-  login({ login = '', password = '' }) {
+  login({ login = '', password = '' }): Observable<boolean> {
     const auth = btoa(login + ':' + password);
     localStorage.setItem('loginpassword', auth);
     const headers = new Headers({ Authorization: 'Basic ' + auth });
-
-    this.http
+    console.log('AuthService()');
+    return this.http
       .get('http://base.progrepublic.ru/csp/bonusclubrest2/getAE',
       { headers }
       )
-      .subscribe(
-      (resp: any) => {
-        console.log(resp.status);
-        console.log(resp.json());
-        if (resp.json().status === 'OK') {
-          this.notifier.success('Вход выполнен.', login);
-          localStorage.setItem('accountEncrypt', resp.json().result);
-          this.router.navigate(['/admin/circular']);
-        } else {
-          this.notifier.error('Не получилось войти! 1', resp.json().status);
+      .map((resp: any) => {
+        console.log('Статус ответа: ' + resp.status);
+        if (resp.json().status !== 'OK') {
+          throw Error('Получен отрицательный ответ: ' + JSON.stringify(resp.json()));
         }
-      },
-      (error) => {
-        console.log(error);
-        this.notifier.error('Не получилось войти! 3', error);
-      }
-      );
+        console.log(resp.json());
+        localStorage.setItem('accountEncrypt', resp.json().result);
+        return true;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Observable.of(false);
+      });
   }
 }
