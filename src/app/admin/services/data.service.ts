@@ -3,18 +3,32 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, RequestOptionsArgs  } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { SelectItem } from 'primeng/primeng';
 
 @Injectable()
 export class DataService {
-  restServerUrl: string;
+  private restServerUrl: string;
 
   constructor(private http: Http) {
     // Подключение пока к тесовой базе base.progrepublic.ru/csp/bonusclubrest2/...
     this.restServerUrl = 'base.progrepublic.ru';
+  }
+
+  private getRequestOptionsArgs(): RequestOptionsArgs {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json;charset=utf-8');
+    headers.append('Authorization', 'Basic ' + localStorage.getItem('loginpassword'));7
+
+    return { headers };
+  }
+
+  private getFullUrl(query = '') {
+    return 'http://' + this.restServerUrl +
+      '/csp/bonusclubrest2/' + localStorage.getItem('accountEncrypt') +
+      '/' + encodeURIComponent(query).replace(new RegExp('%', 'g'), '~');
   }
 
   getGridData(className: string, query: string = '', accountEncryptParam = '') {
@@ -95,21 +109,18 @@ export class DataService {
     );
   }
 
-  sendToSupport(sendData: any) {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json;charset=utf-8');
-    const auth = localStorage.getItem('loginpassword');
-    headers.append('Authorization', 'Basic ' + auth);
-
-    const accountEncrypt = localStorage.getItem('accountEncrypt');
+  sendToSupport(textToSend: string): Observable<boolean> {
     return this.http
-      .post('http://' + this.restServerUrl +
-      '/csp/bonusclubrest2/' + accountEncrypt +
-      '/sendToSupport',
-      sendData,
-      { headers })
-      .map((resp: Response) => resp.json())
-      .catch((error: any) => Observable.throw(error));
+      .post(
+        this.getFullUrl('sendToSupport'),
+        textToSend,
+        this.getRequestOptionsArgs()
+      )
+      .map(resp => true)
+      .catch(error => {
+        console.error(error);
+        return Observable.of(false);
+      });
   }
 
   genSmsCode(userTel: string) {
