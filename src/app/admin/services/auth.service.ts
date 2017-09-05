@@ -7,7 +7,7 @@ import 'rxjs/add/observable/of';
 @Injectable()
 export class AuthService implements OnInit {
 
-  public redirectUrl = '/';
+  private redirectUrl = '/';
 
   constructor(
     private http: Http,
@@ -49,5 +49,10 @@ export class AuthService implements OnInit {
         console.error(error);
         return Observable.of(false);
       });
+  }
+
+  loginAndRedirectTo(path: string) {
+    this.redirectUrl = path;
+    this.router.navigate(['/admin/login']);
   }
 }
