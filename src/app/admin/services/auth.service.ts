@@ -1,12 +1,18 @@
 import { OnInit, Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
 @Injectable()
 export class AuthService implements OnInit {
 
-  constructor(private http: Http) { }
+  public redirectUrl = '/';
+
+  constructor(
+    private http: Http,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     localStorage.setItem('accountEncrypt', '');
@@ -36,6 +42,7 @@ export class AuthService implements OnInit {
         }
         console.log(resp.json());
         localStorage.setItem('accountEncrypt', resp.json().result);
+        this.router.navigate([this.redirectUrl]);
         return true;
       })
       .catch((error) => {

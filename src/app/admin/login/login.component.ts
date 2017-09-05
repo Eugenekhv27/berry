@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+
 import { NotifierService } from '../notifier/notifier.service';
 
 @Component({
@@ -13,7 +13,6 @@ export class LoginComponent {
 
   constructor(
     private auths: AuthService,
-    private router: Router,
     private notifier: NotifierService
   ) { }
 
@@ -21,9 +20,7 @@ export class LoginComponent {
     this.auths
       .login({ login: this.login, password: this.password })
       .subscribe(loginSuccess => {
-        if (loginSuccess) {
-          this.router.navigate(['/admin/circular']);
-        } else {
+        if (!loginSuccess) {
           this.notifier.warning('Ошибка!', 'Не удалось войти в систему.');
         }
       });

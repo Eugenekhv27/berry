@@ -8,8 +8,8 @@ import { AuthService } from '../services/auth.service';
 export class AuthGuard implements CanActivate {
 
   constructor(
-    private router: Router,
     private auth: AuthService,
+    private router: Router
   ) { }
 
   canActivate(
@@ -19,6 +19,7 @@ export class AuthGuard implements CanActivate {
     if (this.auth.isLoggedIn()) {
       return true;
     } else {
+      this.auth.redirectUrl = state.url;
       this.router.navigate(['/admin/login']);
       return false;
     }
