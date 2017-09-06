@@ -49,6 +49,19 @@ export class DataService {
     );
   }
 
+  akaToPhone(o: any) {
+    o.phone = o.Aka;
+    delete o.Aka;
+    return o;
+  }
+
+  getParticipantsList() {
+    return this.getGridData('ent.Buyer')
+      .map((resp: Response) => {
+        return resp.json().children.map(this.akaToPhone);
+      });
+  }
+
   getObjectData(className: string, ID: string, phone?: string) {
     const accountEncrypt = localStorage.getItem('accountEncrypt');
 

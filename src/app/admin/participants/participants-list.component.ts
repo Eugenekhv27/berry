@@ -14,8 +14,7 @@ import {
 } from 'primeng/primeng';
 
 import { Participant } from './participant.model';
-// import { DataService } from '../services/data.service';
-import { DataService } from '../../mocks/services/data.service';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-participants-list',
@@ -43,12 +42,11 @@ export class ParticipantsListComponent implements OnInit {
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    this.participantsList = this.dataService.getGridData('ent.Participant');
-
-    // this.dataService.getGridData('ent.Participant')
-    //   .subscribe((resp: Response) => {
-    //     this.participantsList = resp.json().children;
-    //   });
+    this.dataService.getParticipantsList()
+      .subscribe((freshList: Participant[]) => {
+        console.log(freshList.filter((el, ind) => ind < 9));
+        this.participantsList = freshList;
+      });
   }
 
   showDialogToAdd() {
