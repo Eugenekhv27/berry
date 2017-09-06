@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { NotifierService } from '../notifier/notifier.service';
 
@@ -6,7 +6,7 @@ import { NotifierService } from '../notifier/notifier.service';
   selector: 'app-login',
   templateUrl: './login.component.html'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   login = '';
   password = '';
 
@@ -14,6 +14,10 @@ export class LoginComponent {
     private auths: AuthService,
     private notifier: NotifierService
   ) { }
+
+  ngOnInit() {
+    this.auths.logout();
+  }
 
   doLogin(): void {
     this.auths
