@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-// import { Response } from '@angular/http';
-// import 'rxjs/add/operator/catch';
+import { Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/finally';
 
 // import { SelectItem } from 'primeng/primeng';
 // import { OverlayPanelModule, OverlayPanel, DataTable } from 'primeng/primeng';
@@ -14,8 +16,8 @@ import {
 } from 'primeng/primeng';
 
 import { Participant } from './participant.model';
-// import { DataService } from '../services/data.service';
-import { DataService } from '../../mocks/services/data.service';
+import { DataService } from '../services/data.service';
+import { NotifierService } from '../notifier/notifier.service';
 
 @Component({
   selector: 'app-participants-list',
@@ -37,30 +39,24 @@ export class ParticipantsListComponent implements OnInit {
   /// сюда выводим ошибки
   errors: Message[] = [];
   msgs: Message[] = [];
-  /// для кнопки удалить
-  items: MenuItem[];
 
   selectedBuyerLine: any; // заглушка (свойство используется в шаблоне)
 
-  constructor(private dataService: DataService) { }
+  constructor(
+    private dataService: DataService,
+    private notifier: NotifierService
+  ) { }
 
   ngOnInit() {
-    /// для кнопки удалить
-    this.items = [
-      {
-        label: 'Удалить', icon: 'fa-close', command: () => { this.delete(); }
-      }, {
-        label: 'Отменить', icon: 'fa fa-hand-o-left',
-        command: () => { this.displayDialog = false; this.msgs = []; }
-      }
-    ];
+    this.refreshParticipantsList();
+  }
 
-    this.participantsList = this.dataService.getGridData('ent.Participant');
-
-    // this.dataService.getGridData('ent.Participant')
-    //   .subscribe((resp: Response) => {
-    //     this.participantsList = resp.json().children;
-    //   });
+  refreshParticipantsList() {
+    this.dataService.getParticipantsList()
+      .subscribe((freshList: Participant[]) => {
+        console.log(freshList.filter((el, ind) => ind < 9));
+        this.participantsList = freshList;
+      });
   }
 
   showDialogToAdd() {
@@ -70,46 +66,26 @@ export class ParticipantsListComponent implements OnInit {
   }
 
   cancel() {
-    console.log('---');
+    console.log('- cancel() / cleanup -');
     console.log(this.participantToEdit);
+    this.participantToEdit = null;
     this.participantToEditIsNew = false;
     this.displayDialog = false;
+    this.refreshParticipantsList();
   }
 
-  save() {
-    console.log('save() - сохранялка');
-    this.cancel();
-    // console.log('save()');
-    // console.log(this.object);
-    // console.log(this.object.LinesForDel);
-    // this.msgs = [];
-    // const sendJson = { object: this.object };
-    // console.log(sendJson);
-    // this.dataService.saveObject('ent.Participant', sendJson).subscribe(
-    //   (data: Response) => {
-    //     console.log(data);
-    //     console.log(data.status);
-    //     if (data.status.toString() === 'OK') {
-    //       this.object = null;
-    //       this.displayDialog = false;
-    //       this.ngOnInit();
-    //     } else {
-    //       this.errors.push({
-    //         severity: 'error',
-    //         summary: 'Не сохранилось!',
-    //         detail: data.status.toString()
-    //       });
-    //     }
-    //   },
-    //   (error) => {
-    //     this.errors.push({
-    //       severity: 'error',
-    //       summary: 'Не сохранилось!',
-    //       detail: error
-    //     });
-    //     console.log(error);
-    //   }
-    // );
+  save(): void {
+    console.log('save()');
+    const request = this.dataService.saveParticipant(this.participantToEdit);
+    this.notifier.info(String(this.participantToEdit.phone), 'Данные отправлены.');
+    request.subscribe(done => {
+        if (done) {
+          this.notifier.success('Ok!', 'Данные успешно сохранены.');
+          this.cancel();
+        } else {
+          this.notifier.error('Ошибка!', 'Не удалось сохранить элемент.');
+        }
+      });
   }
 
   delete() {
@@ -164,70 +140,3 @@ export class ParticipantsListComponent implements OnInit {
     //   });
   }
 }
-
-
-
-// Object.assign(target, ...sources)
-
-// export class DataTableCrudDemo implements OnInit {
-
-//       displayDialog: boolean;
-
-//       car: Car = new PrimeCar();
-
-//       selectedCar: Car;
-
-//       newCar: boolean;
-
-//       cars: Car[];
-
-//       constructor(private carService: CarService) { }
-
-//       ngOnInit() {
-//           this.carService.getCarsSmall().then(cars => this.cars = cars);
-//       }
-
-
-
-//       save() {
-//           let cars = [...this.cars];
-//           if(this.newCar)
-//               cars.push(this.car);
-//           else
-//               cars[this.findSelectedCarIndex()] = this.car;
-
-//           this.cars = cars;
-//           this.car = null;
-//           this.displayDialog = false;
-//       }
-
-//       delete() {
-//           let index = this.findSelectedCarIndex();
-//           this.cars = this.cars.filter((val,i) => i!=index);
-//           this.car = null;
-//           this.displayDialog = false;
-//       }
-
-//       onRowSelect(event) {
-//           this.newCar = false;
-//           this.car = this.cloneCar(event.data);
-//           this.displayDialog = true;
-//       }
-
-//       cloneCar(c: Car): Car {
-//           let car = new PrimeCar();
-//           for(let prop in c) {
-//               car[prop] = c[prop];
-//           }
-//           return car;
-//       }
-
-//       findSelectedCarIndex(): number {
-//           return this.cars.indexOf(this.selectedCar);
-//       }
-//   }
-
-//   class PrimeCar implements Car {
-
-//       constructor(public vin?, public year?, public brand?, public color?) {}
-//   }

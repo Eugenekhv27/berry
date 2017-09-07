@@ -1,7 +1,9 @@
 <div class="topbar clearfix">
   <div class="topbar-left">
     <div class="logo">
-      <a href="/"><img src="assets/layout/images/logo-black.png" alt="Logo"></a>
+      <!--<a href="/"><img src="assets/layout/images/logo-black.png" alt="Logo"></a>-->
+      
+      <span style="font-weight: bold; font-size: 2em;"> BONUS CLUB</span>
     </div>
   </div>
 
@@ -9,6 +11,8 @@
     <a id="menu-button" href="#" (click)="app.onMenuButtonClick($event)"><i class="fa fa-angle-left"></i></a>
     <a id="topbar-menu-button" href="#" (click)="app.onTopbarMenuButtonClick($event)"><i class="fa fa-bars"></i></a>
     <ul class="topbar-items fadeInDown animated" [ngClass]="{'topbar-items-visible': app.topbarMenuActive}">
+        <span style="font-weight: bold; font-size: 2em;">+7 (4212) 62-08-28</span>
+      <!--
       <li #profile class="profile-item" [ngClass]="{'active-top-menu':app.activeTopbarItem === profile}">
         <a href="#" (click)="app.onTopbarItemClick($event,profile)">
           <img class="profile-image" src="assets/layout/images/avatar.png" alt="Аватар 0">
@@ -30,6 +34,8 @@
           </li>
         </ul>
       </li>
+    -->
+    <!--
       <li #settings [ngClass]="{'active-top-menu':app.activeTopbarItem === settings}">
         <a href="#" (click)="app.onTopbarItemClick($event,settings)">
           <i class="topbar-icon fa fa-fw fa-cog"></i>
@@ -50,6 +56,8 @@
           </li>
         </ul>
       </li>
+    -->
+    <!--
       <li #messages [ngClass]="{'active-top-menu':app.activeTopbarItem === messages}">
         <a href="#" (click)="app.onTopbarItemClick($event,messages)">
           <i class="topbar-icon fa fa-fw fa-envelope-o"></i>
@@ -89,6 +97,7 @@
           </li>
         </ul>
       </li>
+    -->
       <li #notifications [ngClass]="{'active-top-menu':app.activeTopbarItem === notifications}">
         <a href="#" (click)="app.onTopbarItemClick($event,notifications)">
           <i class="topbar-icon fa fa-fw fa-bell-o"></i>
@@ -111,5 +120,6 @@
         </ul>
       </li>
     </ul>
+  
   </div>
 </div>

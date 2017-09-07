@@ -12,8 +12,11 @@ import { HttpModule } from '@angular/http';
 // Глобальные сервисы
 import { AuthService } from './admin/services/auth.service';
 import { AuthGuard } from './admin/services/auth-guard.service';
+import { NotifierService } from './admin/notifier/notifier.service';
+import { DataService } from './admin/services/data.service';
+
 import { CarService } from './mocks/services/car.service';
-import { DataService } from './mocks/services/data.service';
+
 
 // корневой компонент Angular-приложения
 import { AppComponent } from './app.component';
@@ -34,6 +37,7 @@ import { AppRoutingModule } from './app-routing.module';
   providers: [
     AuthService,
     AuthGuard,
+    NotifierService,
     CarService,
     DataService,
   ],
