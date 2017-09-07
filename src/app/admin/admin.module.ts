@@ -52,9 +52,8 @@ import { NavComponent, NavMenuComponent } from './nav/nav.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { FooterComponent } from './footer/footer.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ParticipantsListComponent } from './participants/participants-list.component';
+import { ParticipantsComponent } from './participants/participants.component';
 import { CircularComponent } from './circular/circular.component';
-import { ReferralSettingsComponent } from './settings/referral-settings.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { NoticeComponent } from './notifier/notice.component';
 
@@ -86,9 +85,8 @@ import { AdminRoutingModule } from './admin-routing.module';
     TopBarComponent,
     FooterComponent,
     DashboardComponent,
-    ParticipantsListComponent,
+    ParticipantsComponent,
     CircularComponent,
-    ReferralSettingsComponent,
     DocumentationComponent,
     NoticeComponent
   ]

@@ -20,11 +20,11 @@ import { DataService } from '../services/data.service';
 import { NotifierService } from '../notifier/notifier.service';
 
 @Component({
-  selector: 'app-participants-list',
-  templateUrl: './participants-list.component.html'
+  selector: 'app-participants',
+  templateUrl: './participants.component.html'
 })
 
-export class ParticipantsListComponent implements OnInit {
+export class ParticipantsComponent implements OnInit {
 
   @ViewChild('dataTable') dt: DataTable;
 
