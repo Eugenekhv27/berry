@@ -1,0 +1,43 @@
+<p-dataTable
+[value]="tableRows"
+[(selection)]="selection"
+selectionMode="multiple"
+(onRowSelect)="onRowSelect($event)"
+(onRowUnselect)="onRowUnselect($event)"
+(onHeaderCheckboxToggle)="onHeaderCheckboxToggle($event)"
+[responsive]="true"
+[paginator]="true"
+[rows]="maxRowsPerPage"
+[headerCheckboxToggleAllPages]="true"
+[globalFilter]="gb">
+  <p-header>Выбранные участники</p-header>
+  <p-column [style]="{'width':'3.4em'}" selectionMode="multiple"></p-column>
+  <p-column field="phone" header="Номер"></p-column>
+  <p-column field="name" header="Имя"></p-column>
+  <p-column field="points" header="Текущее значение" [style]="{'text-align':'right'}">
+    <ng-template let-rd="rowData" pTemplate="body">
+      <span>{{ formatNumberToString(rd.points) }}</span>
+    </ng-template>
+  </p-column>
+  <p-column field="changePoints" header="Изменение" [style]="{'text-align':'right'}">
+    <ng-template let-rd="rowData" pTemplate="body">
+      <span>{{ formatNumberToString(rd.changePoints) }}</span>
+    </ng-template>
+  </p-column>
+  <p-column field="changePercent" header="Изменение, %%" [style]="{'text-align':'right'}">
+    <ng-template let-rd="rowData" pTemplate="body">
+      <span>{{ formatNumberToString(rd.changePercent) }}</span>
+    </ng-template>
+  </p-column>
+  <p-column field="newPoints" header="Новое значение" [style]="{'text-align':'right'}">
+    <ng-template let-rd="rowData" pTemplate="body">
+      <span>{{ formatNumberToString(rd.newPoints) }}</span>
+    </ng-template>
+  </p-column>
+  <p-footer>
+    <div>
+      <i class="fa fa-filter" style="margin:4px 4px 0 0"></i>
+      <input #gb type="text" pInputText size="50" placeholder="значение фильтра...">
+    </div>
+  </p-footer>
+</p-dataTable>

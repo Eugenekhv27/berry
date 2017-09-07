@@ -20,7 +20,7 @@
 
 <p-dataTable *ngIf="!displayDialog" [value]="data" selectionMode="multiple" [(selection)]="selectedLine" (onRowDblclick)="onRowDblclickBuyer($event)"
   [paginator]="true" rows="15" [responsive]="true" [globalFilter]="gb">
-  <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+  <p-column [style]="{'width':'3.4em'}" selectionMode="multiple"></p-column>
   <p-column field="phone" header="Номер"></p-column>
   <p-column field="Name" header="Имя"></p-column>
   <p-column field="Comment" header="Коментарий"></p-column>

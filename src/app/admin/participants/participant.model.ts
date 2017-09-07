@@ -14,6 +14,7 @@ export class Participant {
     public Comment?: string,
     public LinesForDel?: any,
     public objectId?: string,
+    public Bonus?: string | number
   ) { }
 
   static replacePropertyName(o: any, oldName: string, newName: string): any {

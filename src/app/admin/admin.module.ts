@@ -13,8 +13,10 @@ import {
   SplitButtonModule,
   InputMaskModule,
   DialogModule,
-  /*
   InputTextModule,
+  RadioButtonModule,
+  CheckboxModule,
+  /*
   MegaMenuModule,
   MenubarModule,
   MenuItem,
@@ -25,8 +27,6 @@ import {
   FieldsetModule,
   ListboxModule,
   AutoCompleteModule,
-  CheckboxModule,
-  SpinnerModule,
   SelectButtonModule,
   TabViewModule,
   InputSwitchModule,
@@ -35,7 +35,6 @@ import {
   TooltipModule,
   MultiSelectModule,
   DataScrollerModule,
-  RadioButtonModule,
   ToolbarModule,
   InputTextareaModule,
   TriStateCheckboxModule,
@@ -54,6 +53,8 @@ import { FooterComponent } from './footer/footer.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ParticipantsComponent } from './participants/participants.component';
 import { CircularComponent } from './circular/circular.component';
+import { BonusCalculatorComponent } from './bonuses/bonus-calculator.component';
+import { ParticipantSelectorComponent } from './bonuses/participant-selector.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { NoticeComponent } from './notifier/notice.component';
 
@@ -73,6 +74,9 @@ import { AdminRoutingModule } from './admin-routing.module';
     SplitButtonModule,
     InputMaskModule,
     DialogModule,
+    InputTextModule,
+    RadioButtonModule,
+    CheckboxModule,
     // routing
     AdminRoutingModule,
   ],
@@ -86,7 +90,9 @@ import { AdminRoutingModule } from './admin-routing.module';
     FooterComponent,
     DashboardComponent,
     ParticipantsComponent,
+    ParticipantSelectorComponent,
     CircularComponent,
+    BonusCalculatorComponent,
     DocumentationComponent,
     NoticeComponent
   ]

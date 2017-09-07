@@ -1,0 +1,31 @@
+<div class="card">
+  <h2>Начисление бонусных баллов</h2>
+  <div class="ui-g">
+    <div class="ui-g-2">
+      <label>Изменить баланс на... </label>
+    </div>
+    <div class="ui-g-1">
+      <input type="text" pInputText [(ngModel)]="changeBy" style="text-align: right" size="6" (blur)="calculatePoints()" (keyup)="onKey($event)">
+    </div>
+    <div class="ui-g-3">
+      <div class="ui-g">
+        <div class="ui-g-6">
+          <p-radioButton name="rg" [value]="true" label="процентов" [(ngModel)]="usePercents" (click)="calculatePoints()"></p-radioButton>
+        </div>
+        <div class="ui-g-6">
+          <p-radioButton name="rg" [value]="false" label="баллов" [(ngModel)]="usePercents" (click)="calculatePoints()"></p-radioButton>
+        </div>
+      </div>
+    </div>
+    <div class="ui-g-6">
+      <button pButton
+        type="button"
+        icon="fa-save"
+        style="float:right"
+        (click)="calculatePoints()"
+        label="Сохранить">
+      </button>
+    </div>
+  </div>
+  <app-participant-selector></app-participant-selector>
+</div>

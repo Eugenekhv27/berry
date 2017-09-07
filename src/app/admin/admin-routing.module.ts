@@ -7,6 +7,7 @@ import { HelpRequestComponent } from './help/help-request.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ParticipantsComponent } from './participants/participants.component';
 import { CircularComponent } from './circular/circular.component';
+import { BonusCalculatorComponent } from './bonuses/bonus-calculator.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 
 import { AuthGuard } from './services/auth-guard.service';
@@ -15,12 +16,12 @@ const routes: Routes = [{
   path: '',
   component: AdminComponent,
   children: [
-    { path: 'documentation', component: DocumentationComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'documentation', component: DocumentationComponent },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'participants', component: ParticipantsComponent, canActivate: [AuthGuard] },
     { path: 'circular', component: CircularComponent, canActivate: [AuthGuard] },
-    { path: 'bonus-accounting', component: ParticipantsComponent, canActivate: [AuthGuard] },
+    { path: 'bonuses', component: BonusCalculatorComponent, canActivate: [AuthGuard] },
     { path: 'help', component: HelpRequestComponent, canActivate: [AuthGuard] },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: '**', redirectTo: 'dashboard' }
