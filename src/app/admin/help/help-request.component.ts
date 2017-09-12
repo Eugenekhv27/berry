@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DataService } from '../services/data.service';
-import { NotifierService } from '../notifier/notifier.service';
+import { DataService } from '../services/services';
+import { NotifierService } from '../services/services';
 
 @Component({
   selector: 'app-help-request',

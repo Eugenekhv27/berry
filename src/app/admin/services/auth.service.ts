@@ -19,7 +19,8 @@ export class AuthService implements OnInit {
   }
 
   isLoggedIn(): boolean {
-    return Boolean(localStorage.getItem('accountEncrypt'));
+    return localStorage.getItem('useMockBackend').toLowerCase() === 'yes'
+      || Boolean(localStorage.getItem('accountEncrypt'));
   }
 
   logout(): void {

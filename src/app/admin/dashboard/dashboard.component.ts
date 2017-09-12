@@ -1,36 +1,60 @@
 import { Component, OnInit } from '@angular/core';
-
-import { CarService } from '../../mocks/services/car.service';
-import { Car } from '../../mocks/shared/car';
+import { DataService } from '../services/services';
 
 @Component({
+  selector: 'app-dashboard',
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-  cars: Car[];
-  chartData: any;
 
-  constructor(private carService: CarService) { }
+  participantCount = 12345;
+  purchaseCount = 234567;
+  purchaseAmount = 987654;
+  averagePurchaseAmount = 1213.34;
+
+  chartData: any;
+  chartOptions: any;
+
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    this.carService.getCarsSmall().then(cars => this.cars = cars);
+    this.chartOptions = {
+      title: {
+        display: true,
+        text: 'Количество участников'.toUpperCase(),
+        fontSize: 20
+      },
+      legend: {
+        display: false
+      }
+    };
 
-    this.chartData = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    this.getData();
+  }
+
+  private newChartData(x: any[], y: any[]) {
+    return {
+      labels: x,
       datasets: [
         {
-          label: 'First Dataset',
-          data: [65, 59, 80, 81, 56, 55, 40],
+          label: '',
+          data: y,
           fill: false,
           borderColor: '#FFC107'
-        },
-        {
-          label: 'Second Dataset',
-          data: [28, 48, 40, 19, 86, 27, 90],
-          fill: false,
-          borderColor: '#03A9F4'
         }
       ]
-    }
+    };
+  }
+
+  getData() {
+    this.dataService.getDashboardData()
+      .subscribe((dd: any) => {
+        this.participantCount = dd.participantCount;
+        this.purchaseCount = dd.purchaseCount;
+        this.purchaseAmount = dd.purchaseAmount;
+        this.averagePurchaseAmount = dd.averagePurchaseAmount;
+
+        this.chartData = this.newChartData(dd.chart.dates, dd.chart.participantCount);
+      });
   }
 }

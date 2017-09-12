@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { NotifierService } from '../notifier/notifier.service';
+import { AuthService, NotifierService } from '../services/services';
 
 @Component({
   selector: 'app-login',

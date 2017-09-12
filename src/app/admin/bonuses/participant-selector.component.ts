@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { Participant } from '../participants/participant.model';
-import { DataService } from '../services/data.service';
-import { NotifierService } from '../notifier/notifier.service';
+import { DataService, NotifierService } from '../services/services';
 
 class TableRow {
   public id: string;

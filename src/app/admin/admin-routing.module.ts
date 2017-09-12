@@ -3,14 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminComponent } from './admin.component';
 import { LoginComponent } from './login/login.component';
-import { HelpRequestComponent } from './help/help-request.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ParticipantsComponent } from './participants/participants.component';
 import { CircularComponent } from './circular/circular.component';
 import { BonusCalculatorComponent } from './bonuses/bonus-calculator.component';
 import { DocumentationComponent } from './documentation/documentation.component';
+import { ReportComponent } from './report/report.component';
 
-import { AuthGuard } from './services/auth-guard.service';
+import { AuthGuard } from './services/services';
 
 const routes: Routes = [{
   path: '',
@@ -20,9 +20,9 @@ const routes: Routes = [{
     { path: 'documentation', component: DocumentationComponent },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'participants', component: ParticipantsComponent, canActivate: [AuthGuard] },
+    { path: 'report', component: ReportComponent, canActivate: [AuthGuard] },
     { path: 'circular', component: CircularComponent, canActivate: [AuthGuard] },
     { path: 'bonuses', component: BonusCalculatorComponent, canActivate: [AuthGuard] },
-    { path: 'help', component: HelpRequestComponent, canActivate: [AuthGuard] },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: '**', redirectTo: 'dashboard' }
   ]

@@ -16,6 +16,7 @@ import {
   InputTextModule,
   RadioButtonModule,
   CheckboxModule,
+  CalendarModule,
   /*
   MegaMenuModule,
   MenubarModule,
@@ -31,7 +32,6 @@ import {
   TabViewModule,
   InputSwitchModule,
   OverlayPanelModule,
-  CalendarModule,
   TooltipModule,
   MultiSelectModule,
   DataScrollerModule,
@@ -51,12 +51,15 @@ import { NavComponent, NavMenuComponent } from './nav/nav.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { FooterComponent } from './footer/footer.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { OverviewBoxComponent } from './dashboard/overview-box.component';
 import { ParticipantsComponent } from './participants/participants.component';
 import { CircularComponent } from './circular/circular.component';
 import { BonusCalculatorComponent } from './bonuses/bonus-calculator.component';
 import { ParticipantSelectorComponent } from './bonuses/participant-selector.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { NoticeComponent } from './notifier/notice.component';
+import { ButtonWithSpinnerComponent } from './button-with-spinner/button-with-spinner.component';
+import { ReportComponent } from './report/report.component';
 
 import { AdminRoutingModule } from './admin-routing.module';
 
@@ -77,6 +80,7 @@ import { AdminRoutingModule } from './admin-routing.module';
     InputTextModule,
     RadioButtonModule,
     CheckboxModule,
+    CalendarModule,
     // routing
     AdminRoutingModule,
   ],
@@ -89,12 +93,15 @@ import { AdminRoutingModule } from './admin-routing.module';
     TopBarComponent,
     FooterComponent,
     DashboardComponent,
+    OverviewBoxComponent,
     ParticipantsComponent,
     ParticipantSelectorComponent,
     CircularComponent,
     BonusCalculatorComponent,
     DocumentationComponent,
-    NoticeComponent
+    NoticeComponent,
+    ButtonWithSpinnerComponent,
+    ReportComponent,
   ]
 })
 export class AdminModule { }

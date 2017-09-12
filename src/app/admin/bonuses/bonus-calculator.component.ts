@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NotifierService } from '../notifier/notifier.service';
+import { NotifierService } from '../services/services';
 import { ParticipantSelectorComponent } from './participant-selector.component';
+import { ButtonWithSpinnerComponent } from '../button-with-spinner/button-with-spinner.component';
 
 @Component({
   selector: 'app-bonus-calculator',
@@ -8,10 +9,15 @@ import { ParticipantSelectorComponent } from './participant-selector.component';
 })
 export class BonusCalculatorComponent implements OnInit {
   usePercents = true;
-  changeBy = '123';
+  changeBy = '1';
+  private savingTimeoutID: any = null;
+
 
   @ViewChild(ParticipantSelectorComponent)
   private selectionTable: ParticipantSelectorComponent;
+
+  @ViewChild(ButtonWithSpinnerComponent)
+  private saveButton: ButtonWithSpinnerComponent;
 
   constructor(
     private notifier: NotifierService
@@ -44,9 +50,21 @@ export class BonusCalculatorComponent implements OnInit {
     }
   }
 
-  calculatePoints() {
+  calculatePoints(): void {
     console.log(this.changeBy);
     console.log(this.selectionTable.selection);
     this.selectionTable.calculateChanges();
+  }
+
+  save(): void {
+    if (this.savingTimeoutID) {
+      return;
+    }
+    this.saveButton.spin();
+    this.savingTimeoutID = setTimeout(() => {
+      this.saveButton.stopSpin();
+      this.savingTimeoutID = null;
+      this.notifier.success('Выполнено', 'Данные успешно сохранены');
+    } , 3000);
   }
 }

@@ -55,6 +55,65 @@ export class DataService {
     );
   }
 
+  private dateToString(d: Date) {
+    return d.getFullYear() +
+    '-' + ('00' + (d.getMonth() + 1)).slice(-2) +
+    '-' + ('00' + (d.getDate())).slice(-2);
+  }
+
+  getBonusReport(startDate: any, endDate: any) {
+    console.log(this.dateToString(startDate), this.dateToString(endDate));
+    return this.http.get(
+      this.getFullUrl('bonusReport', this.dateToString(startDate), this.dateToString(endDate)),
+      this.getRequestOptionsArgs()
+    )
+    .map((resp: Response) => {
+      if (!resp.ok) {
+        throw new Error('Отрицательный ответ сервера при сохранении объекта.');
+      }
+      return { rows: resp.json()[0].children, totals: resp.json()[1].totals[0] };
+    })
+    .catch((error: any) => {
+      console.log(error);
+      return  Observable.of(false);
+    });
+  }
+
+  getBonusReportDetails(date: any) {
+    console.log(this.dateToString(date));
+    return this.http.get(
+      this.getFullUrl('bonusReportDetails', this.dateToString(date)),
+      this.getRequestOptionsArgs()
+    )
+    .map((resp: Response) => {
+      if (!resp.ok) {
+        throw new Error('Отрицательный ответ сервера.');
+      }
+      return { rows: resp.json()[0].children, totals: resp.json()[1].totals[0] };
+    })
+    .catch((error: any) => {
+      console.log(error);
+      return  Observable.of(false);
+    });
+  }
+
+  getDashboardData() {
+    return this.http.get(
+      this.getFullUrl('dashboard'),
+      this.getRequestOptionsArgs()
+    )
+    .map((resp: Response) => {
+      if (!resp.ok) {
+        throw new Error('Отрицательный ответ сервера.');
+      }
+      return resp.json().summary;
+    })
+    .catch((error: any) => {
+      console.log(error);
+      return  Observable.of(false);
+    });
+  }
+
   getParticipantsList() {
     const p = new Participant();
     return this.getGridData('ent.Buyer')

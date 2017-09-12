@@ -18,13 +18,12 @@
       </div>
     </div>
     <div class="ui-g-6">
-      <button pButton
-        type="button"
+      <app-button-with-spinner
         icon="fa-save"
         style="float:right"
-        (click)="calculatePoints()"
+        (click)="save()"
         label="Сохранить">
-      </button>
+      </app-button-with-spinner>
     </div>
   </div>
   <app-participant-selector></app-participant-selector>
