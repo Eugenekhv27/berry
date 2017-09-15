@@ -35,6 +35,9 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Route Method="GET" Url="/getAE" Call="GetAE" /> 
 <Route Method="GET" Url="/:encriptId/grid/:className/" Call="GetForGridByClassName" />
 
+<!-- сервис для DashBoard -->
+<Route Method="GET" Url="/:encriptId/dashboard" Call="GetDashboardData" />
+
 </Routes>
 }
 
@@ -423,6 +426,15 @@ ClassMethod GetForGridByClassName(encriptId As %String = "", className As %Strin
 	if accountId?.N {
 		do $CLASSMETHOD(className, "GetForGrid",query,accountId)
 	}
+	quit $$$OK
+}
+
+ClassMethod GetDashboardData(encriptId) As %Status
+{
+	set accountId=$system.Encryption.Base32Decode(encriptId,1)
+	set result ={}
+	$$$QuitOnError(##class(rep.Dashboard).GetData(accountId,.result))
+	write result.%ToJSON()
 	quit $$$OK
 }
 

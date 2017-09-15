@@ -24,15 +24,17 @@ Relationship BottomBuyers As ent.Buyer [ Cardinality = many, Inverse = SuperBuye
 
 Relationship BonusOperations As doc.BonusOperation [ Cardinality = many, Inverse = Buyer ];
 
+/// Магазин
+Relationship Shop As ent.Shop(JSONIGNORE = 1) [ Cardinality = one, Inverse = Buyer ];
+
+Property RegDate As p6.dt.Date [ SqlComputeCode = {set {RegDate} = +$H }, SqlComputed, SqlComputeOnChange = %%INSERT ];
+
 /// Бонусов на счете
 Property BonusSum As p6.dt.Float [ Calculated, SqlComputeCode = {
 		new balance,buyerId
 		set buyerId = {%%ID}
 		&sql(select sum(PointsSum) into :balance from doc.BonusOperation where Buyer=:buyerId)
 		set {BonusSum}=balance}, SqlComputed ];
-
-/// Магазин
-Relationship Shop As ent.Shop(JSONIGNORE = 1) [ Cardinality = one, Inverse = Buyer ];
 
 ClassMethod SendHelloBuyer(tel = "") As %Status
 {
@@ -131,6 +133,9 @@ Storage Default
 </Value>
 <Value name="6">
 <Value>Shop</Value>
+</Value>
+<Value name="7">
+<Value>RegDate</Value>
 </Value>
 </Data>
 <DataLocation>^ent.BuyerD</DataLocation>
