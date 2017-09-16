@@ -38,6 +38,9 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <!-- сервис для DashBoard -->
 <Route Method="GET" Url="/:encriptId/dashboard" Call="GetDashboardData" />
 
+<!-- Отчет по бонусам -->
+<Route Method="GET" Url="/:encriptId/bonusReport/:beginDate/:endDate" Call="GetBonusReport" />
+<Route Method="GET" Url="/:encriptId/bonusReportDetails/:onDate" Call="GetBonusReportDetails" />
 </Routes>
 }
 
@@ -438,41 +441,23 @@ ClassMethod GetDashboardData(encriptId) As %Status
 	quit $$$OK
 }
 
-/*
-
-
-
+ClassMethod GetBonusReport(encriptId, beginDate, endDate) As %Status
+{
+	set accountId=$system.Encryption.Base32Decode(encriptId,1)
 	
-  write "{""data"":["
-  set accountId=$system.Encryption.Base32Decode(userCode,1)
-  
-  // s BinaryText=$ZCONVERT(UnicodeText,"O","UTF8")
-  set res = ""
-  for i=1:1:$Length(searchString) {
-	  if '((i\2*2)=i) {
-	  	set res = res_"%"
-	  }
-	  set res = res_$e(searchString,i)
-  }
-  set res2= $zconvert(res,"I","URL")
-  set res2= $ZCONVERT(res2,"I","UTF8")
-  
+	$$$QuitOnError(##class(rep.BonusReport).JsonReport(accountId,$zdh(beginDate,3),$zdh(endDate,3)))
 	
-  SET myquery = 2
-  SET myquery(1) = " select top 15 JSON_OBJECT('value':ReversFullName) from ent.Station"
-  SET myquery(2) = " where (UserAccount = "_accountId_") and (ReversFullName LIKE '%"_res2_"%')"
-  SET tStatement = ##class(%SQL.Statement).%New()
-  SET qStatus = tStatement.%Prepare(.myquery)
-    IF qStatus'=1 { WRITE "%Prepare failed",$System.Status.DisplayError(qStatus) QUIT}
-  SET rset = tStatement.%Execute()
-  set i=1
-  WHILE rset.%Next() {
-	  write:i>1 ","
-	  DO rset.%Print(" ^ ")
-	  set i=i+1
-  }
-  
-  write "]}"
- */
+	quit $$$OK
+}
+
+ClassMethod GetBonusReportDetails(encriptId, onDate) As %Status
+{
+	set accountId=$system.Encryption.Base32Decode(encriptId,1)
+	
+	$$$QuitOnError(##class(rep.BonusReport).JsonReportDetails(accountId,onDate))
+	
+	quit $$$OK
+}
+
 }
 
