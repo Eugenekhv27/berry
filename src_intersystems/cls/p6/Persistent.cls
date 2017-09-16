@@ -1,8 +1,6 @@
 /// абстрактный для порождения всех классов Dimas 
-Class p6.Persistent Extends (%Library.Persistent, p6.zen.DataModel) [ Abstract, ClassType = "", Inheritance = right, ProcedureBlock, PropertyClass = Utils.JsonParams ]
+Class p6.Persistent Extends (%Library.Persistent, p6.zen.DataModel) [ Abstract, ClassType = "", Inheritance = right, ProcedureBlock, PropertyClass = Util.JsonParams ]
 {
-
-// , Cogs.JsonClass
 
 Parameter PROPERTYVALIDATION = 2;
 
@@ -169,7 +167,7 @@ ClassMethod SaveTargetObject(json, className) As %Status
 	set sc = $$$OK
 	
 	
-	do ##class(Utils.JsonProvider).%ConvertJSONToObject(json,"",.clientObj,1)
+	do ##class(Util.JsonProvider).%ConvertJSONToObject(json,"",.clientObj,1)
 	
 	
 	/// Данные по объекту находятся в свойстве "object"
@@ -396,7 +394,7 @@ ClassMethod SaveObject(json) As %Status
 	kill ^a.line
 	set sc = $$$OK
 	
-	do ##class(Utils.JsonProvider).%ConvertJSONToObject(json,"",.clientObj,1)
+	do ##class(Util.JsonProvider).%ConvertJSONToObject(json,"",.clientObj,1)
 	
 	//set ^a.line("_json")=clientObj.%ToJSON()
 	

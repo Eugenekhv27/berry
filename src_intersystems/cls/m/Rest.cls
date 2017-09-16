@@ -347,7 +347,7 @@ ClassMethod GetObjectByAka(encriptId As %String, className As %String = "", Aka 
 	if params("Id")]"" {
 		write """result"":"
 
-		do ##class(Utils.JsonProvider).%WriteJSONFromObject("",className,"GetObject",.params)
+		do ##class(Util.JsonProvider).%WriteJSONFromObject("",className,"GetObject",.params)
 		
 		if $$$ISOK(sc) {
 			write ",""status"":""OK"""
@@ -371,7 +371,7 @@ ClassMethod GetObjectById(encriptId As %String, className As %String = "", ID As
 	if ID]"" {
 		write """result"":"
 		
-		do ##class(Utils.JsonProvider).%WriteJSONFromObject("",className,"GetObject",.params)
+		do ##class(Util.JsonProvider).%WriteJSONFromObject("",className,"GetObject",.params)
 		
 		if $$$ISOK(sc) {
 			write ",""status"":""OK"""
