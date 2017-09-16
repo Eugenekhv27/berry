@@ -537,8 +537,14 @@ ClassMethod UpdateProduction() As %Status
 	set repoDir=^Sources("repoDir")
 	
 	// Удалить временные файлы
-	do ##class(%Library.File).RemoveDirectoryTree(tempDir)
+	do ##class(%Library.File).RemoveDirectoryTree(tempDir_"\"_repoDir)
 	do ##class(%Library.File).Delete(tempDir_"\source.zip")
+	if '##class(%Library.File).DirectoryExists(tempDir) {
+		do ##class(%Library.File).CreateDirectory(tempDir)
+	}
+	do ##class(%Library.File).CreateNewDir(tempDir,repoDir)
+	
+	
 	
 		
 	set status = $ZF(-1,"git archive --format=zip --output="_tempDir_"\source.zip --remote="_repo_" HEAD "_repoDir)
