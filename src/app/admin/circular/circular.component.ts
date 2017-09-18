@@ -28,9 +28,7 @@ export class CircularComponent implements OnInit {
   selectedLine: Participant;
   data: Participant[] = [];
   lines: any[] = [];
-  /// сюда выводим ошибки
-  errors: Message[] = [];
-  msgs: Message[] = [];
+
   /// для кнопки удалить
   items: MenuItem[];
 
@@ -49,14 +47,17 @@ export class CircularComponent implements OnInit {
       }, {
         label: 'Отменить',
         icon: 'fa fa-hand-o-left',
-        command: () => { this.displayDialog = false; this.msgs = []; }
+        command: () => { this.displayDialog = false; }
       }
     ];
 
-    this.dataService.getGridData('ent.Participant')
-      .subscribe((resp: Response) => {
-//        this.data = resp.json().children;
-          this.data = [new Participant(), new Participant()];
+    this.refreshParticipantsList();
+  }
+
+  refreshParticipantsList() {
+    this.dataService.getParticipantsList()
+      .subscribe((freshList: Participant[]) => {
+        this.data = freshList;
       });
   }
 

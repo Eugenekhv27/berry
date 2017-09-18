@@ -1,40 +1,41 @@
 <div class="ui-g">
   <div class="ui-g-12">
-    <p-dataTable
-      selectionMode="single"
-      [responsive]="true"
-      [value]="participantsList"
-      [paginator]="true"
-      [rows]="maxRowsPerPage"
-      [(selection)]="selectedLine"
-      (onRowDblclick)="onRowDoubleClick($event)"
-      [globalFilter]="gb">
-      <p-header>Участники бонусной программы</p-header>
-      <p-column field="phone" header="Номер" [sortable]="true"></p-column>
-      <p-column field="Name" header="Имя" [sortable]="true"></p-column>
-      <p-column field="Comment" header="Коментарий"></p-column>
-      <p-column field="Bonus" header="Бонусы" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
-      <p-footer>
-        <div class="ui-g">
-          <div class="ui-g-6">
-            <button pButton
-              type="button"
-              icon="fa-plus"
-              style="float:left"
-              (click)="showDialogToAdd()"
-              label="Создать">
-            </button>
+    <div class="card">
+      <h2>Участники бонусной программы</h2>
+      <p-dataTable
+        selectionMode="single"
+        [responsive]="true"
+        [value]="participantsList"
+        [paginator]="true"
+        [rows]="maxRowsPerPage"
+        [(selection)]="selectedLine"
+        (onRowDblclick)="onRowDoubleClick($event)"
+        [globalFilter]="gb">
+        <p-column field="phone" header="Номер" [sortable]="true"></p-column>
+        <p-column field="Name" header="Имя" [sortable]="true"></p-column>
+        <p-column field="Comment" header="Коментарий"></p-column>
+        <p-column field="Bonus" header="Бонусы" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
+        <p-footer>
+          <div class="ui-g">
+            <div class="ui-g-6">
+              <button pButton
+                type="button"
+                icon="fa-plus"
+                style="float:left"
+                (click)="showDialogToAdd()"
+                label="Создать">
+              </button>
+            </div>
+            <div class="ui-g-6">
+              <i class="fa fa-filter" style="margin:4px 4px 0 0"></i>
+              <input #gb type="text" pInputText size="50" placeholder="значение фильтра...">
+            </div>
           </div>
-          <div class="ui-g-6">
-            <i class="fa fa-filter" style="margin:4px 4px 0 0"></i>
-            <input #gb type="text" pInputText size="50" placeholder="значение фильтра...">
-          </div>
-        </div>
-      </p-footer>
-    </p-dataTable>
+        </p-footer>
+      </p-dataTable>
+    </div>
   </div>
 </div>
-
 
 <p-dialog [(visible)]="displayDialog" [responsive]="true"
   showEffect="fade" [modal]="true" minWidth=400>

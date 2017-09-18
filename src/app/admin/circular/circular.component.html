@@ -1,95 +1,102 @@
-<h3 *ngIf="!displayDialog" class="first">Отправить SMS и голосовые сообщения</h3>
-<font size="-1" color="blue">
-  1) Отметьте участников в табличной части. 2) Напишите текст сообщения. 3) Нажмите "Отправить SMS сообщение" или "Отправить
-  голосовое сообщение"
-</font>
-<br/>
-<br/> Текст сообщения:
-<textarea pInputTextarea [(ngModel)]="messageForSupport" style="width:100%"></textarea>
-
-<button pButton type="text" icon="fa fa-envelope-o" label="Отправить SMS сообщение" style="width:40%" (click)="sendToSupport()"></button>
-<button pButton type="text" icon="fa fa-envelope-o" label="Отправить голосовое сообщение" style="width:40%" (click)="sendToSupport()"></button>
-
-<div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
-  <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-  <input #gb type="text" pInputText size="50" placeholder="Глобальный поиск">
-</div>
-
-<p-dataTable *ngIf="!displayDialog" [value]="data" selectionMode="multiple" [(selection)]="selectedLine" (onRowDblclick)="onRowDblclickBuyer($event)"
-  [paginator]="true" rows="15" [responsive]="true" [globalFilter]="gb">
-  <p-column [style]="{'width':'3.4em'}" selectionMode="multiple"></p-column>
-  <p-column field="phone" header="Номер"></p-column>
-  <p-column field="Name" header="Имя"></p-column>
-  <p-column field="Comment" header="Коментарий"></p-column>
-  <p-column field="Bonus" header="Бонусы" [style]="{'text-align':'right'}"></p-column>
-  <p-footer>
-    <div class="ui-helper-clearfix" style="width:100%">
-      <button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Создать запись"></button>
-    </div>
-  </p-footer>
-</p-dataTable>
-
-<p-panel *ngIf="displayDialog">
-  <p-header>
-    <div class="ui-toolbar-group-left">
-      <button pButton type="button" label="Назад" icon="fa fa-hand-o-left" (click)="displayDialog = false;
-         msgs = [];"></button>
-    </div>
-    <div class="ui-helper-clearfix">
-      <p-splitButton [style]="{float:'right'}" label="Сохранить" icon="fa-check" (onClick)="save()" [model]="items"></p-splitButton>
-    </div>
-  </p-header>
-  <h3 class="first">Участник</h3>
-
-  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="object">
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4"><label>Номер</label></div>
-      <div class="ui-grid-col-4"><label>Имя</label></div>
-      <div class="ui-grid-col-4" *ngIf="object.referrer"><label>Кто привлек</label></div>
-    </div>
-    <div class="ui-grid-row">
-
-      <div class="ui-grid-col-4">
-        <p-inputMask [(ngModel)]="object.phone" mask="+7(999)9999999"></p-inputMask>
+<div class="ui-g">
+  <div class="ui-g-12">
+    <div class="card">
+      <h2>Рассылка голосовых сообщений и SMS</h2>
+      <div class="ui-g">
+        <!-- левая секция: текст сообщения и кнопки -->
+        <div class="ui-g-12 ui-md-6 ui-lg-4 ui-fluid">
+          <div class="ui-g">
+            <div class="ui-g-12">
+              <ol style="font-size: 0.8em; color: navy;">
+                <li>Отметьте участников в табличной части</li>
+                <li>Напишите текст сообщения</li>
+                <li>Нажмите "Отправить SMS сообщение"<br>или "Отправить голосовое сообщение"</li>
+              </ol>
+              <label for="txt">Текст сообщения:</label>
+              <textarea pInputTextarea name="txt" [(ngModel)]="messageForSupport" style="width:100%; min-height: 180px"></textarea>              </div>
+          </div>
+          <div class="ui-g">
+            <div class="ui-g-12">
+              <button pButton type="text" icon="fa fa-envelope-o" label="Отправить SMS сообщение" style="width:100%" (click)="sendToSupport()"></button>
+            </div>
+          </div>
+          <div class="ui-g">
+            <div class="ui-g-12">
+              <button pButton type="text" icon="fa fa-bullhorn" label="Отправить голосовое сообщение" style="width:100%" (click)="sendToSupport()"></button>
+            </div>
+          </div>
+        </div>
+        <!-- правая секция: таблица выбора списка рассылки -->
+        <div class="ui-g-8">
+          <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
+            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+            <input #gb type="text" pInputText size="50" placeholder="Глобальный поиск">
+          </div>
+          <p-dataTable *ngIf="!displayDialog" [value]="data" selectionMode="multiple" [(selection)]="selectedLine" (onRowDblclick)="onRowDblclickBuyer($event)"
+            [paginator]="true" rows="12" [responsive]="true" [globalFilter]="gb">
+            <p-column [style]="{'width':'3.4em'}" selectionMode="multiple"></p-column>
+            <p-column field="phone" header="Номер"></p-column>
+            <!-- <p-column field="Name" header="Имя"></p-column> -->
+            <p-column field="Comment" header="Коментарий"></p-column>
+            <p-column field="Bonus" header="Бонусы" [style]="{'text-align':'right'}"></p-column>
+            <p-footer>
+              <div class="ui-helper-clearfix" style="width:100%">
+                <button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Создать запись"></button>
+              </div>
+            </p-footer>
+          </p-dataTable>
+          <p-panel *ngIf="displayDialog">
+            <p-header>
+              <div class="ui-toolbar-group-left">
+                <button pButton type="button" label="Назад" icon="fa fa-hand-o-left" (click)="displayDialog = false;
+                   msgs = [];"></button>
+              </div>
+              <div class="ui-helper-clearfix">
+                <p-splitButton [style]="{float:'right'}" label="Сохранить" icon="fa-check" (onClick)="save()" [model]="items"></p-splitButton>
+              </div>
+            </p-header>
+            <h3 class="first">Участник</h3>
+            <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="object">
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label>Номер</label></div>
+                <div class="ui-grid-col-4"><label>Имя</label></div>
+                <div class="ui-grid-col-4" *ngIf="object.referrer"><label>Кто привлек</label></div>
+              </div>
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                  <p-inputMask [(ngModel)]="object.phone" mask="+7(999)9999999"></p-inputMask>
+                </div>
+                <div class="ui-grid-col-4">
+                  <input type="text" [(ngModel)]="object.Name" />
+                </div>
+                <div class="ui-grid-col-4">
+                  <input *ngIf="object.referrer" type="text" [(ngModel)]="object.referrer.phone" />
+                </div>
+              </div>
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-4"><label for="priceGrid">Коментарий</label></div>
+              </div>
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                  <textarea pInputTextarea [(ngModel)]="object.Comment"></textarea>
+                </div>
+              </div>
+              <div style="  padding-top: 1em;    padding-bottom: 0.25em;">
+                <button id="btNapr" type="text" pButton label="Добавить запись" (click)="addLine();" icon="fa-plus"></button>
+              </div>
+              <div style="width:100%">
+                <p-dataTable [value]="object.BonusOperations" [editable]="true" resizableColumns="true" [(selection)]="selectedBuyerLine"
+                  (onEditInit)="onEditInitTable($event)">
+                  <p-column field="DocDate" header="Дата операции" [editable]="false"></p-column>
+                  <p-column field="RubSum" header="Сумма, руб." [editable]="false"></p-column>
+                  <p-column field="PointsSum" header="Бонусы, руб." [editable]="false"></p-column>
+                  <p-column field="Comment" header="Коментарий" [editable]="false"></p-column>
+                </p-dataTable>
+              </div>
+            </div>
+          </p-panel>
+        </div>
       </div>
-      <div class="ui-grid-col-4">
-        <input type="text" [(ngModel)]="object.Name" />
-      </div>
-      <div class="ui-grid-col-4">
-        <input *ngIf="object.referrer" type="text" [(ngModel)]="object.referrer.phone" />
-      </div>
-    </div>
-
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4"><label for="priceGrid">Коментарий</label></div>
-    </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-12">
-        <textarea pInputTextarea [(ngModel)]="object.Comment"></textarea>
-      </div>
-    </div>
-
-    <div style="  padding-top: 1em;    padding-bottom: 0.25em;">
-      <button id="btNapr" type="text" pButton label="Добавить запись" (click)="addLine();" icon="fa-plus"></button>
-    </div>
-    <div style="width:100%">
-      <p-dataTable [value]="object.BonusOperations" [editable]="true" resizableColumns="true" [(selection)]="selectedBuyerLine"
-        (onEditInit)="onEditInitTable($event)">
-        <!--
-        <p-column  [style]="{'width':'35px'}">
-            <template pTemplate="header">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </template>
-            <template let-line="rowData" pTemplate="body">
-                <button type="button" pButton (click)="deleteLine(line)" icon="fa fa-times"></button>
-            </template>
-        </p-column>
-      -->
-        <p-column field="DocDate" header="Дата операции" [editable]="false"></p-column>
-        <p-column field="RubSum" header="Сумма, руб." [editable]="false"></p-column>
-        <p-column field="PointsSum" header="Бонусы, руб." [editable]="false"></p-column>
-        <p-column field="Comment" header="Коментарий" [editable]="false"></p-column>
-      </p-dataTable>
     </div>
   </div>
-</p-panel>
+</div>
