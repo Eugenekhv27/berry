@@ -24,12 +24,23 @@ import { Participant } from '../participants/participant.model';
 
 @Injectable()
 export class DataService {
-  private restServerUrl: string;
+  // Пока по умолчанию подключение к тестовой базе: base.progrepublic.ru/csp/bonusclubrest2/...
+  private readonly defaultRestServiceUrl = 'http://base.progrepublic.ru/csp/bonusclubrest2';
   private restServiceUrl = 'http://base.progrepublic.ru/csp/bonusclubrest2';
+  private restServerName = 'base.progrepublic.ru';
 
-  constructor(private http: Http) {
-    // Подключение пока к тесовой базе base.progrepublic.ru/csp/bonusclubrest2/...
-    this.restServerUrl = 'base.progrepublic.ru';
+  constructor(
+    private http: Http,
+  ) {
+    this.restServiceUrl = this.defaultRestServiceUrl;
+  //  this.restServiceUrl = this.getRestServiceUrl('restServiceUrl');
+  }
+
+  private getRestServiceUrl(name: string) {
+    if (!localStorage.getItem(name)) {
+      localStorage.putItem(name, this.defaultRestServiceUrl);
+    }
+    return localStorage.getItem(name);
   }
 
   private getRequestOptionsArgs(): RequestOptionsArgs {
@@ -133,7 +144,7 @@ export class DataService {
     const auth = localStorage.getItem('loginpassword');
     const headers = new Headers({ Authorization: 'Basic ' + auth });
     return this.http.get(
-      'http://' + this.restServerUrl +
+      'http://' + this.restServerName +
       '/csp/bonusclubrest2/' + accountEncrypt +
       '/getObject/' + className + '/' + ID + '/' + akaToUrl,
       { headers }
@@ -164,7 +175,7 @@ export class DataService {
     const auth = localStorage.getItem('loginpassword');
     const headers = new Headers({ Authorization: 'Basic ' + auth });
     return this.http.delete(
-      'http://' + this.restServerUrl +
+      'http://' + this.restServerName +
       '/csp/bonusclubrest2/' + accountEncrypt +
       '/delObject/' + className + '/' + ID,
       { headers }
@@ -182,7 +193,7 @@ export class DataService {
     const headers = new Headers({ Authorization: 'Basic ' + auth });
 
     return this.http.get(
-      'http://' + this.restServerUrl +
+      'http://' + this.restServerName +
       '/csp/bonusclubrest2/' + accountEncrypt + '/getAppSet',
       { headers }
     );
@@ -221,7 +232,7 @@ export class DataService {
     const auth = btoa('checkSms:checkSms123098');
     headers.append('Authorization', 'Basic ' + auth);
     return this.http.get(
-      'http://' + this.restServerUrl +
+      'http://' + this.restServerName +
       '/csp/bonusclubrest2/genCode/' + userTel,
       { headers }
     )
@@ -235,7 +246,7 @@ export class DataService {
     const auth = btoa('checkSms:checkSms123098');
     headers.append('Authorization', 'Basic ' + auth);
     return this.http.get(
-      'http://' + this.restServerUrl +
+      'http://' + this.restServerName +
       '/csp/bonusclubrest2/checkCode/' + userTel + '/' + code,
       { headers }
     )
