@@ -27,7 +27,7 @@ class TableRow {
   templateUrl: './participant-selector.component.html'
 })
 export class ParticipantSelectorComponent implements OnInit {
-
+  loading: boolean;
   tableRows: TableRow[] = [];
   maxRowsPerPage = 10;
   selection: TableRow[] = [];
@@ -51,12 +51,15 @@ export class ParticipantSelectorComponent implements OnInit {
   }
 
   refreshParticipantsList() {
+    this.loading = true;
+
     this.dataService.getParticipantsList()
       .subscribe((freshList: Participant[]) => {
         console.log(freshList);
         console.log(freshList.map(p => new TableRow(p)));
         this.tableRows = freshList.map(p => new TableRow(p));
         this.clearChanges();
+        this.loading = false;
       });
   }
 

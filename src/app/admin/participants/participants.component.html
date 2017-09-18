@@ -10,6 +10,8 @@
         [rows]="maxRowsPerPage"
         [(selection)]="selectedLine"
         (onRowDblclick)="onRowDoubleClick($event)"
+        [loading]="loading"
+        loadingIcon="fa-spinner"
         [globalFilter]="gb">
         <p-column field="phone" header="Номер" [sortable]="true"></p-column>
         <p-column field="Name" header="Имя" [sortable]="true"></p-column>

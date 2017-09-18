@@ -23,6 +23,7 @@ export class CircularComponent implements OnInit {
 
   @ViewChild('dataTable') dt: DataTable;
 
+  loading: boolean;
   displayDialog: boolean;
   object: Participant;
   selectedLine: Participant;
@@ -55,9 +56,12 @@ export class CircularComponent implements OnInit {
   }
 
   refreshParticipantsList() {
+    this.loading = true;
+
     this.dataService.getParticipantsList()
       .subscribe((freshList: Participant[]) => {
         this.data = freshList;
+        this.loading = false;
       });
   }
 

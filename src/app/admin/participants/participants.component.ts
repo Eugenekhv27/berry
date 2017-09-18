@@ -30,6 +30,7 @@ export class ParticipantsComponent implements OnInit {
 
   maxRowsPerPage = 11;
 
+  loading: boolean;
   displayDialog: boolean;
   participantToEdit: Participant;  // имя свойства было object
   participantToEditIsNew = false;
@@ -52,10 +53,12 @@ export class ParticipantsComponent implements OnInit {
   }
 
   refreshParticipantsList() {
+    this.loading = true;
     this.dataService.getParticipantsList()
       .subscribe((freshList: Participant[]) => {
         console.log(freshList.filter((el, ind) => ind < 9));
         this.participantsList = freshList;
+        this.loading = false;
       });
   }
 

@@ -32,7 +32,10 @@
             <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
             <input #gb type="text" pInputText size="50" placeholder="Глобальный поиск">
           </div>
-          <p-dataTable *ngIf="!displayDialog" [value]="data" selectionMode="multiple" [(selection)]="selectedLine" (onRowDblclick)="onRowDblclickBuyer($event)"
+          <p-dataTable *ngIf="!displayDialog" [value]="data"
+            selectionMode="multiple" [(selection)]="selectedLine"
+            (onRowDblclick)="onRowDblclickBuyer($event)"
+            [loading]="loading" loadingIcon="fa-spinner"
             [paginator]="true" rows="12" [responsive]="true" [globalFilter]="gb">
             <p-column [style]="{'width':'3.4em'}" selectionMode="multiple"></p-column>
             <p-column field="phone" header="Номер"></p-column>
