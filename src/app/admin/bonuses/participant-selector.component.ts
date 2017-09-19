@@ -85,7 +85,7 @@ export class ParticipantSelectorComponent implements OnInit {
     this.clearRowChanges(e.data);
   }
 
-  onHeaderCheckboxToggle() {
+  onHeaderCheckboxToggle(e) {
     this.calculateChanges();
   }
 }
