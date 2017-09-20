@@ -25,13 +25,9 @@ import { Participant } from '../participants/participant.model';
 @Injectable()
 export class DataService {
   // Пока по умолчанию подключение к тестовой базе: base.progrepublic.ru/csp/bonusclubrest2/...
-  //private readonly defaultRestServiceUrl = 'http://base.progrepublic.ru/csp/bonusclubrest2';
-  //private restServiceUrl = 'http://base.progrepublic.ru/csp/bonusclubrest2';
-  //private restServerName = 'base.progrepublic.ru';
-
-  private readonly defaultRestServiceUrl = 'http://localhost:57773/csp/bonusclubrest';
-  private restServiceUrl = 'http://localhost:57773/csp/bonusclubrest';
-  private restServerName = 'localhost:57773';
+  private readonly defaultRestServiceUrl = 'http://base.progrepublic.ru/csp/bonusclubrest2';
+  private restServiceUrl = 'http://base.progrepublic.ru/csp/bonusclubrest2';
+  private restServerName = 'base.progrepublic.ru';
 
   constructor(
     private http: Http,
