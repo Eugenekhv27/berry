@@ -73,14 +73,14 @@ Method %OnBeforeSave(Insert As p6.dt.Boolean) As %Status [ Private, PublicList =
 
 /// получить Id по номеру телефона
 /// и создать новый если еще нет такой записи
-ClassMethod GetBuyerIdByAka(aAka, prentBuyerId = "", ByRef sc = {$$$OK}, fromTel = "", isCreate = {$$$YES}) As %String
+ClassMethod GetBuyerIdByAka(aAka, prentBuyerId = "", ByRef sc = {$$$OK}, fromTel = "", isCreate = {$$$YES}, accountId = "") As %String
 {
 	if (fromTel="+7null") set fromTel=""
 	set result=""
 	set aAka = $tr(aAka," ","")
 	set aAka = $tr(aAka,"-","")
 	set ^a.resttest($h,"fromTel - GetBuyerIdByAka")=fromTel
-	&sql(select Id into :result from ent.Buyer where Aka[:aAka)	
+	&sql(select Id into :result from ent.Buyer where Aka[:aAka and Shop=:accountId)	
 	if SQLCODE set result=""
 	if ('isCreate) && (result="") {
 		set sc = $$$ERROR(1000,"Данного номера нет в базе")
@@ -90,10 +90,11 @@ ClassMethod GetBuyerIdByAka(aAka, prentBuyerId = "", ByRef sc = {$$$OK}, fromTel
 	if result="" {
 		set obj = ..%New()
 		set obj.Aka = aAka
+		set obj.Shop = ##class(ent.Shop).%OpenId(accountId)
 		
 		/// Кто привлек, по номеру телефона (из 1С)
 		if (fromTel]"") {
-			&sql(select Id into :prentBuyerId from ent.Buyer where Aka[:fromTel)	
+			&sql(select Id into :prentBuyerId from ent.Buyer where Aka[:fromTel and Shop=:accountId)	
 			if SQLCODE set prentBuyerId=""
 		}
 		/// Кто привлек, по ID 

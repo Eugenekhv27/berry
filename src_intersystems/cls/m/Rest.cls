@@ -20,13 +20,24 @@ Parameter HandleCorsRequest = 1;
 XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 {
 <Routes>
-<Route Url="/putPoints/:userTel/:uuid/:rubSum/:pointsSum/:fromTel" Method="GET" Call="PutPoints"/>
-<Route Url="/getBalance/:userTel/:fromTel" Method="GET" Call="GetBalance"/>
-<Route Url="/payByPoints/:userTel/:uuid/:points" Method="GET" Call="PayByPoints"/>
-<Route Url="/checkCode/:userTel" Method="GET" Call="CheckCode"/>
-<Route Url="/getOperations/:userTel" Method="GET" Call="GetOperations"/>
-<Route Url="/genCode/:userTel" Method="GET" Call="GenCode"/>
+<!-- интеграция с кассой -->
+<Route Url="/:encriptId/putPoints/:userTel/:uuid/:rubSum/:pointsSum/:fromTel" Method="GET" Call="PutPoints"/>
+<Route Url="/:encriptId/getBalance/:userTel/:fromTel" Method="GET" Call="GetBalance"/>
+<Route Url="/:encriptId/payByPoints/:userTel/:uuid/:points" Method="GET" Call="PayByPoints"/>
+<Route Url="/:encriptId/checkCode/:userTel" Method="GET" Call="CheckCode"/>
 
+<!-- интеграция с кассой (старая версия VAPEKO)-->
+<Route Url="/putPoints/:userTel/:uuid/:rubSum/:pointsSum/:fromTel" Method="GET" Call="PutPointsVAPEKO"/>
+<Route Url="/getBalance/:userTel/:fromTel" Method="GET" Call="GetBalanceVAPEKO"/>
+<Route Url="/payByPoints/:userTel/:uuid/:points" Method="GET" Call="PayByPointsVAPEKO"/>
+
+<!-- Проверка баланса для сайта-->
+<Route Url="/checkCode/:userTel" Method="GET" Call="CheckCodeVAPEKO"/>
+
+
+
+
+<!-- работа с данными -->
 <Route Method="POST" Url="/:encriptId/save/:className" Call="SaveObject" /> 
 <Route Method="GET" Url="/:encriptId/getObject/:className/:ID" Call="GetObjectById" /> 
 <Route Method="GET" Url="/:encriptId/getObjectByAka/:className/:Aka" Call="GetObjectByAka" /> 
@@ -44,18 +55,25 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 
 <!-- Сообщение в техподдержку -->
 <Route Method="POST" Url="/:encriptId/sendToSupport" Call="SendToSupport" />
+
+<!--
+<Route Url="/:encriptId/getOperations/:userTel" Method="GET" Call="GetOperations"/>
+<Route Url="/getOperations/:userTel" Method="GET" Call="GetOperationsVAPEKO"/>
+
+<Route Url="/genCode/:userTel" Method="GET" Call="GenCodeVAPEKO"/>
+<Route Url="/:encriptId/genCode/:userTel" Method="GET" Call="GenCode"/>
+-->
 </Routes>
 }
 
-ClassMethod PutPoints(userTel As %String = "", uuid As %String = "", rubSum As %String = "", pointsSum As %String, fromTel As %String = "") As %Status
+ClassMethod PutPoints(encriptId As %String = "", userTel As %String = "", uuid As %String = "", rubSum As %String = "", pointsSum As %String, fromTel As %String = "") As %Status
 {
 	set ^a.resttest($h,"tel")=userTel
 	set ^a.resttest($h,"rubSum")=rubSum
 	set ^a.resttest($h,"pointsSum")=pointsSum
 	set ^a.resttest($h,"fromTel")=fromTel
 	
-	
- //&sql(delete from doc.BonusOperation where ByDocUUID=:uuid)	
+ set accountId=$system.Encryption.Base32Decode(encriptId,1)	
  
  if '(($e(userTel)="8") || ($e(userTel,1,2)="+7")) {
 	set userTel = "+7"_userTel
@@ -67,13 +85,13 @@ ClassMethod PutPoints(userTel As %String = "", uuid As %String = "", rubSum As %
  
  /// 3х ступенчатая система (50%, 30%, 20%)
  set sc=$$$OK
- set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel,,.sc,fromTel)
+ set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel,,.sc,fromTel,,accountId)
  set pointsSum = $tr(pointsSum,",",".")
  
  set ^a.resttest($h,"buyerId")=buyerId
  
- &sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID) 
- 				values (:rubSum,:pointsSum*.5,:buyerId,:uuid))
+ &sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Shop) 
+ 				values (:rubSum,:pointsSum*.5,:buyerId,:uuid,:accountId))
  if SQLCODE<0{
  	set ^a.resttest($h,"SQLCODE")=SQLCODE
  	set ^a.resttest($h,"SQLCODE","%msg")= %msg
@@ -81,13 +99,13 @@ ClassMethod PutPoints(userTel As %String = "", uuid As %String = "", rubSum As %
  set superBuyerId = ##class(ent.Buyer).SuperBuyerGetStored(buyerId)
  if superBuyerId]"" {
  	set comment = "от "_userTel
- 	&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Comment) 
- 										values (0,:pointsSum*.3,:superBuyerId,:uuid,:comment))
+ 	&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Comment,Shop) 
+ 										values (0,:pointsSum*.3,:superBuyerId,:uuid,:comment,:accountId))
  	set superSuperBuyerId = ##class(ent.Buyer).SuperBuyerGetStored(superBuyerId)
  	if superSuperBuyerId]"" {
  		set comment = "от "_userTel
- 		&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Comment) 
- 				values (0,:pointsSum*.2,:superSuperBuyerId,:uuid,:comment))										
+ 		&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Comment,Shop) 
+ 				values (0,:pointsSum*.2,:superSuperBuyerId,:uuid,:comment,:accountId))										
  	}
  }
 
@@ -108,11 +126,11 @@ ClassMethod PutPoints(userTel As %String = "", uuid As %String = "", rubSum As %
  quit $$$OK
 }
 
-ClassMethod GetBalance(userTel As %String = "", fromTel As %String = "") As %Status
+ClassMethod GetBalance(encriptId As %String = "", userTel As %String = "", fromTel As %String = "") As %Status
 {
 	set ^a.resttest($h,"tel")=userTel
 	set ^a.resttest($h,"fromTel")=fromTel
- 
+ set accountId=$system.Encryption.Base32Decode(encriptId,1)	
  write "{""data"":"	
  if '(($e(userTel)="8") || ($e(userTel,1,2)="+7")) {
 	set userTel = "+7"_userTel
@@ -122,7 +140,7 @@ ClassMethod GetBalance(userTel As %String = "", fromTel As %String = "") As %Sta
  }
  if fromTel="+7null" set fromTel=""
  if (fromTel]"") {
-	&sql(select Id into :prentBuyerId from ent.Buyer where Aka[:fromTel)	
+	&sql(select Id into :prentBuyerId from ent.Buyer where Aka[:fromTel and Shop=:accountId)	
 	if SQLCODE set prentBuyerId=""
 	if prentBuyerId="" {
 		write "{""statusFromTel"":""В базе не зарегистрирован 'Кто привлек'""}"
@@ -132,7 +150,7 @@ ClassMethod GetBalance(userTel As %String = "", fromTel As %String = "") As %Sta
 	}
 }
 	
-	set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel,,,,0)
+	set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel,,,,0,accountId)
 	set ^a.resttest($h,"buyerId")=buyerId
 	set balance = 0
 	&sql(select sum(PointsSum) into :balance from doc.BonusOperation where Buyer=:buyerId)
@@ -145,20 +163,20 @@ ClassMethod GetBalance(userTel As %String = "", fromTel As %String = "") As %Sta
  quit $$$OK
 }
 
-ClassMethod PayByPoints(userTel As %String = "", uuid As %String = "", points As %String = "") As %Status
+ClassMethod PayByPoints(encriptId As %String = "", userTel As %String = "", uuid As %String = "", points As %String = "") As %Status
 {
 	set ^a.resttest($h,"tel")=userTel
 	set ^a.resttest($h,"points")=points
-	
+ set accountId=$system.Encryption.Base32Decode(encriptId,1)	
  if '(($e(userTel)="8") || ($e(userTel,1,2)="+7")) {
 	set userTel = "+7"_userTel
  }
 	
-	set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel)
+	set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel,,,,,accountId)
  	set points = -$tr(points,",",".")
 	
-	&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID) 
- 										values (:rubSum,:points,:buyerId,:uuid))
+	&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Shop) 
+ 										values (:rubSum,:points,:buyerId,:uuid,:accountId))
  
 	set ^a.resttest($h,"SQLCODE")=SQLCODE
  	set ^a.resttest($h,"SQLCODE","%msg")= %msg
@@ -185,6 +203,7 @@ ClassMethod PayByPoints(userTel As %String = "", uuid As %String = "", points As
  quit $$$OK
 }
 
+/*
 ClassMethod GenCode(userTel As %String = "") As %Status
 {
 	
@@ -220,40 +239,17 @@ ClassMethod GenCode(userTel As %String = "") As %Status
  //write "]}"
  quit $$$OK
 }
-
-ClassMethod CheckCode(userTel As %String = "") As %Status
+*/
+ClassMethod CheckCode(encriptId As %String = "", userTel As %String = "") As %Status
 {
-	kill ^a.temp
+	set accountId=$system.Encryption.Base32Decode(encriptId,1)	
 	
  if '(($e(userTel)="8") || ($e(userTel,1,2)="+7")) {
 	set userTel = "+7"_userTel
  }
 
- //if ($get(^smscode(userTel,"code"))=code) {
-	 
- //} else {
-	// set status = "Неверный код"
- // }	
+ set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel,,,,0,accountId)
  
-	
- // write "{""data"":["
-
- 
- 
- set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel,,,,0)
- 
- set ^a.temp("buyerId")=buyerId
- set ^a.temp("userTel")=userTel
- 
- /*
- if buyerId] "" {
- 	set sql = "SELECT DocDate, PointsSum, Comment FROM doc.BonusOperation where Buyer = " _buyerId
- 		_" order by DocDate desc"
- 
- 	set ^a.temp("sql")=sql
- 	do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,sql,,10)
- }
- */
  if buyerId] "" {
 	set status = "OK"
  	set balance=0
@@ -269,6 +265,7 @@ ClassMethod CheckCode(userTel As %String = "") As %Status
  quit $$$OK
 }
 
+/* вроде пока не используется
 ClassMethod GetOperations(userTel As %String = "") As %Status
 {
 	
@@ -303,7 +300,7 @@ ClassMethod GetOperations(userTel As %String = "") As %Status
   write "}"
  quit $$$OK
 }
-
+*/
 /// Сохранения объекта
 ClassMethod SaveObject(encriptId As %String, className As %String = "") As %Status
 {
@@ -494,6 +491,169 @@ ClassMethod SendToSupport(encriptId As %String = "") As %Status
 	 	write "{""status"":"""_$tr(##class(p6.CspMethods).StatusForAlert(sc),$c(13,10)," ")_"""}"  
    }
     quit sc
+}
+
+ClassMethod PutPointsVAPEKO(userTel As %String = "", uuid As %String = "", rubSum As %String = "", pointsSum As %String, fromTel As %String = "") As %Status
+{
+	set ^a.resttest($h,"tel")=userTel
+	set ^a.resttest($h,"rubSum")=rubSum
+	set ^a.resttest($h,"pointsSum")=pointsSum
+	set ^a.resttest($h,"fromTel")=fromTel
+	
+	
+ //&sql(delete from doc.BonusOperation where ByDocUUID=:uuid)	
+ 
+ if '(($e(userTel)="8") || ($e(userTel,1,2)="+7")) {
+	set userTel = "+7"_userTel
+ }
+ if '(($e(fromTel)="8") || ($e(fromTel,1,2)="+7")) {
+	set fromTel = "+7"_fromTel
+ }
+ 
+ 
+ /// 3х ступенчатая система (50%, 30%, 20%)
+ set sc=$$$OK
+ set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel,,.sc,fromTel,,1)
+ set pointsSum = $tr(pointsSum,",",".")
+ 
+ set ^a.resttest($h,"buyerId")=buyerId
+ 
+ &sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Shop) 
+ 				values (:rubSum,:pointsSum*.5,:buyerId,:uuid,1))
+ if SQLCODE<0{
+ 	set ^a.resttest($h,"SQLCODE")=SQLCODE
+ 	set ^a.resttest($h,"SQLCODE","%msg")= %msg
+ }
+ set superBuyerId = ##class(ent.Buyer).SuperBuyerGetStored(buyerId)
+ if superBuyerId]"" {
+ 	set comment = "от "_userTel
+ 	&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Comment,Shop) 
+ 										values (0,:pointsSum*.3,:superBuyerId,:uuid,:comment,1))
+ 	set superSuperBuyerId = ##class(ent.Buyer).SuperBuyerGetStored(superBuyerId)
+ 	if superSuperBuyerId]"" {
+ 		set comment = "от "_userTel
+ 		&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Comment,Shop) 
+ 				values (0,:pointsSum*.2,:superSuperBuyerId,:uuid,:comment,1))										
+ 	}
+ }
+
+ 
+ 
+ if SQLCODE<0 {
+	write "{""data"":{"
+ 	write """userTel"":"""_userTel_""",""rubSum"":"""_rubSum_""",""pointsSum"":"""_pointsSum_""",""status"":""ERROR: "_%msg_""""
+  	write "}}"
+	 
+ } else {
+	
+ 	write "{""data"":{"
+ 	write """userTel"":"""_userTel_""",""rubSum"":"""_rubSum_""",""pointsSum"":"""_pointsSum_""",""status"":""OK"""
+ 	write "}}"
+ }
+ 
+ quit $$$OK
+}
+
+ClassMethod GetBalanceVAPEKO(userTel As %String = "", fromTel As %String = "") As %Status
+{
+	set ^a.resttest($h,"tel")=userTel
+	set ^a.resttest($h,"fromTel")=fromTel
+ 
+ 	write "{""data"":"	
+ 	if '(($e(userTel)="8") || ($e(userTel,1,2)="+7")) {
+		set userTel = "+7"_userTel
+ 	}
+ 	if '(($e(fromTel)="8") || ($e(fromTel,1,2)="+7")) {
+		set fromTel = "+7"_fromTel
+ 	}
+ 	if fromTel="+7null" set fromTel=""
+ 	if (fromTel]"") {
+		&sql(select Id into :prentBuyerId from ent.Buyer where Aka[:fromTel and Shop=1)	
+		if SQLCODE set prentBuyerId=""
+		if prentBuyerId="" {
+			write "{""statusFromTel"":""В базе не зарегистрирован 'Кто привлек'""}"
+		} else {
+		write "{""statusFromTel"":""OK""}"
+		
+		}
+	}
+	
+	set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel,,,,0,1)
+	set ^a.resttest($h,"buyerId")=buyerId
+	set balance = 0
+	&sql(select sum(PointsSum) into :balance from doc.BonusOperation where Buyer=:buyerId)
+ 	if SQLCODE set balance = 0									
+	
+	set ^a.resttest($h,"balance")=balance
+	
+	
+ write "{""balance"":"_$fnumber(balance,"",2)_ "}}"
+ quit $$$OK
+}
+
+ClassMethod PayByPointsVAPEKO(userTel As %String = "", uuid As %String = "", points As %String = "") As %Status
+{
+	set ^a.resttest($h,"tel")=userTel
+	set ^a.resttest($h,"points")=points
+	
+ if '(($e(userTel)="8") || ($e(userTel,1,2)="+7")) {
+	set userTel = "+7"_userTel
+ }
+	
+	set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel,,,,,1)
+ 	set points = -$tr(points,",",".")
+	
+	&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Shop) 
+ 										values (:rubSum,:points,:buyerId,:uuid,1))
+ 
+	set ^a.resttest($h,"SQLCODE")=SQLCODE
+ 	set ^a.resttest($h,"SQLCODE","%msg")= %msg
+ 	set ^a.resttest($h,"SQLCODE","%ROWCOUNT")=	%ROWCOUNT
+ 	set ^a.resttest($h,"SQLCODE","%ROWID")=%ROWID
+ 	
+ 
+ if SQLCODE<0 {
+	write "{""data"":{"
+ 	write """userTel"":"""_userTel_""",""points"":"""_points_""",""status"":""ERROR: "_%msg_""""
+  	write "}}"
+	 
+ } else {
+	/// Отправляем SMS что списали только один раз в одном документе
+	if '$data(^smssend(buyerId,uuid)) {
+		set ^smssend(buyerId,uuid)=points
+		do ##class(p6.Sms).SendSms(userTel,"Списано бонусов: "_(-points)_". Баланс на www.vapeko.ru") 
+	}
+ 	write "{""data"":{"
+ 	write """userTel"":"""_userTel_""",""points"":"""_points_""",""status"":""OK"""
+ 	write "}}"
+ }	
+
+ quit $$$OK
+}
+
+ClassMethod CheckCodeVAPEKO(userTel As %String = "") As %Status
+{
+	
+ if '(($e(userTel)="8") || ($e(userTel,1,2)="+7")) {
+	set userTel = "+7"_userTel
+ }
+
+ set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel,,,,0,1)
+ 
+
+ if buyerId] "" {
+	set status = "OK"
+ 	set balance=0
+ 	&sql(SELECT sum(PointsSum) into :balance FROM doc.BonusOperation where Buyer = :buyerId)
+ 	write "{""status"":"""_status_""""
+ 	write ",""balance"":"""_balance_""""
+ } else {
+	 set status = "Скорее всего неверный номер"
+	 write "{""status"":"""_status_""""
+ }
+ 
+  write "}"
+ quit $$$OK
 }
 
 }
