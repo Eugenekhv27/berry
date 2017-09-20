@@ -113,6 +113,20 @@ ClassMethod GetBuyerIdByAka(aAka, prentBuyerId = "", ByRef sc = {$$$OK}, fromTel
 	quit result
 }
 
+ClassMethod GetForGrid(query = "", accountId = "") As %Status
+{
+    set st = $$$OK
+    
+    set sql = "select Id,Aka,Name,Comment,(select sum(PointsSum) from doc.BonusOperation where Buyer=ent.Buyer.Id) as Bonus from "_ ..%ClassName(1)
+    	_ " where Shop="_accountId 
+    if query]"" {
+	 set sql = sql _" and "_query  
+    }
+	set sql = sql _ " order by Aka"
+    do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,sql,,1000)
+    quit st
+}
+
 Storage Default
 {
 <Data name="BuyerDefaultData">

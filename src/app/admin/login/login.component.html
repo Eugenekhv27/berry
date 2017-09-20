@@ -1,8 +1,25 @@
-<p-panel header="Вход в систему">
-  <h3>Логин:</h3>
-  <input type="text" [(ngModel)]="login" placeholder="введите логин" />
-  <h3>Пароль:</h3>
-  <input type="password" pPassword [(ngModel)]="password" placeholder="введите пароль" />
-  <br>
-  <button pButton type="button" (click)="doLogin()" label="Войти"></button>
-</p-panel>
+<div class="ui-g">
+  <div class="ui-md-3  ui-lg-4"></div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4 ui-fluid contact-form">
+    <div class="card card-w-title" [style]="{'minHeight':'280px'}">
+      <h2 style="text-align: center">Вход в систему</h2>
+      <div class="ui-g">
+        <div class="ui-g-12">
+          <label for="lgn">Логин:</label>
+          <input pInputText name="lgn" type="text" [(ngModel)]="login" placeholder="введите логин" style="width: 100%" />
+        </div>
+      </div>
+      <div class="ui-g">
+        <div class="ui-g-12">
+          <label for="pwd">Пароль:</label>
+          <input pInputText name="pwd" type="password" [(ngModel)]="password" placeholder="введите пароль" style="width: 100%" />
+        </div>
+      </div>
+      <div class="ui-g">
+        <div class="ui-g-12">
+          <button pButton type="button" (click)="doLogin()" label="Войти" icon="fa-sign-in" style="width: 100%"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

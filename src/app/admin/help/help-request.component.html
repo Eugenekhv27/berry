@@ -1,17 +1,20 @@
 <div class="ui-g">
-  <div class="ui-g-6">
-    Задать вопрос в техподдержку:
-    <textarea pInputTextarea
-      [(ngModel)]="helpRequest"
-      style="width:100%"
-      placeholder="Напишите ваш вопрос здесь">
-    </textarea>
-    <button pButton
-      type="text"
-      icon="fa fa-envelope-o"
-      label="Отправить сообщение"
-      style="width:100%"
-      (click)="sendToSupport()">
-    </button>
+  <div class="ui-s-12">
+    <div class="card">
+      <div class="ui-g" style="text-align: center">
+        <h4>Задать вопрос<br>в службу поддержки</h4>
+        <textarea pInputTextarea
+          [(ngModel)]="helpRequest"
+          style="flex-basis: 100%; min-height: 100px; margin-bottom: 10px"
+          placeholder="Напишите ваше сообщение здесь">
+        </textarea>
+        <button pButton
+          type="text"
+          icon="fa fa-envelope-o"
+          label="Отправить вопрос"
+          (click)="sendHelpRequest()">
+        </button>
+      </div>
+    </div>
   </div>
 </div>

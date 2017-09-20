@@ -22,11 +22,11 @@ export class NavComponent implements OnInit {
   ngOnInit() {
     this.model = [
       { label: 'Показатели', icon: 'fa fa-fw fa-dashboard', routerLink: ['/admin/dashboard'] },
-      { label: 'Участники бонус-клуба', icon: 'fa fa-fw fa-users', routerLink: ['/admin/participants-list'] },
+      { label: 'Участники бонус-клуба', icon: 'fa fa-fw fa-users', routerLink: ['/admin/participants'] },
+      { label: 'Отчет по бонусам', icon: 'fa fa-fw fa-pie-chart', routerLink: ['/admin/report'] },
       { label: 'Рассылки', icon: 'fa fa-fw fa-bullhorn', routerLink: ['/admin/circular'] },
-      { label: 'Начисление бонусов', icon: 'fa fa-fw fa-star', routerLink: ['/admin/bonus-accounting'] },
+      { label: 'Начисление бонусов', icon: 'fa fa-fw fa-star', routerLink: ['/admin/bonuses'] },
       { label: 'Документация', icon: 'fa fa-fw fa-book', routerLink: ['/admin/documentation'] },
-      { label: 'Помощь', icon: 'fa fa-fw fa-life-ring', routerLink: ['/admin/help'] },
     ];
   }
 

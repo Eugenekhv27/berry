@@ -143,7 +143,7 @@ ClassMethod GetModelFilter() As %String
 
 // 
 
-ClassMethod GetForGrid(query = "", fromDate = "", toDate = "") As %Status
+ClassMethod GetForGrid(query = "", accountId = "") As %Status
 {
     set st = $$$OK
     set propertyType = $$$comMemberKeyGet(..%ClassName(1),$$$cCLASSproperty,"Aka",$$$cPROPtype)
@@ -152,6 +152,7 @@ ClassMethod GetForGrid(query = "", fromDate = "", toDate = "") As %Status
     	set aAka = ",Aka"
     }
     set sql = "select Id"_aAka_" from "_ ..%ClassName(1)
+    	_ " where Shop="_accountId 
     
     if query]"" {
 	 set sql = sql _" and "_query  

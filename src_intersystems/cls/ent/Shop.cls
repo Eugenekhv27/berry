@@ -20,6 +20,9 @@ Relationship BonusOperations As doc.BonusOperation [ Cardinality = many, Inverse
 
 Relationship Buyer As ent.Buyer [ Cardinality = many, Inverse = Shop ];
 
+/// Примечание
+Property Comment As %String(MAXLEN = 2000);
+
 ClassMethod CreateLogin(shopId, login, role) As %Status
 {
 	if (role="admin") || (role="seller") {
@@ -51,6 +54,9 @@ Storage Default
 </Value>
 <Value name="4">
 <Value>EncriptId</Value>
+</Value>
+<Value name="5">
+<Value>Comment</Value>
 </Value>
 </Data>
 <DataLocation>^ent.ShopD</DataLocation>

@@ -13,8 +13,11 @@ import {
   SplitButtonModule,
   InputMaskModule,
   DialogModule,
-  /*
   InputTextModule,
+  RadioButtonModule,
+  CheckboxModule,
+  CalendarModule,
+  /*
   MegaMenuModule,
   MenubarModule,
   MenuItem,
@@ -25,17 +28,13 @@ import {
   FieldsetModule,
   ListboxModule,
   AutoCompleteModule,
-  CheckboxModule,
-  SpinnerModule,
   SelectButtonModule,
   TabViewModule,
   InputSwitchModule,
   OverlayPanelModule,
-  CalendarModule,
   TooltipModule,
   MultiSelectModule,
   DataScrollerModule,
-  RadioButtonModule,
   ToolbarModule,
   InputTextareaModule,
   TriStateCheckboxModule,
@@ -52,13 +51,15 @@ import { NavComponent, NavMenuComponent } from './nav/nav.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { FooterComponent } from './footer/footer.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ParticipantsListComponent } from './participants/participants-list.component';
+import { OverviewBoxComponent } from './dashboard/overview-box.component';
+import { ParticipantsComponent } from './participants/participants.component';
 import { CircularComponent } from './circular/circular.component';
-import { ReferralSettingsComponent } from './settings/referral-settings.component';
+import { BonusCalculatorComponent } from './bonuses/bonus-calculator.component';
+import { ParticipantSelectorComponent } from './bonuses/participant-selector.component';
 import { DocumentationComponent } from './documentation/documentation.component';
-
 import { NoticeComponent } from './notifier/notice.component';
-import { NotifierService } from './notifier/notifier.service';
+import { ButtonWithSpinnerComponent } from './button-with-spinner/button-with-spinner.component';
+import { ReportComponent } from './report/report.component';
 
 import { AdminRoutingModule } from './admin-routing.module';
 
@@ -76,6 +77,10 @@ import { AdminRoutingModule } from './admin-routing.module';
     SplitButtonModule,
     InputMaskModule,
     DialogModule,
+    InputTextModule,
+    RadioButtonModule,
+    CheckboxModule,
+    CalendarModule,
     // routing
     AdminRoutingModule,
   ],
@@ -88,14 +93,15 @@ import { AdminRoutingModule } from './admin-routing.module';
     TopBarComponent,
     FooterComponent,
     DashboardComponent,
-    ParticipantsListComponent,
+    OverviewBoxComponent,
+    ParticipantsComponent,
+    ParticipantSelectorComponent,
     CircularComponent,
-    ReferralSettingsComponent,
+    BonusCalculatorComponent,
     DocumentationComponent,
-    NoticeComponent
-  ],
-  providers: [
-    NotifierService
+    NoticeComponent,
+    ButtonWithSpinnerComponent,
+    ReportComponent,
   ]
 })
 export class AdminModule { }

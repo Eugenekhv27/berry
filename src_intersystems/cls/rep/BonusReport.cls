@@ -58,7 +58,7 @@ Method Report() As %Status
 		
 		
 		&sql(insert into rep.BonusReport 
-			set RepDate=:qDocDate,StartBonus= :startBonus,EndBonus=(:curBonus+:qStartBonus),
+			set RepDate=:qDocDate,StartBonus= :startBonus,EndBonus=(:curBonus+:startBonus),
 			PlusBonus=:qPlusBonus,MinusBonus=:qMinusBonus)
 	
 		&sql(fetch line)	

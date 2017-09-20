@@ -31,7 +31,7 @@ Property ByDocUUID As %String(MAXLEN = 100);
 Index ByDocUUIDIndex On (ByDocUUID, Buyer) [ Data = %%ID, Unique ];
 
 /// Магазин
-Relationship Shop As ent.Shop [ Cardinality = one, Inverse = BonusOperations ];
+Relationship Shop As ent.Shop(JSONIGNORE = 1) [ Cardinality = one, Inverse = BonusOperations ];
 
 Storage Default
 {

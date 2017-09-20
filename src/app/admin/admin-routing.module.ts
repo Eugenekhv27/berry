@@ -1,36 +1,31 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AdminComponent} from './admin.component';
-import { LoginComponent} from './login/login.component';
-import { HelpRequestComponent } from './help/help-request.component';
+import { AdminComponent } from './admin.component';
+import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ParticipantsListComponent } from './participants/participants-list.component';
+import { ParticipantsComponent } from './participants/participants.component';
 import { CircularComponent } from './circular/circular.component';
-import { ReferralSettingsComponent } from './settings/referral-settings.component';
+import { BonusCalculatorComponent } from './bonuses/bonus-calculator.component';
 import { DocumentationComponent } from './documentation/documentation.component';
+import { ReportComponent } from './report/report.component';
 
-import { AuthGuard } from './services/auth-guard.service';
+import { AuthGuard } from './services/services';
 
 const routes: Routes = [{
-    path: '',
-    component: AdminComponent,
-    children: [
-      { path: 'documentation', component: DocumentationComponent },
-      { path: 'login', component: LoginComponent },
-      { path: '',
-        canActivate: [AuthGuard],
-        children: [
-          { path: 'dashboard', component: DashboardComponent  },
-          { path: 'participants-list', component: ParticipantsListComponent },
-          { path: 'circular', component: CircularComponent },
-          { path: 'bonus-accounting', component: ParticipantsListComponent },
-          { path: 'settings', component: ReferralSettingsComponent },
-          { path: 'help', component: HelpRequestComponent },
-        ]
-      }
-//      { path: '**', component: LoginComponent }
-    ]
+  path: '',
+  component: AdminComponent,
+  children: [
+    { path: 'login', component: LoginComponent },
+    { path: 'documentation', component: DocumentationComponent },
+    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+    { path: 'participants', component: ParticipantsComponent, canActivate: [AuthGuard] },
+    { path: 'report', component: ReportComponent, canActivate: [AuthGuard] },
+    { path: 'circular', component: CircularComponent, canActivate: [AuthGuard] },
+    { path: 'bonuses', component: BonusCalculatorComponent, canActivate: [AuthGuard] },
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: '**', redirectTo: 'dashboard' }
+  ]
 }];
 
 @NgModule({

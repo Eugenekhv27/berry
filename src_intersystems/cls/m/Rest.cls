@@ -41,6 +41,9 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <!-- Отчет по бонусам -->
 <Route Method="GET" Url="/:encriptId/bonusReport/:beginDate/:endDate" Call="GetBonusReport" />
 <Route Method="GET" Url="/:encriptId/bonusReportDetails/:onDate" Call="GetBonusReportDetails" />
+
+<!-- Сообщение в техподдержку -->
+<Route Method="POST" Url="/:encriptId/sendToSupport" Call="SendToSupport" />
 </Routes>
 }
 
@@ -457,6 +460,40 @@ ClassMethod GetBonusReportDetails(encriptId, onDate) As %Status
 	$$$QuitOnError(##class(rep.BonusReport).JsonReportDetails(accountId,onDate))
 	
 	quit $$$OK
+}
+
+/// Отправить сообщение в тех. поддрежку
+ClassMethod SendToSupport(encriptId As %String = "") As %Status
+{
+	
+   set st=$$$OK
+   set accountId=$system.Encryption.Base32Decode(encriptId,1)
+   
+   set (qAka,qComment)=""
+   &sql(select Aka,Comment into :qAka,:qComment from ent.Shop where Id=:accountId)
+   
+    set sendEmail = "vassil@progrepublic.ru"
+   	if sendEmail]"" set sendEmail=$LISTFROMSTRING(sendEmail,",")
+	else  set sendEmail=""
+	
+	
+	set message = "Контакт: "_qAka_"<br>"_qComment_"<br>"_$ZCONVERT(%request.Content.Read(),"I","UTF8")
+	
+	/// логируем на всяк случай
+	set ^MessageToSupport($H)=message
+	
+	set sc =##class(admin.Email).SendEmail(sendEmail,message,"BONUS CLUB! СООБЩЕНИЕ В ТЕХПОДДЕРЖКУ !!!")
+	
+   
+   write "{"
+   if $$$ISOK(sc) {
+   		write """status"":""OK"""
+   		
+   		write "}"
+   } else {
+	 	write "{""status"":"""_$tr(##class(p6.CspMethods).StatusForAlert(sc),$c(13,10)," ")_"""}"  
+   }
+    quit sc
 }
 
 }

@@ -9,8 +9,7 @@ import {
 } from 'primeng/primeng';
 
 import { Participant } from '../participants/participant.model';
-// import { DataService } from '../services/data.service';
-import { DataService } from '../../mocks/services/data.service';
+import { DataService } from '../services/services';
 
 @Component({
   selector: 'app-circular',
@@ -24,14 +23,13 @@ export class CircularComponent implements OnInit {
 
   @ViewChild('dataTable') dt: DataTable;
 
+  loading: boolean;
   displayDialog: boolean;
   object: Participant;
   selectedLine: Participant;
   data: Participant[] = [];
   lines: any[] = [];
-  /// сюда выводим ошибки
-  errors: Message[] = [];
-  msgs: Message[] = [];
+
   /// для кнопки удалить
   items: MenuItem[];
 
@@ -50,15 +48,21 @@ export class CircularComponent implements OnInit {
       }, {
         label: 'Отменить',
         icon: 'fa fa-hand-o-left',
-        command: () => { this.displayDialog = false; this.msgs = []; }
+        command: () => { this.displayDialog = false; }
       }
     ];
 
-    this.data = this.dataService.getGridData('ent.Participant');
-    // this.dataService.getGridData('ent.Participant')
-    //   .subscribe((resp: Response) => {
-    //     this.data = resp.json().children;
-    //   });
+    this.refreshParticipantsList();
+  }
+
+  refreshParticipantsList() {
+    this.loading = true;
+
+    this.dataService.getParticipantsList()
+      .subscribe((freshList: Participant[]) => {
+        this.data = freshList;
+        this.loading = false;
+      });
   }
 
   addLine() {
@@ -72,77 +76,25 @@ export class CircularComponent implements OnInit {
   }
 
   save() {
+    // этот метод здесь, скорее всего, не нужен
     console.log('save()');
-    console.log(this.object);
-    console.log(this.object.LinesForDel);
-    this.msgs = [];
-    const sendJson = { object: this.object };
-    console.log(sendJson);
-    this.dataService.saveObject('ent.Participant', sendJson).subscribe(
-      (data: Response) => {
-        console.log(data);
-        console.log(data.status);
-        if (data.status.toString() === 'OK') {
-          this.object = null;
-          this.displayDialog = false;
-          this.ngOnInit();
-        } else {
-          this.errors.push(
-            { severity: 'error', summary: 'Не сохранилось!', detail: data.status.toString() }
-          );
-        }
-      },
-      (error) => {
-        this.errors.push({ severity: 'error', summary: 'Не сохранилось!', detail: error });
-        console.log(error);
-      }
-    );
   }
 
   delete() {
-    this.msgs = [];
-    this.dataService.deleteObject('ent.Participant', this.object.objectId)
-      .subscribe((data: Response) => {
-        if (data.json().status === 'OK') {
-          this.object = null;
-          this.displayDialog = false;
-          this.ngOnInit();
-        } else {
-          this.errors.push(
-            { severity: 'error', summary: 'Не сохранилось!', detail: data.json().status }
-          );
-        }
-      });
+    // этот метод здесь, скорее всего, не нужен
+    console.log('delete()');
   }
 
   onRowDblclickBuyer(event: any) {
-    // this.newLine = false;
+    // этот метод здесь, скорее всего, не нужен
+    console.log('onRowDblclickBuyer()');
     console.log(event.data);
-    this.dataService.getObjectData('ent.Participant', event.data.ID)
-      .subscribe((resp: Response) => {
-        console.log(resp);
-        console.log(resp.json());
-        if (resp.json().status === 'OK') {
-          console.log('OK');
-          this.object = resp.json().result;
-          this.displayDialog = true;
-          console.log(this.object);
-        } else {
-          this.errors.push(
-            { severity: 'error', summary: 'Не получилось открыть!', detail: resp.json().status }
-          );
-        }
-      });
   }
 
   deleteLine(line: any) {
+    // этот метод здесь, скорее всего, не нужен
+    console.log('delete()');
     console.log(line);
-    if (!this.object.LinesForDel) {
-      this.object.LinesForDel = [];
-    }
-    this.object.LinesForDel.push(line);
-    const index = this.lines.indexOf(line);
-    this.lines.splice(index, 1);
   }
 
   // заглушки

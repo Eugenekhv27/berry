@@ -163,6 +163,12 @@ ClassMethod %ObjectToJSON(pObject As %RegisteredObject, ByRef pVisited, pLevel A
 			Set tClsType = $$$getClassType(tType)
 			Set tClientType = $$$comClassKeyGet(tType,$$$cCLASSclientdatatype)
 			Set tCollection = $$$comMemberKeyGet(tClass,$$$cCLASSproperty,tPropName,$$$cPROPcollection)
+			
+			set ^a.json(tSeq,"tType")=tType
+			set ^a.json(tSeq,"tClsType")=tClsType
+			set ^a.json(tSeq,"tClientType")=tClientType
+			set ^a.json(tSeq,"tCollection")=tCollection
+			
 			If (tClsType '= "datatype") {
 				#; Check for the case where we have a property declared as a %ListOf**
 				If ($classmethod(tType,"%IsA","%Collection.AbstractList")) {
@@ -333,7 +339,8 @@ ClassMethod %ObjectToJSON(pObject As %RegisteredObject, ByRef pVisited, pLevel A
 			}
 			Else {
 				#; scalar item ; converts $List to empty string!
-				Set tStr = $S((tDataType="b")&&(pFormat["e"):$S(tValue=1:"true",tValue=0:"false",1:"null")
+				Set tStr = $S((tType="p6.dt.Date"):##class(p6.Date).LogicalToDisplay(tValue)
+					, (tDataType="b")&&(pFormat["e"):$S(tValue=1:"true",tValue=0:"false",1:"null")
 					, (tDataType="b"):$S(tValue:"true",1:"false")
 					, ((tDataType="n")||(pFormat["q"))&&$$$ZENJSISNUM(tValue):$$$ZENJSNUM(tValue)
 					, (tDataType="n")&&(tValue="")&&(pFormat["d"):"null"
