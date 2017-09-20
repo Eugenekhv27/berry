@@ -50,12 +50,12 @@ ClassMethod Init(reponame As %String) As %Status
 	for {
 		&sql(FETCH classCursor INTO :className)
 		quit:(SQLCODE '= 0)
-		
+		w !," -- "_className
 		// check for mapped files
-		set classLocation = ##class(%SYS.Namespace).GetPackageDest($namespace, className)
-		if classLocation '= currentLocation {
-			continue
-		}
+		//set classLocation = ##class(%SYS.Namespace).GetPackageDest($namespace, className)
+		//if classLocation '= currentLocation {
+		//	continue
+		//}
 		
 		set sc = sourceControl.OnAfterSave(className _ ".cls")
 		if $$$ISERR(sc) {
@@ -128,7 +128,7 @@ Method OnAfterSave(InternalName As %String, Object As %RegisteredObject) As %Sta
 	
 	#; By convention items starting with Z,z,%z,%Z are not exported
 	if (ext="prj")||($extract($translate(name,"Z%","z"))="z") {
-		return $$$OK
+		//return $$$OK
 	}
 	
 	#; if time already matches nothing to do
