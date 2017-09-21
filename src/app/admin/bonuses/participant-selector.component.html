@@ -26,11 +26,6 @@ loadingIcon="fa-spinner"
       <span>{{ formatNumberToString(rd.changePoints) }}</span>
     </ng-template>
   </p-column>
-  <p-column field="changePercent" header="Изменение, %%" [style]="{'text-align':'right'}">
-    <ng-template let-rd="rowData" pTemplate="body">
-      <span>{{ formatNumberToString(rd.changePercent) }}</span>
-    </ng-template>
-  </p-column>
   <p-column field="newPoints" header="Новое значение" [style]="{'text-align':'right'}">
     <ng-template let-rd="rowData" pTemplate="body">
       <span>{{ formatNumberToString(rd.newPoints) }}</span>

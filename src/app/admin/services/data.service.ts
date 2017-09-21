@@ -24,23 +24,20 @@ import { Participant } from '../participants/participant.model';
 
 @Injectable()
 export class DataService {
-  // Пока по умолчанию подключение к тестовой базе: base.progrepublic.ru/csp/bonusclubrest2/...
-  private readonly defaultRestServiceUrl = 'http://base.progrepublic.ru/csp/bonusclubrest2';
-  private restServiceUrl = 'http://base.progrepublic.ru/csp/bonusclubrest2';
   private restServerName = 'base.progrepublic.ru';
 
   constructor(
     private http: Http,
-  ) {
-    this.restServiceUrl = this.defaultRestServiceUrl;
-  //  this.restServiceUrl = this.getRestServiceUrl('restServiceUrl');
-  }
+  ) { }
 
-  private getRestServiceUrl(name: string) {
-    if (!localStorage.getItem(name)) {
-      localStorage.putItem(name, this.defaultRestServiceUrl);
+  private getRestServiceUrl() {
+    const itemName = 'restServiceUrl';
+    const  defaultUrl = 'http://base.progrepublic.ru/csp/bonusclubrest';
+
+    if (!localStorage.getItem(itemName)) {
+      localStorage.setItem(itemName, defaultUrl);
     }
-    return localStorage.getItem(name);
+    return localStorage.getItem(itemName);
   }
 
   private getRequestOptionsArgs(): RequestOptionsArgs {
@@ -54,7 +51,7 @@ export class DataService {
     const query = args
       .map(val => encodeURIComponent(val).replace(new RegExp('%', 'g'), '~'))
       .join('/');
-    return this.restServiceUrl + '/' +
+    return this.getRestServiceUrl() + '/' +
       localStorage.getItem('accountEncrypt') + '/' +
       query;
   }

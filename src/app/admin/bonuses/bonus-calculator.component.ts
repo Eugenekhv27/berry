@@ -9,7 +9,7 @@ import { ButtonWithSpinnerComponent } from '../button-with-spinner/button-with-s
 })
 export class BonusCalculatorComponent implements OnInit {
   usePercents = false;
-  changeBy = '1';
+  changeBy = '10';
   private savingTimeoutID: any = null;
 
 
