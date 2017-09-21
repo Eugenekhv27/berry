@@ -8,7 +8,7 @@ export class DataService {
   constructor() {
   }
 
-  sendToSupport(arg: any): any {
+  sendHelpRequest(arg: any): any {
     return {};
   }
 

@@ -182,40 +182,106 @@ export class DataService {
     );
   }
 
-  getAppSetData(accountEncryptParam = '') {
-    let accountEncrypt: any; // Шифрованный индефикатор аккаунта
-    if (accountEncryptParam !== '') {
-      accountEncrypt = accountEncryptParam;
-    } else {
-      accountEncrypt = localStorage.getItem('accountEncrypt');
-    }
-    const auth = localStorage.getItem('loginpassword');
-    const headers = new Headers({ Authorization: 'Basic ' + auth });
+  // getAppSetData(accountEncryptParam = '') {
+  //   let accountEncrypt: any; // Шифрованный индефикатор аккаунта
+  //   if (accountEncryptParam !== '') {
+  //     accountEncrypt = accountEncryptParam;
+  //   } else {
+  //     accountEncrypt = localStorage.getItem('accountEncrypt');
+  //   }
+  //   const auth = localStorage.getItem('loginpassword');
+  //   const headers = new Headers({ Authorization: 'Basic ' + auth });
 
-    return this.http.get(
-      'http://' + this.restServerName +
-      '/csp/bonusclubrest2/' + accountEncrypt + '/getAppSet',
-      { headers }
-    );
-  }
+  //   return this.http.get(
+  //     'http://' + this.restServerName +
+  //     '/csp/bonusclubrest2/' + accountEncrypt + '/getAppSet',
+  //     { headers }
+  //   );
+  // }
 
   /**
    * Метод не вполне отлажен в части обработки ответа сервера,
-   * т.к. сервер не понимает запрос sendToSupport и не выдает ответ
+   * т.к. сервер не понимает запрос sendHelpRequest и не выдает ответ
    *
    * @param textToSend - текст сообщения, отправляемого в техподдержку
    */
-  sendToSupport(textToSend: string): Observable<boolean> {
+  sendHelpRequest(textToSend: string): Observable<boolean> {
     return this.http
       .post(
-      this.getFullUrl('sendToSupport'),
-      textToSend,
+      this.getFullUrl('help-request'),
+      JSON.stringify({ 'helpRequest': { 'text': textToSend } }),
       this.getRequestOptionsArgs()
       )
       .map(resp => {
         console.log('Статус ответа: ' + resp.status);
         if (resp.status.toString() !== 'OK') {
           throw Error('Получен отрицательный ответ: ' + resp.status.toString());
+        }
+        console.log(resp);
+        return true;
+      })
+      .catch(error => {
+        console.error(error);
+        return Observable.of(false);
+      });
+  }
+
+  /**
+   * Отправить на сервер запрос на SMS или голосовую рассылку
+   * @param textToSend - текст рассылаемого сообщения
+   * @param phones - список телефонов для рассылки SMS
+   */
+  sendRequestForCircular(textToSend: string, phones: string[], type: string = 'sms'): Observable<boolean> {
+    const request = {
+      [type + 'Circular']: {
+        'text': textToSend,
+        'phones': phones
+      }
+    };
+
+    return this.http
+      .post(
+      this.getFullUrl(type + '-circular'),
+      JSON.stringify(request),
+      this.getRequestOptionsArgs()
+      )
+      .map(resp => {
+        console.log('Статус ответа: ' + resp.status);
+        if (!resp.ok) {
+          throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
+        }
+        console.log(resp);
+        return true;
+      })
+      .catch(error => {
+        console.error(error);
+        return Observable.of(false);
+      });
+  }
+
+  /**
+   * Запрос на изменение баланса бонусных баллов
+   * @param points - величина изменения в баллах
+   * @param ids - массив идентификаторов объектов "Участник"
+   */
+  changeBonusPoints(points: number, ids: string[]): Observable<boolean> {
+    const request = {
+      'changeBonus': {
+        'ids': ids,
+        'points': points
+      }
+    };
+
+    return this.http
+      .post(
+      this.getFullUrl('change-bonus'),
+      JSON.stringify(request),
+      this.getRequestOptionsArgs()
+      )
+      .map(resp => {
+        console.log('Статус ответа: ' + resp.status);
+        if (!resp.ok) {
+          throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
         }
         console.log(resp);
         return true;

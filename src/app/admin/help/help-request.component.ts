@@ -7,7 +7,7 @@ import { NotifierService } from '../services/services';
   templateUrl: './help-request.component.html'
 })
 export class HelpRequestComponent {
-  helpRequest: string;
+  helpRequestText: string;
 
   constructor(
     private dataService: DataService,
@@ -15,16 +15,16 @@ export class HelpRequestComponent {
   ) { }
 
   sendHelpRequest() {
-    if (!this.helpRequest) {
+    if (!this.helpRequestText) {
       this.notifier.warning('Пустое сообщение!', 'Напишите ваш вопрос в поле для ввода текста');
       return;
     }
 
-    this.dataService.sendToSupport(this.helpRequest)
+    this.dataService.sendHelpRequest(this.helpRequestText)
       .subscribe(sendSuccess => {
         if (sendSuccess) {
           this.notifier.success('Сообщение отправлено!', 'Максимальное время ответа 24 часа');
-          this.helpRequest = '';
+          this.helpRequestText = '';
         } else {
           this.notifier.error('Ошибка!', 'Не удалось отправить сообщение.');
         }

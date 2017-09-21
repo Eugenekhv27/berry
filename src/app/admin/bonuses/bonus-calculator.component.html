@@ -1,30 +1,30 @@
 <div class="ui-g">
   <div class="ui-g-12">
     <div class="card">
-      <h2>Начисление бонусных баллов</h2>
-      <div class="ui-g">
-        <div class="ui-g-2">
-          <label>Изменить баланс на... </label>
-        </div>
-        <div class="ui-g-1">
-          <input type="text" pInputText [(ngModel)]="changeBy" style="text-align: right" size="6" (blur)="calculatePoints()" (keyup)="onKey($event)">
-        </div>
-        <div class="ui-g-3">
+      <div class="ui-g" style="align-items: flex-end">
+        <div class="ui-g-5">
+          <h2>Начисление бонусных баллов</h2>
           <div class="ui-g">
-            <div class="ui-g-6">
-              <p-radioButton name="rg" [value]="true" label="процентов" [(ngModel)]="usePercents" (click)="calculatePoints()"></p-radioButton>
+            <div class="ui-g-5">
+              <label>Изменить баланс на... </label>
             </div>
-            <div class="ui-g-6">
-              <p-radioButton name="rg" [value]="false" label="баллов" [(ngModel)]="usePercents" (click)="calculatePoints()"></p-radioButton>
+            <div class="ui-g-2">
+              <input type="text" pInputText [(ngModel)]="changeBy" style="text-align: right" size="6" (blur)="calculatePoints()" (keyup)="onKey($event)">
+            </div>
+            <div class="ui-g-4" style="text-align: left">
+              <span>баллов</span>
             </div>
           </div>
         </div>
-        <div class="ui-g-6">
-          <app-button-with-spinner
-            icon="fa-save"
-            style="float:right"
-            (click)="save()"
-            label="Сохранить">
+        <div class="ui-g-5" style="font-size: 0.8em; color: navy; background-color: beige; margin-bottom: 7px;">
+          <ul>
+            <li>Введите количество баллов</li>
+            <li>Выберите участников (будет выполнен предварительный расчет баллов)</li>
+            <li>Нажмите «Сохранить» для выполнения операции</li>
+          </ul>
+        </div>
+        <div class="ui-g-2">
+          <app-button-with-spinner icon="fa-save" style="float:right" (click)="save()" label="Сохранить">
           </app-button-with-spinner>
         </div>
       </div>
