@@ -56,6 +56,9 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <!-- Сообщение в техподдержку -->
 <Route Method="POST" Url="/:encriptId/sendToSupport" Call="SendToSupport" />
 
+<!-- Отправить SMS сообщения -->
+<Route Method="POST" Url="/:encriptId/sms-circular" Call="SendSms" />
+
 <!--
 <Route Url="/:encriptId/getOperations/:userTel" Method="GET" Call="GetOperations"/>
 <Route Url="/getOperations/:userTel" Method="GET" Call="GetOperationsVAPEKO"/>
@@ -490,6 +493,50 @@ ClassMethod SendToSupport(encriptId As %String = "") As %Status
    } else {
 	 	write "{""status"":"""_$tr(##class(p6.CspMethods).StatusForAlert(sc),$c(13,10)," ")_"""}"  
    }
+    quit sc
+}
+
+/// Отправить SMS - сообщение 
+/// {
+///   "smsCircular": {
+///     "text": "Текст сообщения для рассылки",
+///     "phones": ["+7(909)8250066", "+7(909)8523150", "+7(909)8554982"]
+///   }
+/// }
+ClassMethod SendSms(encriptId As %String = "") As %Status
+{
+	
+   set sc=$$$OK
+   set accountId=$system.Encryption.Base32Decode(encriptId,1)
+   do ##class(Util.JsonProvider).%ConvertJSONToObject(%request.Content,"",.clientObj,1)
+   
+      
+	set message = $ZCONVERT(clientObj.smsCircular.text,"I","UTF8")
+	
+	/// логируем на всяк случай
+	set ^MessageToSms($H)=message
+	
+	set telArray = clientObj.smsCircular.phones
+	
+	set coutArray=telArray.Count()
+	set telString=""
+	
+   	for i=1:1:coutArray { 
+   		set telString = telString_","_telArray.GetAt(i)
+   	}
+   	set telString=$e(telString,2,*)
+	
+	set ^a.sms("telString") = telString
+	set ^a.sms("message") = message
+	set result = "Тестовая заглушка. Телефоны:"_telString_" Сообщение: "_message
+	//set result = ##class(p6.Sms).SendSms(telString,message,0)
+	
+	
+   
+   write "{"
+   write """status"":"""_result_""""
+   write "}"
+   
     quit sc
 }
 

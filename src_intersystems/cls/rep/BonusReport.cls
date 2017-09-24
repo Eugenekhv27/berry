@@ -36,7 +36,11 @@ Method Report() As %Status
 	
 	set beginDate = ..BeginDate
 	set endDate = ..EndDate
-	set shopId=..Shop.%Id()
+	if ..Shop]"" {
+		set shopId=..Shop.%Id()
+	} else {
+		set shopId=1
+	}
 	set qStartBonus = 0
 	
 	&sql(select sum(PointsSum) into :qStartBonus from doc.BonusOperation
