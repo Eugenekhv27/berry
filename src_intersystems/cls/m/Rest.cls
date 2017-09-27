@@ -54,10 +54,15 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Route Method="GET" Url="/:encriptId/bonusReportDetails/:onDate" Call="GetBonusReportDetails" />
 
 <!-- Сообщение в техподдержку -->
-<Route Method="POST" Url="/:encriptId/sendToSupport" Call="SendToSupport" />
+<Route Method="POST" Url="/:encriptId/help-request" Call="SendToSupport" />
 
 <!-- Отправить SMS сообщения -->
 <Route Method="POST" Url="/:encriptId/sms-circular" Call="SendSms" />
+<!-- Отправить голосовое сообщения -->
+<Route Method="POST" Url="/:encriptId/voice-circular" Call="SendVoice" />
+
+<!-- Начислить бонусы -->
+<Route Method="POST" Url="/:encriptId/change-bonus" Call="ChangeBonus" />
 
 <!--
 <Route Url="/:encriptId/getOperations/:userTel" Method="GET" Call="GetOperations"/>
@@ -466,7 +471,7 @@ ClassMethod GetBonusReportDetails(encriptId, onDate) As %Status
 ClassMethod SendToSupport(encriptId As %String = "") As %Status
 {
 	
-   set st=$$$OK
+   set sc=$$$OK
    set accountId=$system.Encryption.Base32Decode(encriptId,1)
    
    set (qAka,qComment)=""
@@ -496,6 +501,18 @@ ClassMethod SendToSupport(encriptId As %String = "") As %Status
     quit sc
 }
 
+ClassMethod SendSms(encriptId As %String = "") As %Status
+{
+	$$$QuitOnError(..DoSmsVoice(encriptId,"sms"))
+	quit $$$OK
+}
+
+ClassMethod SendVoice(encriptId As %String = "") As %Status
+{
+	$$$QuitOnError(..DoSmsVoice(encriptId,"voice"))
+	quit $$$OK
+}
+
 /// Отправить SMS - сообщение 
 /// {
 ///   "smsCircular": {
@@ -503,7 +520,7 @@ ClassMethod SendToSupport(encriptId As %String = "") As %Status
 ///     "phones": ["+7(909)8250066", "+7(909)8523150", "+7(909)8554982"]
 ///   }
 /// }
-ClassMethod SendSms(encriptId As %String = "") As %Status
+ClassMethod DoSmsVoice(encriptId As %String = "", type = "sms") As %Status
 {
 	
    set sc=$$$OK
@@ -516,7 +533,13 @@ ClassMethod SendSms(encriptId As %String = "") As %Status
 	/// логируем на всяк случай
 	set ^MessageToSms($H)=message
 	
-	set telArray = clientObj.smsCircular.phones
+	if type = "voice" {
+		set telArray = clientObj.voiceCircular.phones
+		set format = "9"
+	} else {
+		set telArray = clientObj.smsCircular.phones
+		set format = "0"
+	}
 	
 	set coutArray=telArray.Count()
 	set telString=""
@@ -529,7 +552,7 @@ ClassMethod SendSms(encriptId As %String = "") As %Status
 	set ^a.sms("telString") = telString
 	set ^a.sms("message") = message
 	set result = "Тестовая заглушка. Телефоны:"_telString_" Сообщение: "_message
-	//set result = ##class(p6.Sms).SendSms(telString,message,0)
+	//set result = ##class(p6.Sms).SendSms(telString,message,format)
 	
 	
    
@@ -538,6 +561,25 @@ ClassMethod SendSms(encriptId As %String = "") As %Status
    write "}"
    
     quit sc
+}
+
+/// JSON по начислению
+/// {"changeBonus":{"ids":["110","122"],"points":10}}
+ClassMethod ChangeBonus(encriptId As %String = "") As %Status
+{
+	set sc=$$$OK
+   	set accountId=$system.Encryption.Base32Decode(encriptId,1)
+   	do ##class(Util.JsonProvider).%ConvertJSONToObject(%request.Content,"",.clientObj,1)
+    set buyerIdArray = clientObj.changeBonus.ids
+    set pountSum = clientObj.changeBonus.points
+    set comment = ""
+    set countArray=buyerIdArray.Count()
+   	for i=1:1:countArray { 
+   		set curId = buyerIdArray.GetAt(i)
+   		&sql(insert into doc.BonusOperation (PointsSum,Comment,Buyer) Values (:pountSum,:comment,:curId))
+   	}  
+	
+	quit $$$OK
 }
 
 ClassMethod PutPointsVAPEKO(userTel As %String = "", uuid As %String = "", rubSum As %String = "", pointsSum As %String, fromTel As %String = "") As %Status
