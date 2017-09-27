@@ -584,9 +584,48 @@ ClassMethod UpdateProduction() As %Status
 	
 	
 	write !,"загрузка описаний классов из "_tempDir_":",!
- 	do $System.OBJ.ImportDir(tempDir,"*.xml;*.cls;*.mac;*.int;*.inc;*.dfi","ck",,1)
+ 	do $System.OBJ.ImportDir(tempDir,"*.xml;*.cls;*.mac;*.int;*.inc;*.dfi","",,1)
  	
- 	do ##class(p6.ClassUtils).UpdateIndices()
+ 	 set rset = ##class(%ResultSet).%New()
+ do rset.Prepare("select ID from %Dictionary.ClassDefinition where System=0 and not (ID['%')")
+ do rset.Execute()
+ while (rset.Next(.sc)) {
+	set className=rset.GetData(1)
+	if (className["component")||(className["auxiliary") {
+		set firstTimeCompile(className_".CLS")=""
+	}
+	else  {
+		set secondTimeCompile(className_".CLS")=""
+		
+	}
+ }
+ 
+ 
+ // скомпилировать все классы
+ write !,"перекомпиляция описаний всех классов в области:",!
+ 
+ //m ^a.firstTimeCompile=firstTimeCompile
+ //m ^a.secondTimeCompile=secondTimeCompile
+  
+ do $system.OBJ.CompileList(.firstTimeCompile,,.sc) 
+ do $system.OBJ.CompileList(.secondTimeCompile,,.sc) 
+ 
+ write !,"перекомпиляция описаний сообщений:",!
+ set rset = ##class(%ResultSet).%New()
+ do rset.Prepare("select ID from %Dictionary.ClassDefinition where System=0  and not (ID['%')")
+ do rset.Execute()
+ while (rset.Next(.sc)) {
+	set className=rset.GetData(1)
+	if '((className["component")||(className["auxiliary")) {
+		if '$data(secondTimeCompile(className_".CLS")) {	
+			set thirdTimeCompile(className_".CLS")=""
+		}
+	}
+	
+ }
+ do $system.OBJ.CompileList(.thirdTimeCompile,,.sc) 
+ 	
+ do ##class(p6.ClassUtils).UpdateIndices()
  	
  	
 	
