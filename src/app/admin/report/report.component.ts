@@ -42,6 +42,10 @@ class DetailsRow {
   }
 }
 
+function sanitizeNumber(v: string|number) {
+  return isNaN(parseFloat(String(v))) ? 0 : parseFloat(String(v));
+}
+
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html'
@@ -119,8 +123,8 @@ export class ReportComponent implements OnInit {
     this.dataService.getBonusReport(this.startDate, this.endDate)
       .subscribe((reportData: any) => {
         this.tableRows = reportData.rows.map(dataRow => new TableRow(dataRow));
-        this.tableTotals.plusBonus = parseFloat(String(reportData.totals.PlusBonus));
-        this.tableTotals.minusBonus = parseFloat(String(reportData.totals.MinusBonus));
+        this.tableTotals.plusBonus = sanitizeNumber(reportData.totals.PlusBonus);
+        this.tableTotals.minusBonus = sanitizeNumber(reportData.totals.MinusBonus);
         this.loading = false;
       });
   }
@@ -133,8 +137,8 @@ export class ReportComponent implements OnInit {
       .subscribe((reportData: any) => {
         console.log(reportData);
         this.detailsTable = reportData.rows.map(dataRow => new DetailsRow(dataRow));
-        this.detailsTotals.plusBonus = parseFloat(String(reportData.totals.PlusPointsSum));
-        this.detailsTotals.minusBonus = parseFloat(String(reportData.totals.MinusPointsSum));
+        this.detailsTotals.plusBonus = sanitizeNumber(reportData.totals.PlusPointsSum);
+        this.detailsTotals.minusBonus = sanitizeNumber(reportData.totals.MinusPointsSum);
         console.log('-------');
         console.log(this.showDetails);
 
