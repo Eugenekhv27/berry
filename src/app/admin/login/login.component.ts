@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     const server = this.route.snapshot.paramMap.get('server');
-    if (server) {
+    if (server !== null) {
       localStorage.setItem('restServiceUrl', decodeURIComponent(server));
     }
 

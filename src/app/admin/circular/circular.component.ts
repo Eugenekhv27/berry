@@ -9,101 +9,123 @@ import {
 } from 'primeng/primeng';
 
 import { Participant } from '../participants/participant.model';
-import { DataService } from '../services/services';
+import { NotifierService, DataService } from '../services/services';
 
 @Component({
   selector: 'app-circular',
-  styles: [`
-    #btNapr { width: 200px; }
-  `],
-  templateUrl: './circular.component.html',
-  providers: [DataService]
+  templateUrl: './circular.component.html'
 })
 export class CircularComponent implements OnInit {
 
   @ViewChild('dataTable') dt: DataTable;
 
+  maxRowsPerPage = 12;
   loading: boolean;
-  displayDialog: boolean;
-  object: Participant;
-  selectedLine: Participant;
-  data: Participant[] = [];
-  lines: any[] = [];
+  filterValue = '';
+  selectedRows: Participant[] = [];
+  numberOfSelectedRows = 0;
+  receivers: Participant[] = [];
+  messageText: string;
 
-  /// для кнопки удалить
-  items: MenuItem[];
-
-  selectedBuyerLine: any; // заглушка (свойство используется в шаблоне)
-  messageForSupport: string;
-
-  constructor(private dataService: DataService) { }
+  constructor(private notifier: NotifierService, private dataService: DataService) { }
 
   ngOnInit() {
-    /// для кнопки удалить
-    this.items = [
-      {
-        label: 'Удалить',
-        icon: 'fa-close',
-        command: () => { this.delete(); }
-      }, {
-        label: 'Отменить',
-        icon: 'fa fa-hand-o-left',
-        command: () => { this.displayDialog = false; }
-      }
-    ];
-
-    this.refreshParticipantsList();
+    this.refreshAddresseeList();
   }
 
-  refreshParticipantsList() {
+  refreshAddresseeList() {
     this.loading = true;
 
     this.dataService.getParticipantsList()
       .subscribe((freshList: Participant[]) => {
-        this.data = freshList;
+        this.receivers = freshList;
         this.loading = false;
       });
   }
 
-  addLine() {
-    this.lines.push({ RubSum: '100' });
+  /**
+   * Обновляет индикатор количества выбранных строк. Учитывает фильтр.
+   */
+  refreshNumberOfSelectedRows() {
+    setTimeout(() => this.numberOfSelectedRows = this.getSelectedRowsFiltered().length, 0);
   }
 
-  showDialogToAdd() {
-    this.object = new Participant(new Participant());
-    this.lines = [];
-    this.displayDialog = true;
+  /**
+   * Возвращает true, если аргумент прошел фильтр filterValue
+   */
+  private isPassedFilter(v: string | number): boolean {
+     return String(v).toLowerCase().includes(this.filterValue.toLowerCase());
   }
 
-  save() {
-    // этот метод здесь, скорее всего, не нужен
-    console.log('save()');
+  /**
+   * Возвращает список выбранных строк таблицы, проходящих фильтр filterValue.
+   * Для прохождения фильтра достаточно, чтобы хотя бы одно свойство содержало
+   * значение, заданное в качестве фильтра (filterValue).
+   * Проверяются только выводимые в таблицу свойства объекта Participant.
+   */
+  private getSelectedRowsFiltered(): Participant[] {
+    return this.selectedRows.filter((elem) => {
+      return ['Comment', 'Bonus', 'phone']
+      .map(key => this.isPassedFilter(elem[key]))
+      .includes(true);
+    });
   }
 
-  delete() {
-    // этот метод здесь, скорее всего, не нужен
-    console.log('delete()');
+  private getPhoneList(): string[] {
+    return this.getSelectedRowsFiltered().map((elem) => elem.phone);
   }
 
-  onRowDblclickBuyer(event: any) {
-    // этот метод здесь, скорее всего, не нужен
-    console.log('onRowDblclickBuyer()');
-    console.log(event.data);
+  private sendMessage() {
+    console.log('SmsComponent::sendMessage()');
+    console.log(this.messageText);
+    console.log(this.getSelectedRowsFiltered());
   }
 
-  deleteLine(line: any) {
-    // этот метод здесь, скорее всего, не нужен
-    console.log('delete()');
-    console.log(line);
+  private isReadyToSend(): boolean {
+    let isReady = true;
+
+    if (!this.messageText) {
+      isReady = false;
+      this.notifier.warning('Пустое сообщение!', 'Напишите текст для рассылки в поле для ввода текста');
+    }
+
+    if (this.getSelectedRowsFiltered().length < 1) {
+      isReady = false;
+      this.notifier.warning('Не выбраны адресаты!', 'Выберите адресатов рассылки в таблице');
+    }
+
+    return isReady;
   }
 
-  // заглушки
-  sendToSupport() {
-    console.log('SmsComponent::sendToSupport()');
-    console.log(this.messageForSupport);
+  private sendRequestForSmsCircular(): void {
+    if (!this.isReadyToSend()) {
+      return;
+    }
+
+    this.dataService.sendRequestForCircular(this.messageText, this.getPhoneList(), 'sms')
+      .subscribe(sendSuccess => {
+        if (sendSuccess) {
+          this.notifier.success('Команда отправлена.', 'SMS-рассылка будет выполнена сервером в ближайшее время.');
+          this.messageText = '';
+        } else {
+          this.notifier.error('Ошибка!', 'Не удалось отправить командуна выполнение рассылки.');
+        }
+      });
   }
 
-  onEditInitTable() {
-    console.log('BuyerComponent::onEditInitTable()');
+  private sendRequestForVoiceCircular(): void {
+    if (!this.isReadyToSend()) {
+      return;
+    }
+
+    this.dataService.sendRequestForCircular(this.messageText, this.getPhoneList(), 'voice')
+      .subscribe(sendSuccess => {
+        if (sendSuccess) {
+          this.notifier.success('Команда отправлена.', 'Голосовая рассылка будет выполнена сервером в ближайшее время.');
+          this.messageText = '';
+        } else {
+          this.notifier.error('Ошибка!', 'Не удалось отправить команду на выполнение рассылки.');
+        }
+      });
   }
 }

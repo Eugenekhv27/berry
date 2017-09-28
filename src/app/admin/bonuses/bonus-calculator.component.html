@@ -1,27 +1,32 @@
 <div class="ui-g">
   <div class="ui-g-12">
     <div class="card">
-      <h2>Начисление бонусных баллов</h2>
-      <div class="ui-g">
-        <div class="ui-g-2">
-          <label>Изменить баланс на... </label>
-        </div>
-        <div class="ui-g-1">
-          <input type="text" pInputText [(ngModel)]="changeBy" style="text-align: right" size="6" (blur)="calculatePoints()" (keyup)="onKey($event)">
-        </div>
-
-        <div class="ui-g-3">
+      <div class="ui-g" style="align-items: flex-end">
+        <div class="ui-g-5">
+          <h2>Начисление бонусных баллов</h2>
           <div class="ui-g">
-            <label>баллов </label>
+            <div class="ui-g-4">
+              <label>Начислить баллов</label>
+            </div>
+            <div class="ui-g-4">
+              <input type="text" pInputText [(ngModel)]="changeBy" style="text-align: right" size="6" (blur)="calculatePoints()" (keyup)="onKey($event)">
+            </div>
+            <div class="ui-g-4">
+              <app-button-with-spinner icon="fa-cart-plus" style="float:right" (click)="save()" label="Начислить">
+              </app-button-with-spinner>
+            </div>
           </div>
         </div>
-        <div class="ui-g-6">
-          <app-button-with-spinner
-            icon="fa-save"
-            style="float:right"
-            (click)="save()"
-            label="Сохранить">
-          </app-button-with-spinner>
+
+        <div class="ui-g-2">
+        </div>
+
+        <div class="ui-g-5" style="font-size: 0.8em; color: navy;  margin-bottom: 7px;">
+          <ol>
+            <li>Введите количество баллов для начисления</li>
+            <li>Отметьте участников в табличной части</li>
+            <li>Нажмите «Начислить»</li>
+          </ol>
         </div>
       </div>
       <app-participant-selector></app-participant-selector>

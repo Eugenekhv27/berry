@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NotifierService } from '../services/services';
+import { NotifierService, DataService } from '../services/services';
 import { ParticipantSelectorComponent } from './participant-selector.component';
 import { ButtonWithSpinnerComponent } from '../button-with-spinner/button-with-spinner.component';
 
@@ -8,7 +8,7 @@ import { ButtonWithSpinnerComponent } from '../button-with-spinner/button-with-s
   templateUrl: './bonus-calculator.component.html'
 })
 export class BonusCalculatorComponent implements OnInit {
-  
+  usePercents = false;
   changeBy = '10';
   private savingTimeoutID: any = null;
 
@@ -20,7 +20,8 @@ export class BonusCalculatorComponent implements OnInit {
   private saveButton: ButtonWithSpinnerComponent;
 
   constructor(
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {
@@ -41,28 +42,59 @@ export class BonusCalculatorComponent implements OnInit {
     });
   }
 
-  onKey(e: any) {
-    if (e.key === 'Enter') {
+  private onKey(e: any) {
+    if (['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-',
+      'Enter', 'Backspace', 'Delete'].includes(e.key)) {
       this.calculatePoints();
     }
   }
 
-  calculatePoints(): void {
-    console.log(this.changeBy);
-    console.log(this.selectionTable.selection);
+  private calculatePoints(): void {
     this.selectionTable.calculateChanges();
   }
 
-  save(): void {
-    if (this.savingTimeoutID) {
+  private isReadyToSave(): boolean {
+    let isReady = true;
+
+    if (isNaN(parseFloat(this.changeBy))) {
+      isReady = false;
+      this.notifier.warning('Неправильное значение: ' + this.changeBy, 'Введите число');
+    }
+
+
+    if (parseFloat(this.changeBy) === 0) {
+      isReady = false;
+      this.notifier.warning('На задана величина изменения', 'Введите ненулевое значение');
+    }
+
+    if (this.selectionTable.selection.length < 1) {
+      isReady = false;
+      this.notifier.warning('Не выбраны участники!', 'Выберите участников для начисления баллов');
+    }
+
+    return isReady;
+  }
+
+  private save(): void {
+    if (!this.isReadyToSave()) {
       return;
     }
+
     this.saveButton.spin();
-    this.savingTimeoutID = setTimeout(() => {
-      
-      this.saveButton.stopSpin();
-      this.savingTimeoutID = null;
-      this.notifier.success('Выполнено', 'Данные успешно сохранены');
-    } , 3000);
+
+    this.dataService
+      .changeBonusPoints(
+      parseFloat(this.changeBy),
+      this.selectionTable.selection.map(elem => String(elem.id))
+      )
+      .subscribe(sendSuccess => {
+        if (sendSuccess) {
+          this.notifier.success('Ok!', 'Данные успешно сохранены.');
+          this.changeBy = '0';
+        } else {
+          this.notifier.error('Ошибка!', 'Не удалось сохранить данные.');
+        }
+        this.saveButton.stopSpin();
+      });
   }
 }
