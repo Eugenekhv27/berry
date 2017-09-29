@@ -60,6 +60,8 @@ import { DocumentationComponent } from './documentation/documentation.component'
 import { NoticeComponent } from './notifier/notice.component';
 import { ButtonWithSpinnerComponent } from './button-with-spinner/button-with-spinner.component';
 import { ReportComponent } from './report/report.component';
+import { ParticipantDetailsComponent } from './participants/participant-details.component';
+
 
 import { AdminRoutingModule } from './admin-routing.module';
 
@@ -102,6 +104,7 @@ import { AdminRoutingModule } from './admin-routing.module';
     NoticeComponent,
     ButtonWithSpinnerComponent,
     ReportComponent,
+    ParticipantDetailsComponent,
   ]
 })
 export class AdminModule { }

@@ -1,5 +1,6 @@
 
 export { NotifierService } from '../notifier/notifier.service';
+export { UtilsService } from './utils.service';
 
 /* -------------------------------------------- */
 

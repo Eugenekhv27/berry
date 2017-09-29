@@ -33,6 +33,7 @@ export class ParticipantsComponent implements OnInit {
   loading: boolean;
   displayDialog: boolean;
   participantToEdit: Participant;  // имя свойства было object
+  participantId: string;
   participantToEditIsNew = false;
   selectedLine: Participant;
   participantsList: Participant[] = [];
@@ -118,11 +119,12 @@ export class ParticipantsComponent implements OnInit {
   onRowDoubleClick({ data }) {
     console.log('доппель-клик');
     console.log(data);
-    this.participantToEditIsNew = false;
-    this.participantToEdit = Object.assign(
-      new Participant(),
-      this.getParticipantByPhone(data.phone)
-    );
+    this.participantId = data.ID;
+    // this.participantToEditIsNew = false;
+    // this.participantToEdit = Object.assign(
+    //   new Participant(),
+    //   this.getParticipantByPhone(data.phone)
+    // );
     this.displayDialog = true;
     // this.dataService.getObjectData('ent.Participant', event.data.ID)
     //   .subscribe((resp: Response) => {
@@ -142,4 +144,9 @@ export class ParticipantsComponent implements OnInit {
     //     }
     //   });
   }
-}
+
+  onBack(e: any) {
+    console.log('onBack() ' + e);
+    this.cancel();
+  }
+ }

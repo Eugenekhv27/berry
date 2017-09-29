@@ -14,7 +14,8 @@ import {
   AuthGuard,
   AuthService,
   DataService,
-  NotifierService
+  NotifierService,
+  UtilsService
 } from './admin/services/services';
 
 // корневой компонент Angular-приложения
@@ -38,6 +39,7 @@ import { AppRoutingModule } from './app-routing.module';
     AuthGuard,
     NotifierService,
     DataService,
+    UtilsService,
   ],
   bootstrap: [
     AppComponent,

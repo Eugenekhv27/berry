@@ -130,6 +130,24 @@ export class DataService {
       });
   }
 
+  getParticipantDetails(id: string) {
+    return this.http.get(
+      this.getFullUrl('getObject', 'ent.Buyer', id),
+      this.getRequestOptionsArgs()
+    )
+    .map((resp: Response) => {
+      if (!resp.ok) {
+        throw new Error('Отрицательный ответ сервера.');
+      }
+      // в возвращаемом json-е ошибка: даты не заключены в кавычки
+      return JSON.parse(resp.text().replace(/(:)(\d\d\.\d\d\.\d\d)(,)/g, '$1"$2"$3'));
+    })
+    .catch((error: any) => {
+      console.log(error);
+      return  Observable.of(false);
+    });
+  }
+
   saveParticipant(aParticipant: any) {
     return this.saveObject('ent.Buyer', aParticipant.convertForServer());
   }

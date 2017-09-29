@@ -1,0 +1,110 @@
+<div class="ui-g">
+  <div class="ui-g-12">
+    <div class="ui-g">
+      <div class="ui-g-2">
+        <button pButton type="button" icon="fa-chevron-left" (click)="back()" label="Назад"></button>
+      </div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-3">
+        <div class="ui-g">
+          <div class="ui-g-12">
+            <label for="date">Дата регистрации</label>
+            <input pInputText id="date" [(ngModel)]="participant.date" style="width: 100%" />
+          </div>
+          <div class="ui-g-12">
+            <label for="balance">Текущий баланс</label>
+            <input pInputText id="balance" [(ngModel)]="participant.balance" style="width: 100%" />
+          </div>
+          <div class="ui-g-12">
+            <button pButton type="button" icon="fa-check" (click)="save()" label="Сохранить" style="float: left"></button>
+            <button pButton type="button" icon="fa-close" class="ui-button-secondary" (click)="back()" label="Отмена" style="float: right"></button>
+          </div>
+        </div>
+      </div>
+      <div class="ui-g-3">
+        <div class="ui-g">
+          <div class="ui-g-12">
+            <label for="phone">Телефон</label>
+            <input pInputText id="phone" [(ngModel)]="participant.phone" style="width: 100%" />
+          </div>
+          <div class="ui-g-12">
+            <label for="name">Имя</label>
+            <input pInputText id="name" [(ngModel)]="participant.name" style="width: 100%" />
+          </div>
+          <div class="ui-g-12">
+            <button *ngIf="!isNew" pButton type="button" icon="fa-trash" class="ui-button-warning" (click)="delete()" label="Удалить" style="float: right"></button>
+          </div>
+        </div>
+      </div>
+      <div class="ui-g-6">
+        <div class="ui-g">
+          <div class="ui-g-12">
+            <label for="referrer">Кто привлек</label>
+            <input pInputText id="referrer" [(ngModel)]="participant.referrer" style="width: 100%" />
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <label for="referrer">Комментарий</label>
+          <textarea pInputTextarea class="ui-grid-col-12" [(ngModel)]="participant.comment" placeholder="Введите комментарий"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui-g">
+
+
+    </div>
+  </div>
+
+  <p-panel header="Операции по лицевому счету" [toggleable]="true">
+    <div class="ui-g">
+      <div class="ui-g-2">
+        <label for="date">Дата</label>
+        <input pInputText id="date" [(ngModel)]="operationEditor.date" style="width: 100%" />
+      </div>
+      <div class="ui-g-2">
+        <label for="amount">Сумма, руб</label>
+        <input pInputText id="amount" [(ngModel)]="operationEditor.amount" style="width: 100%" />
+      </div>
+      <div class="ui-g-2">
+        <label for="points">Баллы</label>
+        <input pInputText id="points" [(ngModel)]="operationEditor.points" style="width: 100%" />
+      </div>
+      <div class="ui-g-6">
+        <label for="referrer">Комментарий</label>
+        <textarea pInputTextarea class="ui-grid-col-12" [(ngModel)]="operationEditor.comment"></textarea>
+      </div>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <div class="ui-helper-clearfix" style="width:100%">
+          <button label="Добавить операцию" (click)="newLine()" [disabled]="!isNewLineButtonEnabled" type="button" pButton icon="fa-plus-circle"
+            style="float:left; margin-right: 30px"></button>
+          <button label="Изменить операцию" (click)="saveLine()" [disabled]="!isSaveLineButtonEnabled" type="button" pButton icon="fa-check-circle"
+            style="float:left; margin-right: 10px"></button>
+          <button label="Удалить операцию" (click)="deleteLine()" [disabled]="!isDeleteLineButtonEnabled" type="button" pButton icon="fa-minus-circle"
+            style="float:left" class="ui-button-warning"></button>
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <p-dataTable #dt [value]="detailsTable" [responsive]="true" [paginator]="true" [loading]="loading" loadingIcon="fa-spinner"
+          [rows]="maxRowsPerPage" [alwaysShowPaginator]="false" selectionMode="single" [emptyMessage]="'нет данных об операциях'"
+          (onRowSelect)="onRowSelect($event)">
+          <p-column field="date" header="Дата" [style]="{'text-align':'center', 'width':'9em'}"></p-column>
+          <p-column field="amount" header="Сумма покупки, руб" [style]="rowStyle">
+            <ng-template let-rd="rowData" pTemplate="body">
+              <span>{{ formatNumberToString(rd.amount) }}</span>
+            </ng-template>
+          </p-column>
+          <p-column field="points" header="Бонусные баллы" [style]="rowStyle">
+            <ng-template let-rd="rowData" pTemplate="body">
+              <span>{{ formatNumberToString(rd.points) }}</span>
+            </ng-template>
+          </p-column>
+          <p-column field="comment" header="Комментарий" [style]="{'text-align':'left'}"></p-column>
+        </p-dataTable>
+      </div>
+    </div>
+  </p-panel>
+</div>

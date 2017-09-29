@@ -1,6 +1,6 @@
 <div class="ui-g">
   <div class="ui-g-12">
-    <div class="card">
+    <div class="card" *ngIf="!displayDialog">
       <h2>Участники бонусной программы</h2>
       <p-dataTable
         selectionMode="single"
@@ -36,10 +36,17 @@
         </p-footer>
       </p-dataTable>
     </div>
+  <!-- BEGIN: форма редактирования участника -->
+    <div class="card" *ngIf="displayDialog">
+        <h2>Участник</h2>
+      <app-participant-details [participantId]="participantId" (onBack)="onBack($event)"></app-participant-details>
+    </div>
+  <!-- END: форма редактирования участника -->
   </div>
 </div>
 
-<p-dialog [(visible)]="displayDialog" [responsive]="true"
+<!-- BEGIN: модальный диалог редактирования участника -->
+<!-- <p-dialog [(visible)]="displayDialog" [responsive]="true"
   showEffect="fade" [modal]="true" minWidth=400>
   <p-header>
     {{ participantToEditIsNew ? 'Новый участник' : 'Участник' }}
@@ -73,4 +80,7 @@
       </button>
     </div>
   </p-footer>
-</p-dialog>
+</p-dialog> -->
+<!-- END: модальный диалог редактирования участника -->
+
+
