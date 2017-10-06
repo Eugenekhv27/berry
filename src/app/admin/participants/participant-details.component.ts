@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import 'rxjs/add/operator/switchMap';
 import { DataService, NotifierService, UtilsService } from '../services/services';
 import { DataTable } from 'primeng/primeng';
 
@@ -24,9 +26,11 @@ class OperationEditor extends DetailsRow {
   constructor() {
     super();
     this.selection = null;
+    this.amount = 0;
+    this.points = 0;
   }
 
-  newSelection(s: any) {
+  refreshDisplayedData(s: any) {
     this.selection = s;
     this.id = s.id;
     this.date = s.date;
@@ -60,8 +64,6 @@ class OperationEditor extends DetailsRow {
 })
 export class ParticipantDetailsComponent implements OnInit {
   @ViewChild('dt') dt: DataTable;
-  @Input() participantId = '';
-  @Output() onBack = new EventEmitter<boolean>();
   participant = { id: '', date: '', balance: '', phone: '', name: '', referrer: '', comment: ''};
   isNew: false;
   detailsTable = [];
@@ -78,13 +80,21 @@ export class ParticipantDetailsComponent implements OnInit {
   private idBase: number;
 
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private dataService: DataService
   ) {
     this.idBase = new Date().getTime();
   }
 
   ngOnInit() {
-    this.getData();
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id === 'new') {
+      this.detailsTable = [];
+      this.loading = false;
+    } else {
+      this.getData(id);
+    }
     this.operationEditor = new OperationEditor();
   }
 
@@ -98,31 +108,31 @@ export class ParticipantDetailsComponent implements OnInit {
 
   back() {
     this.detailsTable = [];
-    this.onBack.emit(true);
+    this.router.navigate(['/admin/participants']);
   }
 
-  getData() {
-    console.log(this.participantId);
+  getData(id: string) {
     this.loading = true;
     this.detailsTable = [];
 
-    this.dataService.getParticipantDetails(this.participantId)
+    this.dataService.getParticipantDetails(id)
       .subscribe((data: any) => {
         console.log(data);
         this.detailsTable = data.result.BonusOperations.map(dataRow => new DetailsRow(dataRow));
         this.participant = {
           id: data.result._id || '',
-          date: '',
-          balance: '',
+          date: data.result.RegDate || '',
+          balance: data.result.BonusSum || '',
           phone: data.result.Aka || '',
           name: data.result.Name || '',
           referrer: data.result.SuperBuyer ? data.result.SuperBuyer.Aka : '',
           comment: data.result.Comment || ''
         };
-
         this.loading = false;
-    console.log(this.detailsTable);
-    console.log(this.participant);
+
+        console.log(this.detailsTable);
+        console.log(this.participant);
+
       });
   }
 
@@ -184,12 +194,14 @@ export class ParticipantDetailsComponent implements OnInit {
     */
     this.dt.first = this.lastPageFirstRowIndex();
     this.dt.paginate();
-    setTimeout(() => this.operationEditor.newSelection(this.dt.selection), 0);
+    setTimeout(() => this.operationEditor.refreshDisplayedData(this.dt.selection), 0);
   }
 
   deleteLine() {
+    console.log(this.dt.selection);
     const ind = this.detailsTable.indexOf(this.dt.selection);
     this.detailsTable = this.detailsTable.filter((val, i) => i !== ind);
+    this.dt.selection = null;
     this.operationEditor = new OperationEditor();
   }
 
@@ -197,7 +209,7 @@ export class ParticipantDetailsComponent implements OnInit {
     console.log('onRowSelect() - селектилка');
     console.log(this.dt.selection);
 
-    this.operationEditor.newSelection(this.dt.selection);
+    this.operationEditor.refreshDisplayedData(this.dt.selection);
 
     this.isNewLineButtonEnabled = true;
     this.isSaveLineButtonEnabled = true;

@@ -5,6 +5,7 @@ import { AdminComponent } from './admin.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ParticipantsComponent } from './participants/participants.component';
+import { ParticipantDetailsComponent } from './participants/participant-details.component';
 import { CircularComponent } from './circular/circular.component';
 import { BonusCalculatorComponent } from './bonuses/bonus-calculator.component';
 import { DocumentationComponent } from './documentation/documentation.component';
@@ -20,6 +21,7 @@ const routes: Routes = [{
     { path: 'documentation', component: DocumentationComponent },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'participants', component: ParticipantsComponent, canActivate: [AuthGuard] },
+    { path: 'participants/:id', component: ParticipantDetailsComponent, canActivate: [AuthGuard] },
     { path: 'report', component: ReportComponent, canActivate: [AuthGuard] },
     { path: 'circular', component: CircularComponent, canActivate: [AuthGuard] },
     { path: 'bonuses', component: BonusCalculatorComponent, canActivate: [AuthGuard] },
