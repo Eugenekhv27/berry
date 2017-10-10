@@ -50,8 +50,12 @@
             [globalFilter]="gb">
             <p-column selectionMode="multiple" [style]="{'width':'3.4em'}"></p-column>
             <p-column field="phone" header="Номер"></p-column>
-            <p-column field="Comment" header="Коментарий"></p-column>
-            <p-column field="Bonus" header="Бонусы" [style]="{'text-align':'right'}"></p-column>
+            <p-column field="comment" header="Коментарий"></p-column>
+            <p-column field="balance" header="Бонусы" [style]="{'text-align':'right'}">
+              <ng-template let-rd="rowData" pTemplate="body">
+                <span>{{ u.formatNumber(rd.balance) }}</span>
+              </ng-template>
+            </p-column>
           </p-dataTable>
         </div>
       </div>

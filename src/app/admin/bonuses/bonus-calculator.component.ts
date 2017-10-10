@@ -8,7 +8,6 @@ import { ButtonWithSpinnerComponent } from '../button-with-spinner/button-with-s
   templateUrl: './bonus-calculator.component.html'
 })
 export class BonusCalculatorComponent implements OnInit {
-  usePercents = false;
   changeBy = '10';
   private savingTimeoutID: any = null;
 
@@ -26,19 +25,7 @@ export class BonusCalculatorComponent implements OnInit {
 
   ngOnInit() {
     this.selectionTable.setCalculationFunction(elem => {
-      const delta = Number.parseFloat(this.changeBy);
-
-      if (this.usePercents) {
-        elem.changePoints = delta / 100 * elem.points;
-        elem.changePercent = delta;
-      } else {
-        elem.changePoints = delta;
-        if (elem.points === 0) {
-          elem.changePercent = delta === 0 ? 0 : 9999.99;
-        } else {
-          elem.changePercent = (delta / elem.points) * 100;
-        }
-      }
+      elem.changePoints = Number.parseFloat(this.changeBy);
       elem.newPoints = elem.points + elem.changePoints;
 
       return elem;

@@ -96,12 +96,12 @@
               <p-column field="date" header="Дата" [style]="{'text-align':'center', 'width':'9em'}"></p-column>
               <p-column field="amount" header="Сумма покупки, руб" [style]="rowStyle">
                 <ng-template let-rd="rowData" pTemplate="body">
-                  <span>{{ formatNumberToString(rd.amount) }}</span>
+                  <span>{{ u.formatNumber(rd.amount) }}</span>
                 </ng-template>
               </p-column>
               <p-column field="points" header="Бонусные баллы" [style]="rowStyle">
                 <ng-template let-rd="rowData" pTemplate="body">
-                  <span>{{ formatNumberToString(rd.points) }}</span>
+                  <span>{{ u.formatNumber(rd.points) }}</span>
                 </ng-template>
               </p-column>
               <p-column field="comment" header="Комментарий" [style]="{'text-align':'left'}"></p-column>

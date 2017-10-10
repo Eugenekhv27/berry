@@ -123,10 +123,9 @@ export class DataService {
   }
 
   getParticipantsList() {
-    const p = new Participant();
     return this.getGridData('ent.Buyer')
       .map((resp: Response) => {
-        return resp.json().children.map(p.convertForFront);
+        return resp.json().children.map(elem => new Participant(elem));
       });
   }
 
@@ -152,7 +151,7 @@ export class DataService {
     return this.saveObject('ent.Buyer', aParticipant.convertForServer());
   }
 
-  getObjectData(className: string, ID: string, phone?: string) {
+  getObjectData(className: string, id: string, phone?: string) {
     const accountEncrypt = localStorage.getItem('accountEncrypt');
 
     const akaToUrl = encodeURIComponent(phone).replace(new RegExp('%', 'g'), '~');
@@ -161,7 +160,7 @@ export class DataService {
     return this.http.get(
       'http://' + this.restServerName +
       '/csp/bonusclubrest2/' + accountEncrypt +
-      '/getObject/' + className + '/' + ID + '/' + akaToUrl,
+      '/getObject/' + className + '/' + id + '/' + akaToUrl,
       { headers }
     );
   }
@@ -185,14 +184,14 @@ export class DataService {
       });
   }
 
-  deleteObject(className: string, ID: string) {
+  deleteObject(className: string, id: string) {
     const accountEncrypt = localStorage.getItem('accountEncrypt');
     const auth = localStorage.getItem('loginpassword');
     const headers = new Headers({ Authorization: 'Basic ' + auth });
     return this.http.delete(
       'http://' + this.restServerName +
       '/csp/bonusclubrest2/' + accountEncrypt +
-      '/delObject/' + className + '/' + ID,
+      '/delObject/' + className + '/' + id,
       { headers }
     );
   }

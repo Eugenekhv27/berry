@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Participant } from '../participants/participant.model';
-import { DataService, NotifierService } from '../services/services';
+import { DataService, NotifierService, UtilsService } from '../services/services';
 
 function parseDate(s: string) {
   const ps = s
@@ -92,7 +92,8 @@ export class ReportComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    public u: UtilsService
   ) {
     this.dateRange = [this.startDate, this.endDate];
   }
@@ -101,14 +102,6 @@ export class ReportComponent implements OnInit {
     this.getMainReport();
     this.back();
 
-  }
-
-  formatNumberToString(n: number, size = 2, zero = '') {
-    return n ? n.toFixed(size) : zero;
-  }
-
-  formatDateToString(d: Date) {
-    return new Intl.DateTimeFormat('ru-RU').format(d);
   }
 
   getMainReport() {
@@ -151,7 +144,7 @@ export class ReportComponent implements OnInit {
     console.log(e);
     this.getDetailedReport(e.data.date);
     this.showDetails = true;
-    this.reportHeader = this.mainHeader + ' за ' + this.formatDateToString(e.data.date);
+    this.reportHeader = this.mainHeader + ' за ' + this.u.formatDate(e.data.date);
   }
 
   back() {

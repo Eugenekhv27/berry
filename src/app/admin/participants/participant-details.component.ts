@@ -82,7 +82,9 @@ export class ParticipantDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private dataService: DataService
+    private notifier: NotifierService,
+    private dataService: DataService,
+    public u: UtilsService
   ) {
     this.idBase = new Date().getTime();
   }
@@ -96,14 +98,6 @@ export class ParticipantDetailsComponent implements OnInit {
       this.getData(id);
     }
     this.operationEditor = new OperationEditor();
-  }
-
-  formatNumberToString(n: number, size = 2, zero = '') {
-    return n ? n.toFixed(size) : zero;
-  }
-
-  formatDateToString(d: Date) {
-    return new Intl.DateTimeFormat('ru-RU').format(d);
   }
 
   back() {
@@ -138,15 +132,15 @@ export class ParticipantDetailsComponent implements OnInit {
 
   save(): void {
     console.log('save()');
-    // const request = this.dataService.saveParticipant(this.participantToEdit);
-    // this.notifier.info(String(this.participantToEdit.phone), 'Данные отправлены.');
-    // request.subscribe(done => {
-    //     if (done) {
-    //       this.notifier.success('Ok!', 'Данные успешно сохранены.');
-    //     } else {
-    //       this.notifier.error('Ошибка!', 'Не удалось сохранить элемент.');
-    //     }
-    //   });
+    const request = this.dataService.saveParticipant(this.participant);
+    this.notifier.info(String(this.participant.phone), 'Данные отправлены.');
+    request.subscribe(done => {
+        if (done) {
+          this.notifier.success('Ok!', 'Данные успешно сохранены.');
+        } else {
+          this.notifier.error('Ошибка!', 'Не удалось сохранить элемент.');
+        }
+      });
   }
 
   delete() {

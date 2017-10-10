@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { Participant } from '../participants/participant.model';
-import { DataService, NotifierService } from '../services/services';
+import { DataService, NotifierService, UtilsService } from '../services/services';
 
 class TableRow {
   public id: string;
@@ -8,17 +8,19 @@ class TableRow {
   public name: string;
   public points: number;
   public changePoints: number;
-  public changePercent: number;
   public newPoints: number;
 
+  public ppp: any;
+
   constructor(p: Participant) {
-    this.id = String(p.ID);
-    this.phone = String(p.phone).trim();
-    this.name = String(p.Name || '').trim();
-    this.points = Number.parseFloat(String(p.Bonus));
+    this.id = p.id;
+    this.phone = p.phone;
+    this.name = p.name;
+    this.points = p.balance;
     this.changePoints = 0;
-    this.changePercent = 0;
     this.newPoints = 0;
+
+    this.ppp = p;
   }
 }
 
@@ -35,15 +37,12 @@ export class ParticipantSelectorComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    public u: UtilsService
   ) { }
 
   ngOnInit() {
     this.refreshParticipantsList();
-  }
-
-  formatNumberToString(n: number, size = 2, zero = '') {
-    return n ? n.toFixed(size) : zero;
   }
 
   setCalculationFunction(fn: any) {
@@ -56,15 +55,15 @@ export class ParticipantSelectorComponent implements OnInit {
     this.dataService.getParticipantsList()
       .subscribe((freshList: Participant[]) => {
         console.log(freshList);
-        console.log(freshList.map(p => new TableRow(p)));
         this.tableRows = freshList.map(p => new TableRow(p));
+        console.log(this.tableRows);
         this.clearChanges();
         this.loading = false;
       });
   }
 
   clearRowChanges(row: any) {
-    row.changePoints = row.changePercent = row.newPoints = 0;
+    row.changePoints = row.newPoints = 0;
     return row;
   }
 

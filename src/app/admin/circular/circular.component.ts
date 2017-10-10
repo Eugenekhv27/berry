@@ -8,8 +8,9 @@ import {
   MultiSelectModule, MenuItem
 } from 'primeng/primeng';
 
+// import * as gl from '../admin.globals';
 import { Participant } from '../participants/participant.model';
-import { NotifierService, DataService } from '../services/services';
+import { NotifierService, DataService, UtilsService } from '../services/services';
 
 @Component({
   selector: 'app-circular',
@@ -27,7 +28,11 @@ export class CircularComponent implements OnInit {
   receivers: Participant[] = [];
   messageText: string;
 
-  constructor(private notifier: NotifierService, private dataService: DataService) { }
+  constructor(
+    private notifier: NotifierService,
+    private dataService: DataService,
+    public u: UtilsService
+  ) { }
 
   ngOnInit() {
     this.refreshAddresseeList();
@@ -65,7 +70,7 @@ export class CircularComponent implements OnInit {
    */
   private getSelectedRowsFiltered(): Participant[] {
     return this.selectedRows.filter((elem) => {
-      return ['Comment', 'Bonus', 'phone']
+      return ['comment', 'balance', 'phone']
       .map(key => this.isPassedFilter(elem[key]))
       .includes(true);
     });

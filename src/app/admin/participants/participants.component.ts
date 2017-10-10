@@ -29,16 +29,13 @@ export class ParticipantsComponent implements OnInit {
     this.loading = true;
     this.dataService.getParticipantsList()
       .subscribe((freshList: Participant[]) => {
-        console.log(freshList.filter((el, ind) => ind < 9));
         this.participantsList = freshList;
         this.loading = false;
       });
   }
 
   onRowDoubleClick() {
-    console.log('доппель-клик');
-    console.log(this.selectedLine);
-    this.router.navigate(['/admin/participants/' + encodeURIComponent(this.selectedLine.ID)]);
+    this.router.navigate(['/admin/participants/' + encodeURIComponent(this.selectedLine.id)]);
   }
 
   openNewParticipantForm() {
