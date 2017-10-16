@@ -4,59 +4,8 @@ import 'rxjs/add/operator/switchMap';
 import { DataService, NotifierService, UtilsService } from '../services/services';
 import { DataTable } from 'primeng/primeng';
 
-class DetailsRow {
-  public id: string;
-  public date: string;
-  public amount: number;
-  public points: number;
-  public comment: string;
-
-  constructor(dataRow: any = {_id: '', DocDate: '', RubSum: '', PointsSum: '', Comment: ''}) {
-    this.id = String(dataRow._id).trim();
-    this.date = String(dataRow.DocDate).trim();
-    this.amount = parseFloat(String(dataRow.RubSum));
-    this.points = parseFloat(String(dataRow.PointsSum));
-    this.comment = String(dataRow.Comment).trim();
-  }
-}
-
-class OperationEditor extends DetailsRow {
-  public selection: any;
-
-  constructor() {
-    super();
-    this.selection = null;
-    this.amount = 0;
-    this.points = 0;
-  }
-
-  refreshDisplayedData(s: any) {
-    this.selection = s;
-    this.id = s.id;
-    this.date = s.date;
-    this.amount = s.amount;
-    this.points = s.points;
-    this.comment = s.comment;
-  }
-
-  updateRow(r: DetailsRow): DetailsRow {
-    r.date = String(this.date).trim();
-    r.amount = parseFloat(String(this.amount));
-    r.points = parseFloat(String(this.points));
-    r.comment = String(this.comment).trim();
-
-    return r;
-  }
-
-  newRow(id: string = ''): DetailsRow {
-    const r = new DetailsRow();
-    r.id = id;
-    this.updateRow(r);
-
-    this.selection = null;
-    return r;
-  }
-}
+import { DetailsRow } from './details-row.class';
+import { OperationEditor } from './operation-editor.class';
 
 @Component({
   selector: 'app-participant-details',
@@ -73,9 +22,7 @@ export class ParticipantDetailsComponent implements OnInit {
 
   operationEditor: OperationEditor;
 
-  isNewLineButtonEnabled = false;
-  isSaveLineButtonEnabled = false;
-  isDeleteLineButtonEnabled = false;
+  isDeleteButtonDisabled = true;
 
   private idBase: number;
 
@@ -94,6 +41,7 @@ export class ParticipantDetailsComponent implements OnInit {
     if (id === 'new') {
       this.detailsTable = [];
       this.loading = false;
+      this.participant.date = this.u.formatDate(new Date());
     } else {
       this.getData(id);
     }
@@ -123,6 +71,7 @@ export class ParticipantDetailsComponent implements OnInit {
           comment: data.result.Comment || ''
         };
         this.loading = false;
+        this.isDeleteButtonDisabled = false;
 
         console.log(this.detailsTable);
         console.log(this.participant);
@@ -204,10 +153,6 @@ export class ParticipantDetailsComponent implements OnInit {
     console.log(this.dt.selection);
 
     this.operationEditor.refreshDisplayedData(this.dt.selection);
-
-    this.isNewLineButtonEnabled = true;
-    this.isSaveLineButtonEnabled = true;
-    this.isDeleteLineButtonEnabled = true;
   }
 
   private getNewId() {
