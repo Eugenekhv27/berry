@@ -11,7 +11,7 @@ export class UtilsService {
   }
 
   formatDate(d: Date) {
-    return new Intl.DateTimeFormat('ru-RU').format(d);
+    return Intl.DateTimeFormat('ru-RU').format(d);
   }
 
   parseDate(s: string) {
