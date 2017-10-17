@@ -3,18 +3,18 @@
     <div class="card">
       <div class="ui-helper-clearfix" style="width:100%;">
         <button pButton type="button" icon="fa-chevron-left" (click)="back()" label="Назад" style="float: left; margin: 18px 20px 18px 16px"></button>
-        <h2>Участник <span style="font-weight: bold; margin-left: 18px">{{ participant.phone }}</span></h2>
+        <h2>Участник <span style="font-weight: bold; margin-left: 18px">{{ participantEditor.phone }}</span></h2>
       </div>
       <div class="ui-g">
         <div class="ui-g-3">
           <div class="ui-g">
             <div class="ui-g-12">
               <label for="date">Дата регистрации</label>
-              <p-inputMask id="date"  mask="99.99.9999" [(ngModel)]="participant.date" placeholder="дата"></p-inputMask>
+              <p-inputMask id="date"  mask="99.99.9999" [(ngModel)]="participantEditor.date" placeholder="дата"></p-inputMask>
             </div>
             <div class="ui-g-12">
               <span>Текущий баланс: </span><br>
-              <span style="font-size: 1.5em; font-weight: bold">{{ participant.balance }}</span>
+              <span style="font-size: 1.5em; font-weight: bold">{{ participantEditor.balance }}</span>
             </div>
           </div>
         </div>
@@ -22,11 +22,11 @@
           <div class="ui-g">
             <div class="ui-g-12">
               <label for="phone">Телефон</label>
-              <p-inputMask id="phone" mask="+7 (999) 999-9999" [(ngModel)]="participant.phone" [style]="{'width': '100%'}"></p-inputMask>
+              <p-inputMask id="phone" mask="+7 (999) 999-9999" [(ngModel)]="participantEditor.phone" [style]="{'width': '100%'}"></p-inputMask>
             </div>
             <div class="ui-g-12">
               <label for="name">Имя</label>
-              <input pInputText id="name" [(ngModel)]="participant.name" style="width: 100%" />
+              <input pInputText id="name" [(ngModel)]="participantEditor.name" style="width: 100%" />
             </div>
           </div>
         </div>
@@ -34,12 +34,12 @@
           <div class="ui-g">
             <div class="ui-g-12">
               <label for="referrer">Кто привлек</label>
-              <p-inputMask id="referrer" mask="+7 (999) 999-9999" [(ngModel)]="participant.referrer" [style]="{'width': '100%'}"></p-inputMask>
+              <p-inputMask id="referrer" mask="+7 (999) 999-9999" [(ngModel)]="participantEditor.referrer" [style]="{'width': '100%'}"></p-inputMask>
             </div>
           </div>
           <div class="ui-g-12">
             <label for="comment">Комментарий</label>
-            <textarea pInputTextarea class="ui-grid-col-12" [(ngModel)]="participant.comment" placeholder="Введите комментарий"></textarea>
+            <textarea pInputTextarea class="ui-grid-col-12" [(ngModel)]="participantEditor.comment" placeholder="Введите комментарий"></textarea>
           </div>
         </div>
       </div>

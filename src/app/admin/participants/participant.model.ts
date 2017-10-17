@@ -67,17 +67,19 @@ export class Participant {
   // ) { }
   private static readonly serverClassKeys = {
     id: '_id',
+    date: 'RegDate',
     phone: 'Aka',
     name: 'Name',
     comment: 'Comment',
     referrer: 'SuperBuyer',
-    referrals: 'BottomBayers',
+    referrals: 'BottomBuyers',
     operations: 'BonusOperations',
     balance: 'BonusSum',
     shop: 'Shop'
   };
 
   id: string;
+  date: string;
   phone: string;
   name: string;
   comment: string;
@@ -85,21 +87,24 @@ export class Participant {
   referrals: ParticipantLink[];
   operations: BonusAccountOperation[];
   balance: number;
+  shop: string;
 
   constructor(serverObject: any = {}) {
     console.log(serverObject);
     this.id = String(serverObject._id || serverObject.ID || '');
+    this.date = String(serverObject.RegDate || '');
     this.phone = String(serverObject.Aka || '');
     this.name = String(serverObject.Name || '');
     this.comment = String(serverObject.Comment || '');
     this.referrer = new ParticipantLink(serverObject.SuperBuyer);
-    if (serverObject.BottomBayers) {
-      this.referrals = serverObject.BottomBayers.map(elem => new ParticipantLink(elem));
+    if (serverObject.BottomBuyers) {
+      this.referrals = serverObject.BottomBuyers.map(elem => new ParticipantLink(elem));
     }
     if (serverObject.BonusOperations) {
       this.operations = serverObject.BonusOperations.map(elem => new BonusAccountOperation(elem));
     }
     this.balance = parseNumber(serverObject.BonusSum || serverObject.Bonus);
+    this.shop = String(serverObject.Shop || '');
   }
 
   static replacePropertyName(o: any, oldName: string, newName: string): any {

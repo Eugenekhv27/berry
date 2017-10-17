@@ -4,6 +4,7 @@ import 'rxjs/add/operator/switchMap';
 import { DataService, NotifierService, UtilsService } from '../services/services';
 import { DataTable } from 'primeng/primeng';
 
+import { Participant } from './participant.model';
 import { DetailsRow } from './details-row.class';
 import { OperationEditor } from './operation-editor.class';
 
@@ -13,7 +14,8 @@ import { OperationEditor } from './operation-editor.class';
 })
 export class ParticipantDetailsComponent implements OnInit {
   @ViewChild('dt') dt: DataTable;
-  participant = { id: '', date: '', balance: '', phone: '', name: '', referrer: '', comment: ''};
+  participantEditor = { id: '', date: '', balance: '', phone: '', name: '', referrer: '', comment: ''};
+//  participant: Participant;
   isNew: false;
   detailsTable = [];
   rowStyle = {'text-align': 'right', 'width': '13em'};
@@ -41,7 +43,7 @@ export class ParticipantDetailsComponent implements OnInit {
     if (id === 'new') {
       this.detailsTable = [];
       this.loading = false;
-      this.participant.date = this.u.formatDate(new Date());
+      this.participantEditor.date = this.u.formatDate(new Date());
     } else {
       this.getData(id);
     }
@@ -59,9 +61,9 @@ export class ParticipantDetailsComponent implements OnInit {
 
     this.dataService.getParticipantDetails(id)
       .subscribe((data: any) => {
-        console.log(data);
+       console.log(data);
         this.detailsTable = data.result.BonusOperations.map(dataRow => new DetailsRow(dataRow));
-        this.participant = {
+        this.participantEditor = {
           id: data.result._id || '',
           date: data.result.RegDate || '',
           balance: data.result.BonusSum || '',
@@ -70,19 +72,41 @@ export class ParticipantDetailsComponent implements OnInit {
           referrer: data.result.SuperBuyer ? data.result.SuperBuyer.Aka : '',
           comment: data.result.Comment || ''
         };
+//        this.participant = new Participant(data.result);
+
         this.loading = false;
         this.isDeleteButtonDisabled = false;
 
         console.log(this.detailsTable);
-        console.log(this.participant);
-
+        console.log(this.participantEditor);
+//        console.log(this.participant);
       });
+  }
+
+  createParticipantObject(): Participant {
+    const p = new Participant();
+    const pe = this.participantEditor;
+
+    p.id = pe.id;
+    p.date = pe.date;
+    p.phone = pe.phone.replace(/ /g, '').replace(/-/g, '');
+    p.name = pe.name;
+    p.comment = pe.comment;
+    p.referrer.id = '';
+    p.referrer.phone = pe.referrer;
+    p.referrals = [];
+    p.operations = [];
+    p.balance = this.u.parseNumber(pe.balance);
+    p.shop = 'GE';
+
+    return p;
   }
 
   save(): void {
     console.log('save()');
-    const request = this.dataService.saveParticipant(this.participant);
-    this.notifier.info(String(this.participant.phone), 'Данные отправлены.');
+    console.log(this.createParticipantObject());
+    const request = this.dataService.saveParticipant(this.createParticipantObject());
+    this.notifier.info(String(this.participantEditor.phone), 'Данные отправлены.');
     request.subscribe(done => {
         if (done) {
           this.notifier.success('Ok!', 'Данные успешно сохранены.');
