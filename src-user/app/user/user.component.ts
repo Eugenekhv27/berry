@@ -1,10 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import {
-  InputTextModule, MegaMenuModule, MenuItem, OverlayPanelModule, OverlayPanel
-} from 'primeng/primeng';
-import { Message, MessagesModule } from 'primeng/primeng';
 import { DataService } from '../user/services/data.service';
 
 @Component({
@@ -14,9 +10,7 @@ import { DataService } from '../user/services/data.service';
 })
 export class UserComponent implements OnDestroy, OnInit {
   /// сюда выводим ошибки
-  errors: Message[] = [];
-  messageForSupport: string;
-  contactForSupport: string;
+  errors = [];
   userTel: string;
   // код полученный с сервера (был отправлен в СМС)
   checkCode: string;
@@ -145,9 +139,5 @@ export class UserComponent implements OnDestroy, OnInit {
         console.log(error);
       }
     );
-  }
-
-  sendToSupport() {
-    console.log('LoginComponent::sendToSupport()');
   }
 }

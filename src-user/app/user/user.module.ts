@@ -5,16 +5,23 @@ import { FormsModule } from '@angular/forms';
 
 // библиотечные
 import {
+  ButtonModule,
+  GrowlModule,
   ToolbarModule,
   InputMaskModule,
   AccordionModule,
+  RatingModule,
+  PanelModule,
+/*
+  TreeTableModule,
+  TreeNode,
+  SharedModule
+  CarouselModule,
   OverlayPanelModule,
   DataListModule,
-/*
   PanelModule,
   DataTableModule,
   ChartModule,
-  GrowlModule,
   MessagesModule,
   SplitButtonModule,
   DialogModule,
@@ -26,7 +33,6 @@ import {
   MenubarModule,
   MenuItem,
   SharedModule,
-  ButtonModule,
   DropdownModule,
   SelectItem,
   FieldsetModule,
@@ -45,6 +51,12 @@ import {
 
 // наши
 import { UserComponent } from './user.component';
+import { TopBarComponent } from './top-bar/top-bar.component';
+import { HelpRequestComponent } from './help/help-request.component';
+import { NoticeComponent } from './notifier/notice.component';
+import { AdvertisementPanelComponent } from './adv-panel/adv-panel.component';
+import { BalanceComponent } from './balance/balance.component';
+import { HistoryComponent } from './history/history.component';
 
 import { UserRoutingModule } from './user-routing.module';
 
@@ -54,15 +66,18 @@ import { UserRoutingModule } from './user-routing.module';
     CommonModule,
     FormsModule,
     // PrimeNG
+    ButtonModule,
+    GrowlModule,
     ToolbarModule,
     InputMaskModule,
     AccordionModule,
-    OverlayPanelModule,
-    DataListModule,
-    // PanelModule,
+    RatingModule,
+    PanelModule,
+    // TreeTableModule,
+    // OverlayPanelModule,
+    // DataListModule,
     // DataTableModule,
     // ChartModule,
-    // GrowlModule,
     // MessagesModule,
     // SplitButtonModule,
     // DialogModule,
@@ -75,6 +90,12 @@ import { UserRoutingModule } from './user-routing.module';
   ],
   declarations: [
     UserComponent,
+    TopBarComponent,
+    HelpRequestComponent,
+    NoticeComponent,
+    AdvertisementPanelComponent,
+    BalanceComponent,
+    HistoryComponent,
   ]
 })
 export class UserModule { }

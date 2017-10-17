@@ -1,0 +1,34 @@
+<!-- <div class="ui-g">
+  <div class="ui-md-3  ui-lg-4"></div>
+  <div class="ui-g-12 ui-md-6 ui-lg-4 ui-fluid contact-form">
+    <div class="card card-w-title" [style]="{'minHeight':'280px'}">
+      <h2 style="text-align: center">Вход в систему</h2>
+      <div class="ui-g">
+        <div class="ui-g-12">
+          <label for="lgn">Логин:</label>
+          <input pInputText name="lgn" type="text" [(ngModel)]="login" placeholder="введите логин" style="width: 100%" />
+        </div>
+      </div>
+      <div class="ui-g">
+        <div class="ui-g-12">
+          <label for="pwd">Пароль:</label>
+          <input pInputText name="pwd" type="password" [(ngModel)]="password" placeholder="введите пароль" style="width: 100%" />
+        </div>
+      </div>
+      <div class="ui-g">
+        <div class="ui-g-12">
+          <button pButton type="button" (click)="doLogin()" label="Войти" icon="fa-sign-in" style="width: 100%"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div *ngIf="!isAuth">
+  <br/> Чтобы посмотреть сколько у вас накопленных балов, введите номер телефона и код из полученного SMS
+  <br/> Номер вашего телефона:
+  <p-inputMask [(ngModel)]="userTel" mask="(999) 999-9999"></p-inputMask>
+  <button pButton type="text" icon="fa fa-envelope-o" label="Получить SMS с кодом" (click)="genSms()"></button>
+  <br/> Код из SMS:
+  <p-inputMask [(ngModel)]="authCode" mask="9999" (onComplete)="doLogin()"></p-inputMask>
+</div>
