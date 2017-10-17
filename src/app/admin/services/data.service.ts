@@ -56,6 +56,10 @@ export class DataService {
       query;
   }
 
+  private isResponseOk(r: Response) {
+    return r.json().status.toString().toLowerCase() === 'ok';
+  }
+
   getGridData(className: string, query: string = '') {
     return this.http.get(
       this.getFullUrl('grid', className, query),
@@ -139,7 +143,7 @@ export class DataService {
         throw new Error('Отрицательный ответ сервера.');
       }
       // в возвращаемом json-е ошибка: даты не заключены в кавычки
-      return JSON.parse(resp.text().replace(/(:)(\d\d\.\d\d\.\d\d)(,)/g, '$1"$2"$3'));
+      return JSON.parse(resp.text().replace(/(:)(\d\d\.\d\d\.\d\d(\d\d)?)(,)/g, '$1"$2"$4'));
     })
     .catch((error: any) => {
       console.log(error);
@@ -147,7 +151,7 @@ export class DataService {
     });
   }
 
-  saveParticipant(aParticipant: any) {
+  saveParticipant(aParticipant: Participant) {
     return this.saveObject('ent.Buyer', aParticipant.convertForServer());
   }
 
@@ -173,10 +177,11 @@ export class DataService {
         this.getRequestOptionsArgs()
       )
       .map((resp: Response) => {
-        if (resp.status.toString() !== 'OK') {
-          throw new Error('Отрицательный ответ сервера при сохранении объекта.');
+        if (this.isResponseOk(resp)) {
+          return true;
+        } else {
+          throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
         }
-        return true;
       })
       .catch((error: any) => {
         console.log(error);
@@ -227,12 +232,11 @@ export class DataService {
       this.getRequestOptionsArgs()
       )
       .map(resp => {
-        console.log('Статус ответа: ' + resp.status);
-        if (resp.status.toString() !== 'OK') {
-          throw Error('Получен отрицательный ответ: ' + resp.status.toString());
+        if (this.isResponseOk(resp)) {
+          return true;
+        } else {
+          throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
         }
-        console.log(resp);
-        return true;
       })
       .catch(error => {
         console.error(error);
