@@ -2,26 +2,28 @@
   <div class="card" style="text-align: center; margin-bottom: 10px">
     <div class="ui-g">
       <div class="ui-g-12">
-        <span style="font-size: 2em; font-weight: bold; color: black;">{{ balance }}</span>
-      </div>
-    </div>
-    <div class="ui-g">
-      <div class="ui-g-12" style="font-size: 1.2em;  margin-top: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0;">
-        <span>за неделю</span>
+        <span style="font-size: 2em; font-weight: bold; color: black;">{{ balance.points }}</span>
       </div>
     </div>
     <div class="ui-g" style="font-weight: bold; font-size: 1.6em;">
-      <div class="ui-g-6" style="margin-top: 0; padding-top: 2px;">
-        <span style="color: blue">{{ plusPoints }}</span>
+      <div class="ui-g-3" style="margin-top: 0; padding-top: 2px;">
+        <span style="color: blue">{{ balance.plusPoints }}</span>
       </div>
-      <div class="ui-g-6" style="margin-top: 0; padding-top: 2px;">
-        <span style="color: red">{{ minusPoints }}</span>
+      <div class="ui-g-6" style="margin-top: 0; padding-top: 2px; ">
+        <span style="font-weight: normal; font-size: 0.8em;">за неделю</span>
+      </div>
+      <div class="ui-g-3" style="margin-top: 0; padding-top: 2px;">
+        <span style="color: red">{{ balance.minusPoints }}</span>
       </div>
     </div>
     <p-accordion>
       <p-accordionTab header="подробнее">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam dignissimos ullam nisi cum accusantium sequi laborum
-          animi nesciunt non, explicabo commodi suscipit eveniet? Aliquam veritatis incidunt excepturi accusamus dicta! Nobis.</p>
+        <table style="width: 100%">
+          <tr *ngFor="let det of balance.details">
+            <td style="border-bottom: 1px dashed grey; padding-top: 10px; text-align: left;">{{ det.shop }}</td>
+            <td style="border-bottom: 1px dashed grey; text-align: right; padding-top: 10px;">{{ det.points }}</td>
+          </tr>
+        </table>
       </p-accordionTab>
     </p-accordion>
   </div>

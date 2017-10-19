@@ -1,34 +1,29 @@
-<!-- <div class="ui-g">
-  <div class="ui-md-3  ui-lg-4"></div>
-  <div class="ui-g-12 ui-md-6 ui-lg-4 ui-fluid contact-form">
-    <div class="card card-w-title" [style]="{'minHeight':'280px'}">
-      <h2 style="text-align: center">Вход в систему</h2>
-      <div class="ui-g">
-        <div class="ui-g-12">
-          <label for="lgn">Логин:</label>
-          <input pInputText name="lgn" type="text" [(ngModel)]="login" placeholder="введите логин" style="width: 100%" />
-        </div>
-      </div>
-      <div class="ui-g">
-        <div class="ui-g-12">
-          <label for="pwd">Пароль:</label>
-          <input pInputText name="pwd" type="password" [(ngModel)]="password" placeholder="введите пароль" style="width: 100%" />
-        </div>
-      </div>
-      <div class="ui-g">
-        <div class="ui-g-12">
-          <button pButton type="button" (click)="doLogin()" label="Войти" icon="fa-sign-in" style="width: 100%"></button>
-        </div>
-      </div>
+<div class="card">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <h2 style="margin-bottom: 10px">Вход в личный кабинет</h2>
     </div>
   </div>
-</div> -->
-
-<div *ngIf="!isAuth">
-  <br/> Чтобы посмотреть сколько у вас накопленных балов, введите номер телефона и код из полученного SMS
-  <br/> Номер вашего телефона:
-  <p-inputMask [(ngModel)]="userTel" mask="(999) 999-9999"></p-inputMask>
-  <button pButton type="text" icon="fa fa-envelope-o" label="Получить SMS с кодом" (click)="genSms()"></button>
-  <br/> Код из SMS:
-  <p-inputMask [(ngModel)]="authCode" mask="9999" (onComplete)="doLogin()"></p-inputMask>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-6">
+      <p-inputMask [(ngModel)]="phone" mask="+7 (999) 999-9999" [style]="{'width': '100%'}" placeholder="телефонный номер" (onComplete)="isPhoneEntered=true;"></p-inputMask>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+      <button pButton type="text" icon="fa fa-envelope-o" label="Получить SMS с кодом" (click)="requestSMS()" style="width: 100%" [disabled]="!isPhoneEntered"></button>
+    </div>
+  </div>
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <p style="font-weight: bold; color: navy;">Введите номер Вашего телефона,
+        <br>после получения SMS введите код.</p>
+    </div>
+  </div>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-6">
+      <p-inputMask [(ngModel)]="code" mask="9999" placeholder="код из SMS" [style]="{'width': '100%'}" (onComplete)="isCodeEntered=true;"></p-inputMask>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+      <app-button-with-spinner icon="fa fa-check" label="Подтвердить" (click)="confirmCode()" [style]="{'width': '100%'}" [disabled]="!(isCodeEntered && isPhoneEntered)"></app-button-with-spinner>
+    </div>
+  </div>
 </div>

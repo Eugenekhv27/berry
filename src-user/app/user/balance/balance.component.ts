@@ -1,14 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DataService } from '../services/services';
+import { Balance } from './balance.model';
 
 @Component({
   selector: 'app-balance',
   templateUrl: './balance.component.html',
 })
 export class BalanceComponent {
-  balance = 12345;
-  plusPoints = '+345';
-  minusPoints = '-456';
+  @Input() balance: Balance;
 
   constructor(
     private dataService: DataService,

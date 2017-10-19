@@ -3,6 +3,7 @@ import { Http, Headers } from '@angular/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/delay';
 
 @Injectable()
 export class AuthService implements OnInit {
@@ -16,6 +17,13 @@ export class AuthService implements OnInit {
 
   ngOnInit() {
     localStorage.setItem('accountEncrypt', '');
+  }
+
+  private normalizePhone(phone: string):string {
+    return phone
+      .replace(/[ -]/g, '') // убрать побелы и дефисы
+      .replace(/^(7)/,"+$1") // добавить в начало плюс, если его нет
+      .replace(/^([^\+][^7])/,"+7$1"); // добавить в начало +7, если нет
   }
 
   isLoggedIn(): boolean {
@@ -49,6 +57,16 @@ export class AuthService implements OnInit {
         console.error(error);
         return Observable.of(false);
       });
+  }
+
+  smsLogin({ phone = '', code = '' }): Observable<boolean> {
+    console.log(this.normalizePhone(phone), code);
+    // имитация: вероятность успешного логина 1/2
+    return Observable.of(
+      Math.random() > 0.5 ?
+      (this.router.navigate([this.redirectUrl]), true) :
+      false
+    ).delay(2000);
   }
 
   loginAndRedirectTo(path: string) {

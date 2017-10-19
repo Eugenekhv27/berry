@@ -1,14 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { AuthService, NotifierService } from '../services/services';
+import { ButtonWithSpinnerComponent } from '../button-with-spinner/button-with-spinner.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit {
-  login = '';
-  password = '';
+  phone = '';
+  code = '';
+  isPhoneEntered = false;
+  isCodeEntered = false;
+
+  @ViewChild(ButtonWithSpinnerComponent)
+  private confirmButton: ButtonWithSpinnerComponent;
 
   constructor(
     private router: Router,
@@ -26,13 +32,35 @@ export class LoginComponent implements OnInit {
     this.auths.logout();
   }
 
-  doLogin(): void {
+  // doLogin(): void {
+  //   this.auths
+  //     .login({ login: this.login, password: this.password })
+  //     .subscribe(loginSuccess => {
+  //       if (!loginSuccess) {
+  //         this.notifier.warning('Ошибка!', 'Не удалось войти в систему.');
+  //       }
+  //     });
+  // }
+
+  requestSMS(): void {
+    // this.auths
+    //   .login({ login: this.login, password: this.password })
+    //   .subscribe(loginSuccess => {
+    //     if (!loginSuccess) {
+    //       this.notifier.warning('Ошибка!', 'Не удалось войти в систему.');
+    //     }
+    //   });
+  }
+
+  confirmCode(): void {
+    this.confirmButton.spin();
     this.auths
-      .login({ login: this.login, password: this.password })
+      .smsLogin({ phone: this.phone, code: this.code })
       .subscribe(loginSuccess => {
         if (!loginSuccess) {
-          this.notifier.warning('Ошибка!', 'Не удалось войти в систему.');
+          this.notifier.warning('Ошибка!', 'Недействительный код.');
         }
+        this.confirmButton.stopSpin();
       });
   }
 }

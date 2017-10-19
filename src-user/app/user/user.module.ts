@@ -13,14 +13,14 @@ import {
   RatingModule,
   PanelModule,
 /*
+  OverlayPanelModule,
   TreeTableModule,
   TreeNode,
   SharedModule
   CarouselModule,
-  OverlayPanelModule,
+  DataTableModule,
   DataListModule,
   PanelModule,
-  DataTableModule,
   ChartModule,
   MessagesModule,
   SplitButtonModule,
@@ -52,11 +52,15 @@ import {
 // наши
 import { UserComponent } from './user.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
+import { ButtonWithSpinnerComponent } from './button-with-spinner/button-with-spinner.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { LoginComponent } from './login/login.component';
 import { HelpRequestComponent } from './help/help-request.component';
 import { NoticeComponent } from './notifier/notice.component';
 import { AdvertisementPanelComponent } from './adv-panel/adv-panel.component';
 import { BalanceComponent } from './balance/balance.component';
 import { HistoryComponent } from './history/history.component';
+import { PurchaseComponent } from './history/purchase.component';
 
 import { UserRoutingModule } from './user-routing.module';
 
@@ -73,10 +77,10 @@ import { UserRoutingModule } from './user-routing.module';
     AccordionModule,
     RatingModule,
     PanelModule,
-    // TreeTableModule,
     // OverlayPanelModule,
-    // DataListModule,
+    // TreeTableModule,
     // DataTableModule,
+    // DataListModule,
     // ChartModule,
     // MessagesModule,
     // SplitButtonModule,
@@ -91,11 +95,15 @@ import { UserRoutingModule } from './user-routing.module';
   declarations: [
     UserComponent,
     TopBarComponent,
+    ButtonWithSpinnerComponent,
+    HomepageComponent,
+    LoginComponent,
     HelpRequestComponent,
     NoticeComponent,
     AdvertisementPanelComponent,
     BalanceComponent,
     HistoryComponent,
+    PurchaseComponent,
   ]
 })
 export class UserModule { }

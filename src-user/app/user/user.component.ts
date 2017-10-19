@@ -4,9 +4,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { DataService } from '../user/services/data.service';
 
 @Component({
-  selector: 'app-my-user',
-  templateUrl: '/user.component.html',
-  providers: [DataService]
+  selector: 'app-user',
+  templateUrl: '/user.component.html'
 })
 export class UserComponent implements OnDestroy, OnInit {
   /// сюда выводим ошибки

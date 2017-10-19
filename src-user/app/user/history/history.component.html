@@ -1,45 +1,5 @@
 <p-panel header="Недавние покупки" [toggleable]="true">
   <p-accordion>
-    <p-accordionTab header="Магазин 'Клюква'">
-      <p-accordion>
-        <p-accordionTab header="Бонус: 123 балла (1234 руб)">
-          <p>Товар 1..... 123руб</p>
-          <p>Товар 1..... 123руб</p>
-          <p>Товар 1..... 123руб</p>
-          <p>Товар 1..... 123руб</p>
-        </p-accordionTab>
-      </p-accordion>
-      <p>Оценка:
-        <p-rating [(ngModel)]="ratings[0]" [cancel]="false"></p-rating>
-      </p>
-      <a href="#">Оставить отзыв</a>
-    </p-accordionTab>
-    <p-accordionTab header="Автосервис 'Кривошип' бонус 1100">
-      <p-accordion>
-        <p-accordionTab header="На сумму 11 000 руб">
-          <p>Колесо.... 5000руб</p>
-          <p>Открутить.....3000руб</p>
-          <p>Прикрутить.....3000руб</p>
-        </p-accordionTab>
-      </p-accordion>
-      <p>Оценка:
-        <p-rating [(ngModel)]="ratings[1]" [cancel]="false"></p-rating>
-      </p>
-      <a href="#">Оставить отзыв</a>
-    </p-accordionTab>
-    <p-accordionTab header="Парикмахерская 'Кудряшка'">
-      <p-accordion>
-        <p-accordionTab header="Бонус: 80 (800 руб)">
-          <p>Стрижка... 500руб</p>
-          <p>Брижка... 300руб</p>
-        </p-accordionTab>
-      </p-accordion>
-      <p>Оценка:
-        <p-rating [(ngModel)]="ratings[2]" [cancel]="false"></p-rating>
-      </p>
-      <a href="#">Оставить отзыв</a>
-    </p-accordionTab>
-    <p-accordionTab header="Фитнесс-клуб 'Качалка и мочалка'">
-    </p-accordionTab>
+    <app-purchase *ngFor="let purchase of purchases" [purchase]="purchase"></app-purchase>
   </p-accordion>
 </p-panel>
