@@ -10,14 +10,13 @@
  * Обращение по другим путям будет вызывать ошибки.
  */
 
-import 'rxjs/add/operator/toPromise';
+import { Injectable } from '@angular/core';
+import { Http, Response, Headers, RequestOptionsArgs } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/observable/throw';
-import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptionsArgs } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 
 import { SelectItem } from 'primeng/primeng';
 import { Participant } from '../participants/participant.model';
@@ -336,5 +335,47 @@ export class DataService {
     )
       .map((resp: Response) => resp.json())
       .catch((error: any) => Observable.throw(error));
+  }
+
+  /**
+   * getTestimonial() - mock, получить Отзыв участника о Покупке
+   * @param purchaseId - идентификатор Покупки
+   */
+  getTestimonial(purchaseId: string) {
+    return Observable.of(JSON.stringify(purchaseId)).delay(1600);
+  }
+
+  /**
+   * postTestimonial() - mock, сохранить на сервере Отзыв участника о Покупке
+   * @param tm - объект, описывающий Отзыв
+   */
+  postTestimonial(tm: { purchaseId: string, date: Date, text: string }) {
+    return Observable.of(JSON.stringify(tm)).delay(1600);
+  }
+
+  /**
+   * getRating() - mock, получить рейтинг покупки
+   * @param purchaseId - идентификатор Покупки
+   */
+  getRating(purchaseId: string) {
+    return Observable.of(JSON.stringify(purchaseId)).delay(1600);
+  }
+
+  /**
+   * postRating() - mock, сохранить на сервере рейтинг покупки
+   * @param r - объект, описывающий рейтинг
+   */
+  postRating(r: { purchaseId: string, date: Date, value: number }) {
+    return Observable.of(JSON.stringify(r)).delay(1600);
+  }
+
+  /**
+   * getBanner() - mock, получение рекламного баннера с сервера
+   */
+  getBanner() {
+    return Observable.of(`
+      <style type="text/css"> h3{ color: coral; text-align: center }</style>
+      <h3>Здесь могла мочь быть Ваша реклама.</h3>
+    `).delay(1600);
   }
 }

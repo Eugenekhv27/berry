@@ -1,9 +1,9 @@
-// системные
+// System
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-// библиотечные
+// UI library components
 import {
   ButtonModule,
   GrowlModule,
@@ -13,6 +13,7 @@ import {
   RatingModule,
   PanelModule,
 /*
+  ProgressBarModule,
   OverlayPanelModule,
   TreeTableModule,
   TreeNode,
@@ -49,7 +50,7 @@ import {
 */
 } from 'primeng/primeng';
 
-// наши
+// Application components
 import { UserComponent } from './user.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { ButtonWithSpinnerComponent } from './button-with-spinner/button-with-spinner.component';
@@ -59,9 +60,13 @@ import { HelpRequestComponent } from './help/help-request.component';
 import { NoticeComponent } from './notifier/notice.component';
 import { AdvertisementPanelComponent } from './adv-panel/adv-panel.component';
 import { BalanceComponent } from './balance/balance.component';
-import { HistoryComponent } from './history/history.component';
-import { PurchaseComponent } from './history/purchase.component';
+import { HistoryComponent } from './purchase-history/purchase-history.component';
+import { PurchaseComponent } from './purchase-history/purchase.component';
 
+// Application pipes
+import { SafeHtmlPipe } from './adv-panel/safe-html.pipe';
+
+// Application modules
 import { UserRoutingModule } from './user-routing.module';
 
 @NgModule({
@@ -77,6 +82,7 @@ import { UserRoutingModule } from './user-routing.module';
     AccordionModule,
     RatingModule,
     PanelModule,
+    // ProgressBarModule,
     // OverlayPanelModule,
     // TreeTableModule,
     // DataTableModule,
@@ -93,6 +99,7 @@ import { UserRoutingModule } from './user-routing.module';
     UserRoutingModule,
   ],
   declarations: [
+    // components
     UserComponent,
     TopBarComponent,
     ButtonWithSpinnerComponent,
@@ -104,6 +111,8 @@ import { UserRoutingModule } from './user-routing.module';
     BalanceComponent,
     HistoryComponent,
     PurchaseComponent,
+    // pipes
+    SafeHtmlPipe,
   ]
 })
 export class UserModule { }

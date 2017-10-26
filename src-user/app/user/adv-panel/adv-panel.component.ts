@@ -6,7 +6,18 @@ import { DataService } from '../services/services';
   templateUrl: './adv-panel.component.html',
 })
 export class AdvertisementPanelComponent {
+  banner = '';
+
   constructor(
     private dataService: DataService,
-  ) { }
+  ) {
+    this.getBanner();
+  }
+
+  getBanner() {
+    this.dataService.getBanner()
+      .subscribe(html => {
+        this.banner = html;
+      });
+  }
 }

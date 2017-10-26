@@ -8,7 +8,7 @@
     <p-accordionTab header="Отзыв о покупке">
       <textarea pInputTextarea [(ngModel)]="testimonialText" style="width: 100%; min-height: 100px; margin-bottom: 10px" placeholder="Напишите ваш отзыв здесь">
       </textarea>
-      <button pButton type="button" icon="fa fa-envelope-o" label="Отправить отзыв" style="width: 100%" (click)="sendTestimonial()">
+      <button pButton type="button" icon="fa fa-envelope-o" label="Отправить отзыв" style="width: 100%" (click)="postTestimonial()">
       </button>
     </p-accordionTab>
   </p-accordion>
@@ -17,7 +17,7 @@
       Оценка: {{ purchase.rating }}
     </div>
     <div class="ui-g-4">
-      <p-rating [(ngModel)]="purchase.rating" [cancel]="false"></p-rating>
+      <p-rating [(ngModel)]="purchase.rating" (onRate)="changeRating()" [cancel]="false"></p-rating>
     </div>
     <div class="ui-g-4">
       <a style="font-weight: bold; float: right; cursor: pointer;" (click)="toggleTestimonialForm()">Написать отзыв</a>

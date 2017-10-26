@@ -5,6 +5,7 @@ interface PurchaseDetail {
 }
 
 export interface Purchase {
+  id: string;
   date: string;
   shop: string;
   points: number;
@@ -12,4 +13,5 @@ export interface Purchase {
   rating: number;
   details: PurchaseDetail[];
   detailsSummary: string;
+  testimonialId: string;
 }

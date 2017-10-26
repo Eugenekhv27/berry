@@ -1,9 +1,6 @@
 <div class="card">
   <div class="ui-g">
-    <div class="ui-g-12">
-      <h4>Свежий спам, новый спам!</h4>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit iure minima, delectus optio enim ea facilis corporis
-        aspernatur fugiat accusamus tempora porro.</p>
+    <div class="ui-g-12" [innerHTML]="banner | safeHtml">
     </div>
   </div>
 </div>

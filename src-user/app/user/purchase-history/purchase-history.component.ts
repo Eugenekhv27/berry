@@ -4,12 +4,14 @@ import { Purchase } from './purchase.model';
 
 const p = [
   {
+    id: '123',
     date: '17.10.2017',
     shop: 'Магазин «Клюковка»',
     points: 123,
     money: 1234,
     rating: 3,
     detailsSummary: 'на сумму 1234 руб',
+    testimonialId: '12345',
     details: [
       {
         article: 'Что-то',
@@ -23,12 +25,14 @@ const p = [
       },
     ]
   }, {
+    id: '234',
     date: '17.10.2017',
     shop: 'Автосервис «Кривошип»',
     points: 432,
     money: 4321,
     rating: 2,
     detailsSummary: 'на сумму 4321 руб',
+    testimonialId: '',
     details: [
       {
         article: 'Штуковина',
@@ -42,12 +46,14 @@ const p = [
       },
     ]
   }, {
+    id: '324',
     date: '17.10.2017',
     shop: 'Магазин «Клюковка»',
     points: 432,
     money: 4321,
     rating: 2,
     detailsSummary: 'на сумму 4321 руб',
+    testimonialId: '',
     details: [
       {
         article: 'Нужное',
@@ -61,12 +67,14 @@ const p = [
       },
     ]
   }, {
+    id: '345',
     date: '16.10.2017',
     shop: 'Парикмахерская «Кудряшка»',
     points: 80,
     money: 800,
     rating: 3,
     detailsSummary: 'на сумму 800 руб',
+    testimonialId: '',
     details: [
       {
         article: 'Стрижка',
@@ -77,12 +85,14 @@ const p = [
       },
     ]
   }, {
+    id: '456',
     date: '14.10.2017',
     shop: 'Фитнесс-клуб «Качалка и мочалка»',
     points: 120,
     money: 1200,
     rating: 4,
     detailsSummary: 'на сумму 1200 руб',
+    testimonialId: '',
     details: [
       {
         article: 'Абонемент',
@@ -94,7 +104,7 @@ const p = [
 
 @Component({
   selector: 'app-history',
-  templateUrl: './history.component.html',
+  templateUrl: './purchase-history.component.html',
 })
 export class HistoryComponent {
   purchases: Purchase[];
