@@ -4,7 +4,7 @@
  * BrowserAnimationsModule можно импортировать только в корневом модуле приложения
  * (он нужен для библиотеки PrimeNG в AdminModule, но импортировать его приходится здесь)
  */
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
@@ -40,6 +40,7 @@ import { AppRoutingModule } from './app-routing.module';
     NotifierService,
     DataService,
     UtilsService,
+    { provide: LOCALE_ID, useValue: 'ru-RU' },
   ],
   bootstrap: [
     AppComponent,
