@@ -8,8 +8,8 @@ import { DataService, NotifierService } from '../services/services';
 export class HomepageComponent {
   balance = {
     points: 12345,
-    plusPoints: '+345',
-    minusPoints: '-456',
+    plusPoints: +345,
+    minusPoints: -456,
     details: [
       {
         shop: 'Магазин "Клюковка"',
@@ -26,28 +26,4 @@ export class HomepageComponent {
       }
     ]
   };
-
-  // helpRequestText: string;
-
-  // constructor(
-  //   private dataService: DataService,
-  //   private notifier: NotifierService
-  // ) { }
-
-  // sendHelpRequest() {
-  //   if (!this.helpRequestText) {
-  //     this.notifier.warning('Пустое сообщение!', 'Напишите ваш вопрос в поле для ввода текста');
-  //     return;
-  //   }
-
-  //   this.dataService.sendHelpRequest(this.helpRequestText)
-  //     .subscribe(sendSuccess => {
-  //       if (sendSuccess) {
-  //         this.notifier.success('Сообщение отправлено!', 'Максимальное время ответа 24 часа');
-  //         this.helpRequestText = '';
-  //       } else {
-  //         this.notifier.error('Ошибка!', 'Не удалось отправить сообщение.');
-  //       }
-  //     });
-  // }
 }

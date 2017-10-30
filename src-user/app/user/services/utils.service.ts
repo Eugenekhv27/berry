@@ -6,9 +6,9 @@ export class UtilsService {
   constructor(
   ) { }
 
-  formatNumber(n: number, size = 2, zero = '') {
-    return n ? n.toFixed(size) : zero;
-  }
+  // formatNumber(n: number, size = 2, zero = '') {
+  //   return n ? n.toFixed(size) : zero;
+  // }
 
   formatDate(d: Date) {
     return Intl.DateTimeFormat('ru-RU').format(d);
