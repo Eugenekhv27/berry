@@ -6,12 +6,11 @@ interface PurchaseDetail {
 
 export interface Purchase {
   id: string;
-  date: string;
+  date: Date;
   shop: string;
   points: number;
   money: number;
   rating: number;
   details: PurchaseDetail[];
   detailsSummary: string;
-  testimonialId: string;
 }

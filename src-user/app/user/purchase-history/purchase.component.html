@@ -1,6 +1,6 @@
 <p-accordionTab>
   <p-header>
-    <span style="font-weight: bold">{{ purchase.date }}</span>
+    <span style="font-weight: bold">{{ purchase.date | date:'shortDate' }}</span>
     <span style="margin-left: 1.2em; margin-right: 1.2em;">{{ purchase.shop }}</span>
     <span style="font-weight: bold; float: right">{{ purchase.points }}&nbsp;баллов</span>
   </p-header>
