@@ -6,25 +6,23 @@
   <div class="ui-g" *ngIf="!showDetails">
     <div class="ui-g-12">
       <div class="ui-g">
-        <div class="ui-g-4">
+        <div class="ui-g-3">
           <label>С: </label>
           <p-calendar
             readonlyInput="true" [locale]="ru"
             dateFormat="dd.mm.yy"
             [(ngModel)]="startDate"
+            (onSelect)="getMainReport()"
             [showIcon]="true"></p-calendar>
         </div>
-        <div class="ui-g-4">
+        <div class="ui-g-3">
           <label>по: </label>
           <p-calendar
             readonlyInput="true" [locale]="ru"
             dateFormat="dd.mm.yy"
             [(ngModel)]="endDate"
+            (onSelect)="getMainReport()"
             [showIcon]="true"></p-calendar>
-        </div>
-        <div class="ui-s-12 ui-g-4">
-          <button pButton type="button" icon = "fa-check" (click)="this.getMainReport()" label="Обновить">
-          </button>
         </div>
       </div>
       <div class="ui-g">

@@ -9,7 +9,9 @@ import { ParticipantDetailsComponent } from './participants/participant-details.
 import { CircularComponent } from './circular/circular.component';
 import { BonusCalculatorComponent } from './bonuses/bonus-calculator.component';
 import { DocumentationComponent } from './documentation/documentation.component';
-import { ReportComponent } from './report/report.component';
+import { BonusTurnoverReportComponent } from './reports/bonus-turnover-report.component';
+import { ParticipantSatisfactionReportComponent } from './reports/participant-satisfaction-report.component';
+import { ABCAnalysisReportComponent } from './reports/abc-analysis-report.component';
 
 import { AuthGuard } from './services/services';
 
@@ -22,7 +24,9 @@ const routes: Routes = [{
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'participants', component: ParticipantsComponent, canActivate: [AuthGuard] },
     { path: 'participants/:id', component: ParticipantDetailsComponent, canActivate: [AuthGuard] },
-    { path: 'report', component: ReportComponent, canActivate: [AuthGuard] },
+    { path: 'reports/bonuses', component: BonusTurnoverReportComponent, canActivate: [AuthGuard] },
+    { path: 'reports/satisfaction', component: ParticipantSatisfactionReportComponent, canActivate: [AuthGuard] },
+    { path: 'reports/abc', component: ABCAnalysisReportComponent, canActivate: [AuthGuard] },
     { path: 'circular', component: CircularComponent, canActivate: [AuthGuard] },
     { path: 'bonuses', component: BonusCalculatorComponent, canActivate: [AuthGuard] },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

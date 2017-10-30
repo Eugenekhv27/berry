@@ -59,7 +59,9 @@ import { ParticipantSelectorComponent } from './bonuses/participant-selector.com
 import { DocumentationComponent } from './documentation/documentation.component';
 import { NoticeComponent } from './notifier/notice.component';
 import { ButtonWithSpinnerComponent } from './button-with-spinner/button-with-spinner.component';
-import { ReportComponent } from './report/report.component';
+import { BonusTurnoverReportComponent } from './reports/bonus-turnover-report.component';
+import { ParticipantSatisfactionReportComponent } from './reports/participant-satisfaction-report.component';
+import { ABCAnalysisReportComponent } from './reports/abc-analysis-report.component';
 import { ParticipantDetailsComponent } from './participants/participant-details.component';
 
 
@@ -103,7 +105,9 @@ import { AdminRoutingModule } from './admin-routing.module';
     DocumentationComponent,
     NoticeComponent,
     ButtonWithSpinnerComponent,
-    ReportComponent,
+    BonusTurnoverReportComponent,
+    ParticipantSatisfactionReportComponent,
+    ABCAnalysisReportComponent,
     ParticipantDetailsComponent,
   ]
 })
