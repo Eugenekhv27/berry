@@ -8,8 +8,8 @@ import { DataService, NotifierService } from '../services/services';
 export class HomepageComponent {
   balance = {
     points: 12345,
-    plusPoints: +345,
-    minusPoints: -456,
+    plusPoints: 345,
+    minusPoints: 456,
     details: [
       {
         shop: 'Магазин "Клюковка"',
