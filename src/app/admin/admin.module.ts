@@ -47,7 +47,8 @@ import {
 import { AdminComponent } from './admin.component';
 import { LoginComponent } from './login/login.component';
 import { HelpRequestComponent } from './help/help-request.component';
-import { NavComponent, NavMenuComponent } from './nav/nav.component';
+import { NavComponent } from './nav/nav.component';
+import { NavMenuComponent } from './nav/nav-menu.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { FooterComponent } from './footer/footer.component';
 import { DashboardComponent } from './dashboard/dashboard.component';

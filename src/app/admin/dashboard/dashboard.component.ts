@@ -7,10 +7,10 @@ import { DataService } from '../services/services';
 })
 export class DashboardComponent implements OnInit {
 
-  participantCount = 12345;
-  purchaseCount = 234567;
-  purchaseAmount = 987654;
-  averagePurchaseAmount = 1213.34;
+  participantCount: number | string = '?';
+  purchaseCount: number | string = '?';
+  purchaseAmount: number | string = '?';
+  averagePurchaseAmount: number | string = '?';
 
   chartData: any;
   chartOptions: any;

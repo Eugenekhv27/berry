@@ -1,6 +1,10 @@
 <div class="ui-g">
   <div class="ui-g-12">
-    <div class="ui-g card overview-box" [ngClass]="setColorClass()">
+    <div class="ui-g card overview-box"
+      [ngClass]="setColorClass()"
+      [@boxState]="state"
+      [@flyIn]
+      (click)="toggleState()" >
       <div class="ui-g-4">
         <i [ngClass]="setIconClasses()"></i>
       </div>
