@@ -3,8 +3,6 @@ import { ABCAnalysisService } from './abc-analysis.service';
 
 import { russianCalendarLocale } from '../../shared/locale';
 
-import { data } from './abc-analysis-mock-data';
-
 interface TableRow {
   'phone': string;
   'balance': number;
@@ -21,12 +19,12 @@ export class ABCAnalysisReportComponent implements OnInit {
   maxRowsPerPage = 14;
   startDate: Date;
   endDate: Date;
-  tableRows: TableRow[] = [];
+  reportTableData: TableRow[] = [];
   reportHeader = 'ABC-анализ';
   loading: boolean;
 
   constructor(
-    private abcData: ABCAnalysisService,
+    private abcS: ABCAnalysisService,
   ) {
     this.startDate = new Date('2017');
     this.endDate = new Date();
@@ -37,12 +35,13 @@ export class ABCAnalysisReportComponent implements OnInit {
   }
 
   getMainReport() {
-    // this.loading = true;
-    this.tableRows = [];
-
-    console.log(this.startDate, this.endDate);
-
-    this.tableRows = data;
+    this.loading = true;
+    this.reportTableData = [];
+    this.abcS.getReportData(this.startDate, this.endDate)
+      .subscribe( data => {
+        this.reportTableData = data;
+        this.loading = false;
+      });
   }
 
   getDetails(selectedRow: any) {
