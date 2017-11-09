@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
-import { Participant } from '../participants/participant.model';
+import { Participant } from '../../shared/model/participant.model';
 import { DataService, NotifierService, UtilsService } from '../services/services';
 
 class TableRow {

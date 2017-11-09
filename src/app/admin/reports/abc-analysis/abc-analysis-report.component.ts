@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ABCAnalysisService } from './abc-analysis.service';
 
-import { russianCalendarLocale } from '../../shared/locale';
+import { russianCalendarLocale } from '../../../shared/locale';
 
 interface TableRow {
   id: string;

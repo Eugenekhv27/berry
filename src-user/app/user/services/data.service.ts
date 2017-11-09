@@ -19,7 +19,7 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/observable/throw';
 
 import { SelectItem } from 'primeng/primeng';
-import { Participant } from '../participants/participant.model';
+import { Participant } from '../../shared/model/participant.model';
 
 @Injectable()
 export class DataService {

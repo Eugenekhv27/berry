@@ -9,9 +9,9 @@ import { ParticipantDetailsComponent } from './participants/participant-details.
 import { CircularComponent } from './circular/circular.component';
 import { BonusCalculatorComponent } from './bonuses/bonus-calculator.component';
 import { DocumentationComponent } from './documentation/documentation.component';
-import { BonusTurnoverReportComponent } from './reports/bonus-turnover-report.component';
-import { ParticipantSatisfactionReportComponent } from './reports/participant-satisfaction-report.component';
-import { ABCAnalysisReportComponent } from './reports/abc-analysis-report.component';
+import { BonusTurnoverReportComponent } from './reports/bonus-turnover/bonus-turnover-report.component';
+import { ParticipantSatisfactionReportComponent } from './reports/participant-satisfaction/participant-satisfaction-report.component';
+import { ABCAnalysisReportComponent } from './reports/abc-analysis/abc-analysis-report.component';
 
 import { AuthGuard } from './services/services';
 

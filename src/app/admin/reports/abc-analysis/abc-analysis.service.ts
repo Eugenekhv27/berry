@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/delay';
 
-import { NotifierService } from '../services/services';
+import { NotifierService } from '../../services/services';
 import { data } from './abc-analysis-mock-data';
 
 @Injectable()

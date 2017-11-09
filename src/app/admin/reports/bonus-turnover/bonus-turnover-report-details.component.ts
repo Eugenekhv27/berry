@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Participant } from '../participants/participant.model';
-import { DataService, NotifierService, UtilsService } from '../services/services';
-import { russianCalendarLocale } from '../../shared/locale';
+import { Participant } from '../../../shared/model/participant.model';
+import { DataService, NotifierService, UtilsService } from '../../services/services';
+import { russianCalendarLocale } from '../../../shared/locale';
 
 function parseDate(s: string) {
   const ps = s

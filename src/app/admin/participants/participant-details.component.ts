@@ -5,7 +5,7 @@ import 'rxjs/add/operator/switchMap';
 import { DataService, NotifierService, UtilsService } from '../services/services';
 import { DataTable } from 'primeng/primeng';
 
-import { Participant } from './participant.model';
+import { Participant } from '../../shared/model/participant.model';
 import { DetailsRow } from './details-row.class';
 import { OperationEditor } from './operation-editor.class';
 
