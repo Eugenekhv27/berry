@@ -9,7 +9,7 @@
         <div class="ui-g-3">
           <label>С: </label>
           <p-calendar
-            readonlyInput="true" [locale]="ru"
+            readonlyInput="true" [locale]="calendarLocale"
             dateFormat="dd.mm.yy"
             [(ngModel)]="startDate"
             (onSelect)="getMainReport()"
@@ -18,7 +18,7 @@
         <div class="ui-g-3">
           <label>по: </label>
           <p-calendar
-            readonlyInput="true" [locale]="ru"
+            readonlyInput="true" [locale]="calendarLocale"
             dateFormat="dd.mm.yy"
             [(ngModel)]="endDate"
             (onSelect)="getMainReport()"

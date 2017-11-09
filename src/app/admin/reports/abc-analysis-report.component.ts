@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Participant } from '../participants/participant.model';
 import { DataService, NotifierService, UtilsService } from '../services/services';
 
+import { russianCalendarLocale } from '../../shared/locale';
+
 import { data } from './abc-analysis-mock-data';
 
 interface TableRow {
@@ -20,6 +22,8 @@ function sanitizeNumber(v: string|number) {
   templateUrl: './abc-analysis-report.component.html'
 })
 export class ABCAnalysisReportComponent implements OnInit {
+  readonly calendarLocale = russianCalendarLocale;
+
   maxRowsPerPage = 14;
   rowStyle = {'text-align': 'right'};
   totalsStyle = {'text-align': 'right', 'background-color': '#D9E0E7', 'font-weight': 'bold'};
@@ -42,22 +46,6 @@ export class ABCAnalysisReportComponent implements OnInit {
   selection: TableRow[] = [];
 
   loading: boolean;
-
-  readonly ru = {
-    firstDayOfWeek: 1,
-    dayNames: ['Воскресенье', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    dayNamesShort: ['Вск', 'Пнд', 'Втр', 'Срд', 'Чтв', 'Птн', 'Сбт'],
-    dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-    monthNames: [
-      'Январь', 'Февраль', 'Март',
-      'Апрель', 'Май', 'Июнь',
-      'Июль', 'Август', 'Сентябрь',
-      'Октябрь', 'Ноябрь', 'Декабрь'
-    ],
-    monthNamesShort: [ 'Янв', 'Feb', 'Mar', 'Apr', 'Май', 'Jun', 'Jul', 'Aug', 'Сен', 'Окт', 'Nov', 'Dec' ],
-    today: 'сегодня',
-    clear: 'пусто'
-  };
 
   constructor(
     private dataService: DataService,
