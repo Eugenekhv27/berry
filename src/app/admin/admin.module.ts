@@ -68,6 +68,9 @@ import { ParticipantDetailsComponent } from './participants/participant-details.
 
 import { AdminRoutingModule } from './admin-routing.module';
 
+// специализированные сервисы
+import { ABCAnalysisService } from './reports/abc-analysis.service';
+
 @NgModule({
   imports: [
     // Angular
@@ -110,6 +113,9 @@ import { AdminRoutingModule } from './admin-routing.module';
     ParticipantSatisfactionReportComponent,
     ABCAnalysisReportComponent,
     ParticipantDetailsComponent,
+  ],
+  providers: [
+    ABCAnalysisService,
   ]
 })
 export class AdminModule { }
