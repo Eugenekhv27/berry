@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ABCAnalysisService } from './abc-analysis.service';
 
 import { russianCalendarLocale } from '../../shared/locale';
 
 interface TableRow {
-  'phone': string;
-  'balance': number;
-  'plusPoints': number;
-  'minusPoints': number;
+  id: string;
+  phone: string;
+  balance: number;
+  plusPoints: number;
+  minusPoints: number;
 }
 
 @Component({
@@ -24,6 +26,7 @@ export class ABCAnalysisReportComponent implements OnInit {
   loading: boolean;
 
   constructor(
+    private router: Router,
     private abcS: ABCAnalysisService,
   ) {
     this.startDate = new Date('2017');
@@ -44,7 +47,7 @@ export class ABCAnalysisReportComponent implements OnInit {
       });
   }
 
-  getDetails(selectedRow: any) {
-    console.log(selectedRow);
+  getDetails(selectedRow: TableRow) {
+    this.router.navigate(['/admin/participants/' + encodeURIComponent(selectedRow.id)]);
   }
 }
