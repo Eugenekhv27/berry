@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { russianCalendarLocale } from '../../../shared/locale';
+import { localBeginningOfTheYear } from '../../../shared/utils';
 import { BonusTurnoverService } from './bonus-turnover.service';
 import { TableRow } from './bonus-turnover.model';
 
@@ -15,8 +16,8 @@ export class BonusTurnoverReportComponent implements OnInit {
 
   maxRowsPerPage = 14;
   totalsStyle = {'text-align': 'right', 'background-color': '#D9E0E7', 'font-weight': 'bold'};
-  startDate = new Date('2017');
-  endDate = new Date();
+  startDate: Date;
+  endDate: Date;
   reportData: any;
   loading: boolean;
 
@@ -24,6 +25,8 @@ export class BonusTurnoverReportComponent implements OnInit {
     private router: Router,
     private reportDataService: BonusTurnoverService,
   ) {
+    this.endDate = new Date();
+    this.startDate = localBeginningOfTheYear(this.endDate);
     this.resetReportData();
   }
 
