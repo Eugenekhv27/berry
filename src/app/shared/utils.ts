@@ -11,8 +11,6 @@ export function appParseDate(s: string) {
 }
 
 export function localBeginningOfTheYear(d: Date): Date {
-  console.log('Дата: ', d);
-  console.log('Начало года: ', new Date(d.getFullYear(), 0));
-  // такая конструкция возвращает момент начала года в текущем часовом поясе, а не по UTC
+  // такой вызов конструктора Date() создает момент начала года в текущем часовом поясе, а не по UTC
   return new Date(d.getFullYear(), 0);
 }

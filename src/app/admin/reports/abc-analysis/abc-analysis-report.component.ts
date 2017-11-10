@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ABCAnalysisService } from './abc-analysis.service';
 
 import { russianCalendarLocale } from '../../../shared/locale';
+import { localBeginningOfTheYear } from '../../../shared/utils';
+import { ABCAnalysisService } from './abc-analysis.service';
 
 interface TableRow {
   id: string;
@@ -29,8 +30,8 @@ export class ABCAnalysisReportComponent implements OnInit {
     private router: Router,
     private abcS: ABCAnalysisService,
   ) {
-    this.startDate = new Date('2017');
     this.endDate = new Date();
+    this.startDate = localBeginningOfTheYear(this.endDate);
   }
 
   ngOnInit() {

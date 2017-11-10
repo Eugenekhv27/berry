@@ -1,16 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Participant } from '../../../shared/model/participant.model';
 import { DataService, NotifierService } from '../../services/services';
 import { russianCalendarLocale } from '../../../shared/locale';
+import { localBeginningOfTheYear } from '../../../shared/utils';
 
 import { data, dataDetails } from './participant-satisfaction-mock-data';
-
-function appParseDate(s: string) {
-  const ps = s
-    .split('.')
-    .map(v => parseInt(v, 10));
-  return new Date(ps[2], ps[1] - 1, ps[0]);
-}
 
 interface TableRow {
   'phone': string;
@@ -48,10 +43,8 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
   rowStyle = {'text-align': 'right'};
   totalsStyle = {'text-align': 'right', 'background-color': '#D9E0E7', 'font-weight': 'bold'};
 
-  dateRange: Date[];
-
-  startDate = new Date('2017');
-  endDate = new Date();
+  startDate: Date;
+  endDate: Date;
 
   tableRows: TableRow[] = [];
   tableTotals = { plusBonus: 0, minusBonus: 0 };
@@ -71,7 +64,8 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
     private dataService: DataService,
     private notifier: NotifierService,
   ) {
-    this.dateRange = [this.startDate, this.endDate];
+    this.endDate = new Date();
+    this.startDate = localBeginningOfTheYear(this.endDate);
   }
 
   ngOnInit() {
@@ -86,7 +80,6 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
     this.tableTotals.minusBonus = 0;
     this.tableRows = [];
 
-    console.log(this.dateRange);
     console.log(this.startDate, this.endDate);
 
     this.tableRows = data;
