@@ -61,6 +61,7 @@ import { DocumentationComponent } from './documentation/documentation.component'
 import { NoticeComponent } from './notifier/notice.component';
 import { ButtonWithSpinnerComponent } from './button-with-spinner/button-with-spinner.component';
 import { BonusTurnoverReportComponent } from './reports/bonus-turnover/bonus-turnover-report.component';
+import { BonusTurnoverDetailedReportComponent } from './reports/bonus-turnover/bonus-turnover-detailed-report.component';
 import { ParticipantSatisfactionReportComponent } from './reports/participant-satisfaction/participant-satisfaction-report.component';
 import { ABCAnalysisReportComponent } from './reports/abc-analysis/abc-analysis-report.component';
 import { ParticipantDetailsComponent } from './participants/participant-details.component';
@@ -70,6 +71,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 
 // специализированные сервисы
 import { ABCAnalysisService } from './reports/abc-analysis/abc-analysis.service';
+import { BonusTurnoverService } from './reports/bonus-turnover/bonus-turnover.service';
 
 @NgModule({
   imports: [
@@ -110,12 +112,14 @@ import { ABCAnalysisService } from './reports/abc-analysis/abc-analysis.service'
     NoticeComponent,
     ButtonWithSpinnerComponent,
     BonusTurnoverReportComponent,
+    BonusTurnoverDetailedReportComponent,
     ParticipantSatisfactionReportComponent,
     ABCAnalysisReportComponent,
     ParticipantDetailsComponent,
   ],
   providers: [
     ABCAnalysisService,
+    BonusTurnoverService,
   ]
 })
 export class AdminModule { }

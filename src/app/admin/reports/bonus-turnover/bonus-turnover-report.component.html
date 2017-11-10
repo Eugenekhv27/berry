@@ -1,9 +1,6 @@
 <div class="card">
   <h2>{{ reportHeader }}</h2>
-
-  <!-- Основная таблица selectionMode="range" -->
-
-  <div class="ui-g" *ngIf="!showDetails">
+  <div class="ui-g">
     <div class="ui-g-12">
       <div class="ui-g">
         <div class="ui-g-3">
@@ -28,10 +25,10 @@
       <div class="ui-g">
         <div class="ui-g-12">
         <p-dataTable
-          [value]="tableRows"
-          [(selection)]="selection"
+          #reportTable
+          [value]="reportData.table"
           selectionMode="single"
-          (onRowDblclick)="onRowDoubleClick($event)"
+          (onRowDblclick)="getDetailedReport(reportTable.selection.date)"
           [responsive]="true"
           [paginator]="true"
           [loading]="loading"
@@ -39,35 +36,35 @@
           [rows]="maxRowsPerPage">
           <p-column field="date" header="Дата" [style]="{'text-align':'center'}">
             <ng-template let-rd="rowData" pTemplate="body">
-              <span>{{ u.formatDate(rd.date) }}</span>
+              <span>{{ rd.date | date: 'shortDate' }}</span>
             </ng-template>
           </p-column>
-          <p-column field="startBonus" header="Начальный баланс" [style]="rowStyle">
+          <p-column field="startBonus" header="Начальный баланс" [style]="{'text-align': 'right'}">
             <ng-template let-rd="rowData" pTemplate="body">
-              <span>{{ u.formatNumber(rd.startBonus) }}</span>
+              <span>{{ rd.startBonus | number: '1.0-0' }}</span>
             </ng-template>
           </p-column>
-          <p-column field="plusBonus" header="Начислено" [style]="rowStyle">
+          <p-column field="plusBonus" header="Начислено" [style]="{'text-align': 'right'}">
             <ng-template let-rd="rowData" pTemplate="body">
-              <span>{{ u.formatNumber(rd.plusBonus) }}</span>
+              <span>{{ rd.plusBonus | number: '1.0-0' }}</span>
             </ng-template>
           </p-column>
-          <p-column field="minusBonus" header="Списано" [style]="rowStyle">
+          <p-column field="minusBonus" header="Списано" [style]="{'text-align': 'right'}">
             <ng-template let-rd="rowData" pTemplate="body">
-              <span>{{ u.formatNumber(rd.minusBonus) }}</span>
+              <span>{{ rd.minusBonus | number: '1.0-0' }}</span>
             </ng-template>
           </p-column>
-          <p-column field="endBonus" header="Конечный баланс" [style]="rowStyle">
+          <p-column field="endBonus" header="Конечный баланс" [style]="{'text-align': 'right'}">
             <ng-template let-rd="rowData" pTemplate="body">
-              <span>{{ u.formatNumber(rd.endBonus) }}</span>
+              <span>{{ rd.endBonus | number: '1.0-0' }}</span>
             </ng-template>
           </p-column>
           <p-footerColumnGroup>
             <p-row>
               <p-column footer="Всего:"[style]="totalsStyle"></p-column>
               <p-column footer="-" [style]="totalsStyle"></p-column>
-              <p-column [footer]="u.formatNumber(tableTotals.plusBonus)" [style]="totalsStyle"></p-column>
-              <p-column [footer]="u.formatNumber(tableTotals.minusBonus)" [style]="totalsStyle"></p-column>
+              <p-column footer="{{ reportData.totals.plusBonus | number: '1.0-0' }}" [style]="totalsStyle"></p-column>
+              <p-column footer="{{ reportData.totals.minusBonus | number: '1.0-0' }}" [style]="totalsStyle"></p-column>
               <p-column footer="-" [style]="totalsStyle"></p-column>
             </p-row>
           </p-footerColumnGroup>
@@ -76,49 +73,5 @@
       </div>
     </div>
   </div>
-
-  <!-- Таблица "расшифровки" -->
-
-  <div class="ui-g" *ngIf="showDetails">
-    <div class="ui-g-12">
-      <div class="ui-g">
-        <div class="ui-g-2">
-          <button pButton type="button" icon = "fa-chevron-left" (click)="back()" label="Назад">
-            </button>
-        </div>
-      </div>
-      <div class="ui-g">
-        <div class="ui-g-12">
-          <p-dataTable
-            [value]="detailsTable"
-            [responsive]="true"
-            [paginator]="true"
-            [loading]="loading"
-            loadingIcon="fa-spinner"
-            [rows]="maxRowsPerPage">
-            <p-column field="phone" header="Участник" [style]="{'text-align':'center'}"></p-column>
-            <p-column field="plusBonus" header="Начислено" [style]="rowStyle">
-              <ng-template let-rd="rowData" pTemplate="body">
-                <span>{{ u.formatNumber(rd.plusBonus) }}</span>
-              </ng-template>
-            </p-column>
-            <p-column field="minusBonus" header="Списано" [style]="rowStyle">
-              <ng-template let-rd="rowData" pTemplate="body">
-                <span>{{ u.formatNumber(rd.minusBonus) }}</span>
-              </ng-template>
-            </p-column>
-            <p-footerColumnGroup>
-              <p-row>
-                <p-column footer="Всего:"[style]="totalsStyle"></p-column>
-                <p-column [footer]="u.formatNumber(detailsTotals.plusBonus)" [style]="totalsStyle"></p-column>
-                <p-column [footer]="u.formatNumber(detailsTotals.minusBonus)" [style]="totalsStyle"></p-column>
-              </p-row>
-            </p-footerColumnGroup>
-          </p-dataTable>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </div>
 
