@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { TreeNode } from 'primeng/primeng';
+
 import { russianCalendarLocale } from '../../../shared/locale';
 import { localBeginningOfTheYear } from '../../../shared/utils';
 import { ABCAnalysisService } from './abc-analysis.service';
@@ -22,7 +24,7 @@ export class ABCAnalysisReportComponent implements OnInit {
   maxRowsPerPage = 14;
   startDate: Date;
   endDate: Date;
-  reportTableData: TableRow[] = [];
+  reportTableData: TreeNode[] = [];
   reportHeader = 'ABC-анализ';
   loading: boolean;
 
@@ -50,5 +52,9 @@ export class ABCAnalysisReportComponent implements OnInit {
 
   getDetails(selectedRow: TableRow) {
     this.router.navigate(['/admin/participants/' + encodeURIComponent(selectedRow.id)]);
+  }
+
+  isNumber(v: any) {
+    return typeof v === 'number';
   }
 }

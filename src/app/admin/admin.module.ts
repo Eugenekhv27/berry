@@ -17,6 +17,7 @@ import {
   RadioButtonModule,
   CheckboxModule,
   CalendarModule,
+  TreeTableModule,
   /*
   MegaMenuModule,
   MenubarModule,
@@ -91,6 +92,7 @@ import { BonusTurnoverService } from './reports/bonus-turnover/bonus-turnover.se
     RadioButtonModule,
     CheckboxModule,
     CalendarModule,
+    TreeTableModule,
     // routing
     AdminRoutingModule,
   ],

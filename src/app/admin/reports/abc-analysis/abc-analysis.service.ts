@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/delay';
 
+import { TreeNode } from 'primeng/primeng';
+
 import { NotifierService } from '../../services/services';
-import { data } from './abc-analysis-mock-data';
+import { abc_json } from './abc-analysis-mock-data';
+
 
 @Injectable()
 export class ABCAnalysisService {
@@ -11,6 +14,6 @@ export class ABCAnalysisService {
 
   getReportData(startDate: Date, endDate: Date) {
     console.log('ABCAnalysisService::getReportData()', startDate, endDate);
-    return Observable.of(data).delay(1200);
+    return Observable.of(<TreeNode[]> JSON.parse(abc_json).abc).delay(1200);
   }
 }
