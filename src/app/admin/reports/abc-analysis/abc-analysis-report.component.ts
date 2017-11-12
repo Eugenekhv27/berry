@@ -25,7 +25,6 @@ export class ABCAnalysisReportComponent implements OnInit {
   startDate: Date;
   endDate: Date;
   reportTableData: TreeNode[] = [];
-  reportHeader = 'ABC-анализ';
   loading: boolean;
 
   constructor(
