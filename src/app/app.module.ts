@@ -19,6 +19,7 @@ import {
   NotifierService,
   UtilsService
 } from './admin/services/services';
+import { RestService } from './shared/services/rest.service';
 
 // корневой компонент Angular-приложения
 import { AppComponent } from './app.component';
@@ -43,6 +44,7 @@ import { AppRoutingModule } from './app-routing.module';
     NotifierService,
     DataService,
     UtilsService,
+    RestService,
     { provide: LOCALE_ID, useValue: 'ru-RU' },
   ],
   bootstrap: [

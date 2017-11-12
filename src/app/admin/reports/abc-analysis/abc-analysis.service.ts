@@ -1,19 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/delay';
 
 import { TreeNode } from 'primeng/primeng';
 
 import { NotifierService } from '../../services/services';
-import { abc_json } from './abc-analysis-mock-data';
-
+import { RestService } from '../../../shared/services/rest.service';
 
 @Injectable()
 export class ABCAnalysisService {
-  private restServerName = 'base.progrepublic.ru';
+
+  constructor(
+    private rest: RestService,
+    private notifier: NotifierService
+  ) {}
 
   getReportData(startDate: Date, endDate: Date) {
-    console.log('ABCAnalysisService::getReportData()', startDate, endDate);
-    return Observable.of(<TreeNode[]> JSON.parse(abc_json).abc).delay(1200);
+    return this.rest.getData('/admin/reports/abc', { startDate, endDate })
+      .map((result: any) => {
+        return result['data']['tableData']['body'];
+      })
+      .catch((err: any, caught: Observable<any>) => {
+        // TODO: здесь надо написать вменяемую обработку ошибок и выдачу сообщений в NotifierService
+        this.notifier.error('Ошибка!', 'Данные не получены');
+        return Observable.of([]);
+      });
   }
 }
