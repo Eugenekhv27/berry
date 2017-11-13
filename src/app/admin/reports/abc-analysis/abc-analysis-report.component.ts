@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { TreeNode } from 'primeng/primeng';
+// import { TreeNode } from 'primeng/primeng';
 
 import { russianCalendarLocale } from '../../../shared/locale';
 import { localBeginningOfTheYear } from '../../../shared/utils';
 import { ABCAnalysisService } from './abc-analysis.service';
+import { ReportModel } from '../shared/report.model';
 
 interface TableRow {
   id: string;
@@ -22,17 +23,16 @@ interface TableRow {
 export class ABCAnalysisReportComponent implements OnInit {
   readonly calendarLocale = russianCalendarLocale;
   maxRowsPerPage = 14;
-  startDate: Date;
-  endDate: Date;
-  reportTableData: TreeNode[] = [];
+  reportData = new ReportModel;
   loading: boolean;
 
   constructor(
     private router: Router,
     private abcS: ABCAnalysisService,
   ) {
-    this.endDate = new Date();
-    this.startDate = localBeginningOfTheYear(this.endDate);
+    this.reportData.table.body = [];
+    this.reportData.endDate = new Date();
+    this.reportData.beginDate = localBeginningOfTheYear(this.reportData.endDate);
   }
 
   ngOnInit() {
@@ -41,10 +41,10 @@ export class ABCAnalysisReportComponent implements OnInit {
 
   getMainReport() {
     this.loading = true;
-    this.reportTableData = [];
-    this.abcS.getReportData(this.startDate, this.endDate)
-      .subscribe( data => {
-        this.reportTableData = data;
+    this.reportData.table.body = [];
+    this.abcS.getReportData(this.reportData.beginDate, this.reportData.endDate)
+      .subscribe( repData => {
+        this.reportData = repData;
         this.loading = false;
       });
   }
