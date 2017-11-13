@@ -1,12 +1,17 @@
+export interface ReportTable {
+  body: Array<any>;
+  totals: {
+    [key: string]: number | string
+  };
+}
+
 export class ReportModel {
   title: string;
   beginDate: Date;
   endDate: Date;
-  table = {
-    body: [],
-    totals: {}
-  };
+  table: ReportTable;
 
   constructor() {
+    this.table = { body: [], totals: {} };
   }
 }
