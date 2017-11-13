@@ -18,7 +18,8 @@ interface TableRow {
 
 @Component({
   selector: 'app-abc-analysis-report',
-  templateUrl: './abc-analysis-report.component.html'
+  templateUrl: './abc-analysis-report.component.html',
+  providers: [ ABCAnalysisService ]
 })
 export class ABCAnalysisReportComponent implements OnInit {
   readonly calendarLocale = russianCalendarLocale;
@@ -28,7 +29,7 @@ export class ABCAnalysisReportComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private abcS: ABCAnalysisService,
+    private dataService: ABCAnalysisService,
   ) {
     this.reportData = new ReportModel();
     this.reportData.table.body = [];
@@ -43,7 +44,7 @@ export class ABCAnalysisReportComponent implements OnInit {
   getMainReport(): void {
     this.loading = true;
     this.reportData.table.body = [];
-    this.abcS.getReportData(this.reportData.beginDate, this.reportData.endDate)
+    this.dataService.getReportData(this.reportData.beginDate, this.reportData.endDate)
       .subscribe( repData => {
         this.reportData = <ReportModel>repData;
         this.loading = false;

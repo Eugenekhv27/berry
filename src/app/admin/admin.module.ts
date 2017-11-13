@@ -71,7 +71,6 @@ import { ParticipantDetailsComponent } from './participants/participant-details.
 import { AdminRoutingModule } from './admin-routing.module';
 
 // специализированные сервисы
-import { ABCAnalysisService } from './reports/abc-analysis/abc-analysis.service';
 import { BonusTurnoverService } from './reports/bonus-turnover/bonus-turnover.service';
 
 @NgModule({
@@ -120,7 +119,6 @@ import { BonusTurnoverService } from './reports/bonus-turnover/bonus-turnover.se
     ParticipantDetailsComponent,
   ],
   providers: [
-    ABCAnalysisService,
     BonusTurnoverService,
   ]
 })
