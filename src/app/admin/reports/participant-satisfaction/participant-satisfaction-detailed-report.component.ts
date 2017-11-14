@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 import { DataService, NotifierService } from '../../services/services';
 import { russianCalendarLocale } from '../../../shared/locale';
@@ -24,6 +25,7 @@ export class ParticipantSatisfactionDetailedReportComponent implements OnInit {
   loading: boolean;
 
   constructor(
+    private location: Location,
     private dataService: DataService,
     private notifier: NotifierService,
   ) {
@@ -50,6 +52,7 @@ export class ParticipantSatisfactionDetailedReportComponent implements OnInit {
     console.log(e);
   }
 
-  goBack() {
+  goBack(): void {
+    this.location.back();
   }
 }
