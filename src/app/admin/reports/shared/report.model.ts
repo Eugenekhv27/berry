@@ -1,3 +1,6 @@
+
+import { localBeginningOfTheYear } from '../../../shared/utils';
+
 export interface ReportTable {
   body: Array<any>;
   totals: {
@@ -13,5 +16,7 @@ export class ReportModel {
 
   constructor() {
     this.table = { body: [], totals: {} };
+    this.endDate = new Date();
+    this.beginDate = localBeginningOfTheYear(this.endDate);
   }
 }
