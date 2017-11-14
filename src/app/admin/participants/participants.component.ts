@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Participant } from './participant.model';
+import { Participant } from '../../shared/model/participant.model';
 import { DataService, NotifierService } from '../services/services';
 
 @Component({

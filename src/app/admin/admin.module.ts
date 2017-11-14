@@ -17,6 +17,7 @@ import {
   RadioButtonModule,
   CheckboxModule,
   CalendarModule,
+  TreeTableModule,
   /*
   MegaMenuModule,
   MenubarModule,
@@ -60,13 +61,17 @@ import { ParticipantSelectorComponent } from './bonuses/participant-selector.com
 import { DocumentationComponent } from './documentation/documentation.component';
 import { NoticeComponent } from './notifier/notice.component';
 import { ButtonWithSpinnerComponent } from './button-with-spinner/button-with-spinner.component';
-import { BonusTurnoverReportComponent } from './reports/bonus-turnover-report.component';
-import { ParticipantSatisfactionReportComponent } from './reports/participant-satisfaction-report.component';
-import { ABCAnalysisReportComponent } from './reports/abc-analysis-report.component';
+import { BonusTurnoverReportComponent } from './reports/bonus-turnover/bonus-turnover-report.component';
+import { BonusTurnoverDetailedReportComponent } from './reports/bonus-turnover/bonus-turnover-detailed-report.component';
+import { ParticipantSatisfactionReportComponent } from './reports/participant-satisfaction/participant-satisfaction-report.component';
+import { ABCAnalysisReportComponent } from './reports/abc-analysis/abc-analysis-report.component';
 import { ParticipantDetailsComponent } from './participants/participant-details.component';
 
 
 import { AdminRoutingModule } from './admin-routing.module';
+
+// специализированные сервисы
+import { BonusTurnoverService } from './reports/bonus-turnover/bonus-turnover.service';
 
 @NgModule({
   imports: [
@@ -86,6 +91,7 @@ import { AdminRoutingModule } from './admin-routing.module';
     RadioButtonModule,
     CheckboxModule,
     CalendarModule,
+    TreeTableModule,
     // routing
     AdminRoutingModule,
   ],
@@ -107,9 +113,13 @@ import { AdminRoutingModule } from './admin-routing.module';
     NoticeComponent,
     ButtonWithSpinnerComponent,
     BonusTurnoverReportComponent,
+    BonusTurnoverDetailedReportComponent,
     ParticipantSatisfactionReportComponent,
     ABCAnalysisReportComponent,
     ParticipantDetailsComponent,
+  ],
+  providers: [
+    BonusTurnoverService,
   ]
 })
 export class AdminModule { }

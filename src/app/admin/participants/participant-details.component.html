@@ -2,7 +2,7 @@
   <div class="ui-g-12">
     <div class="card">
       <div class="ui-helper-clearfix" style="width:100%;">
-        <button pButton type="button" icon="fa-chevron-left" (click)="back()" label="Назад" style="float: left; margin: 18px 20px 18px 16px"></button>
+        <button pButton type="button" icon="fa-chevron-left" (click)="goBack()" label="Назад" style="float: left; margin: 18px 20px 18px 16px"></button>
         <h2>Участник <span style="font-weight: bold; margin-left: 18px">{{ participantEditor.phone }}</span></h2>
       </div>
       <div class="ui-g">
@@ -47,7 +47,7 @@
         <div class="ui-g-3">
           <div class="ui-g-12">
             <button pButton type="button" icon="fa-check" (click)="save()" label="Сохранить" style="float: left"></button>
-            <button pButton type="button" icon="fa-close" class="ui-button-secondary" (click)="back()" label="Отмена" style="float: right"></button>
+            <button pButton type="button" icon="fa-close" class="ui-button-secondary" (click)="goBack()" label="Отмена" style="float: right"></button>
           </div>
         </div>
         <div class="ui-g-3">

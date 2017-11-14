@@ -7,7 +7,9 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+
+import { HttpModule } from '@angular/http'; // TODO - убрать, устаревшая конструкция
 
 // Глобальные сервисы
 import {
@@ -17,6 +19,7 @@ import {
   NotifierService,
   UtilsService
 } from './admin/services/services';
+import { RestService } from './shared/services/rest.service';
 
 // корневой компонент Angular-приложения
 import { AppComponent } from './app.component';
@@ -28,7 +31,8 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpModule,
+    HttpModule, // TODO - убрать, устаревшая конструкция
+    HttpClientModule,
     AppRoutingModule,
   ],
   declarations: [
@@ -40,6 +44,7 @@ import { AppRoutingModule } from './app-routing.module';
     NotifierService,
     DataService,
     UtilsService,
+    RestService,
     { provide: LOCALE_ID, useValue: 'ru-RU' },
   ],
   bootstrap: [

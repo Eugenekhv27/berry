@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Participant } from '../participants/participant.model';
-import { DataService, NotifierService } from '../services/services';
+
+import { Participant } from '../../../shared/model/participant.model';
+import { DataService, NotifierService } from '../../services/services';
+import { russianCalendarLocale } from '../../../shared/locale';
+import { localBeginningOfTheYear } from '../../../shared/utils';
 
 import { data, dataDetails } from './participant-satisfaction-mock-data';
-
-function parseDate(s: string) {
-  const ps = s
-    .split('.')
-    .map(v => parseInt(v, 10));
-  return new Date(ps[2], ps[1] - 1, ps[0]);
-}
 
 interface TableRow {
   'phone': string;
@@ -32,7 +28,7 @@ class DetailsRow {
   }
 }
 
-function sanitizeNumber(v: string|number) {
+function appParseNumber(v: string|number) {
   return isNaN(parseFloat(String(v))) ? 0 : parseFloat(String(v));
 }
 
@@ -41,14 +37,14 @@ function sanitizeNumber(v: string|number) {
   templateUrl: './participant-satisfaction-report.component.html'
 })
 export class ParticipantSatisfactionReportComponent implements OnInit {
+  readonly calendarLocale = russianCalendarLocale;
+
   maxRowsPerPage = 14;
   rowStyle = {'text-align': 'right'};
   totalsStyle = {'text-align': 'right', 'background-color': '#D9E0E7', 'font-weight': 'bold'};
 
-  dateRange: Date[];
-
-  startDate = new Date('2017');
-  endDate = new Date();
+  startDate: Date;
+  endDate: Date;
 
   tableRows: TableRow[] = [];
   tableTotals = { plusBonus: 0, minusBonus: 0 };
@@ -64,27 +60,12 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
 
   loading: boolean;
 
-  readonly ru = {
-    firstDayOfWeek: 1,
-    dayNames: ['Воскресенье', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    dayNamesShort: ['Вск', 'Пнд', 'Втр', 'Срд', 'Чтв', 'Птн', 'Сбт'],
-    dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-    monthNames: [
-      'Январь', 'Февраль', 'Март',
-      'Апрель', 'Май', 'Июнь',
-      'Июль', 'Август', 'Сентябрь',
-      'Октябрь', 'Ноябрь', 'Декабрь'
-    ],
-    monthNamesShort: [ 'Янв', 'Feb', 'Mar', 'Apr', 'Май', 'Jun', 'Jul', 'Aug', 'Сен', 'Окт', 'Nov', 'Dec' ],
-    today: 'сегодня',
-    clear: 'пусто'
-  };
-
   constructor(
     private dataService: DataService,
     private notifier: NotifierService,
   ) {
-    this.dateRange = [this.startDate, this.endDate];
+    this.endDate = new Date();
+    this.startDate = localBeginningOfTheYear(this.endDate);
   }
 
   ngOnInit() {
@@ -99,7 +80,6 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
     this.tableTotals.minusBonus = 0;
     this.tableRows = [];
 
-    console.log(this.dateRange);
     console.log(this.startDate, this.endDate);
 
     this.tableRows = data;
@@ -107,8 +87,8 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
     // this.dataService.getBonusReport(this.startDate, this.endDate)
     //   .subscribe((reportData: any) => {
     //     this.tableRows = reportData.rows.map(dataRow => new TableRow(dataRow));
-    //     this.tableTotals.plusBonus = sanitizeNumber(reportData.totals.PlusBonus);
-    //     this.tableTotals.minusBonus = sanitizeNumber(reportData.totals.MinusBonus);
+    //     this.tableTotals.plusBonus = appParseNumber(reportData.totals.PlusBonus);
+    //     this.tableTotals.minusBonus = appParseNumber(reportData.totals.MinusBonus);
     //     this.loading = false;
     //   });
   }
@@ -123,8 +103,8 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
     //   .subscribe((reportData: any) => {
     //     console.log(reportData);
     //     this.detailsTable = reportData.rows.map(dataRow => new DetailsRow(dataRow));
-    //     this.detailsTotals.plusBonus = sanitizeNumber(reportData.totals.PlusPointsSum);
-    //     this.detailsTotals.minusBonus = sanitizeNumber(reportData.totals.MinusPointsSum);
+    //     this.detailsTotals.plusBonus = appParseNumber(reportData.totals.PlusPointsSum);
+    //     this.detailsTotals.minusBonus = appParseNumber(reportData.totals.MinusPointsSum);
     //     console.log('-------');
     //     console.log(this.showDetails);
 

@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 import { DataService, NotifierService, UtilsService } from '../services/services';
 import { DataTable } from 'primeng/primeng';
 
-import { Participant } from './participant.model';
+import { Participant } from '../../shared/model/participant.model';
 import { DetailsRow } from './details-row.class';
 import { OperationEditor } from './operation-editor.class';
 
@@ -31,6 +32,7 @@ export class ParticipantDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private notifier: NotifierService,
     private dataService: DataService,
     public u: UtilsService
@@ -50,9 +52,9 @@ export class ParticipantDetailsComponent implements OnInit {
     this.operationEditor = new OperationEditor();
   }
 
-  back() {
+  goBack(): void {
     this.detailsTable = [];
-    this.router.navigate(['/admin/participants']);
+    this.location.back();
   }
 
   getData(id: string) {

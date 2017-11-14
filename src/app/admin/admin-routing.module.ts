@@ -9,9 +9,10 @@ import { ParticipantDetailsComponent } from './participants/participant-details.
 import { CircularComponent } from './circular/circular.component';
 import { BonusCalculatorComponent } from './bonuses/bonus-calculator.component';
 import { DocumentationComponent } from './documentation/documentation.component';
-import { BonusTurnoverReportComponent } from './reports/bonus-turnover-report.component';
-import { ParticipantSatisfactionReportComponent } from './reports/participant-satisfaction-report.component';
-import { ABCAnalysisReportComponent } from './reports/abc-analysis-report.component';
+import { BonusTurnoverReportComponent } from './reports/bonus-turnover/bonus-turnover-report.component';
+import { BonusTurnoverDetailedReportComponent } from './reports/bonus-turnover/bonus-turnover-detailed-report.component';
+import { ParticipantSatisfactionReportComponent } from './reports/participant-satisfaction/participant-satisfaction-report.component';
+import { ABCAnalysisReportComponent } from './reports/abc-analysis/abc-analysis-report.component';
 
 import { AuthGuard } from './services/services';
 
@@ -25,6 +26,7 @@ const routes: Routes = [{
     { path: 'participants', component: ParticipantsComponent, canActivate: [AuthGuard] },
     { path: 'participants/:id', component: ParticipantDetailsComponent, canActivate: [AuthGuard] },
     { path: 'reports/bonuses', component: BonusTurnoverReportComponent, canActivate: [AuthGuard] },
+    { path: 'reports/bonuses/:date', component: BonusTurnoverDetailedReportComponent, canActivate: [AuthGuard] },
     { path: 'reports/satisfaction', component: ParticipantSatisfactionReportComponent, canActivate: [AuthGuard] },
     { path: 'reports/abc', component: ABCAnalysisReportComponent, canActivate: [AuthGuard] },
     { path: 'circular', component: CircularComponent, canActivate: [AuthGuard] },

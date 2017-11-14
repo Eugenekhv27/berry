@@ -1,0 +1,5 @@
+{
+  "/user/bonuses": "/user?_embed=bonuses",
+  "/admin/reports": "/admin-reports",
+  "/admin/reports/abc": "/admin-reports/3"
+}

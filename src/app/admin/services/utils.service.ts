@@ -14,7 +14,7 @@ export class UtilsService {
     return Intl.DateTimeFormat('ru-RU').format(d);
   }
 
-  parseDate(s: string) {
+  appParseDate(s: string) {
     const ps = s
       .split('.')
       .map(v => parseInt(v, 10));
