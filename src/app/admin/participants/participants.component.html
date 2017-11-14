@@ -4,33 +4,41 @@
       <h2>Участники бонусной программы</h2>
       <p-dataTable
         selectionMode="single"
+        [(selection)]="selectedLine"
         [responsive]="true"
         [value]="participantsList"
         [paginator]="true"
         [rows]="maxRowsPerPage"
-        [(selection)]="selectedLine"
-        (onRowDblclick)="onRowDoubleClick($event)"
+        (onRowDblclick)="onRowDoubleClick()"
         [loading]="loading"
         loadingIcon="fa-spinner"
         [globalFilter]="gb">
         <p-column field="phone" header="Номер" [sortable]="true"></p-column>
-        <p-column field="Name" header="Имя" [sortable]="true"></p-column>
-        <p-column field="Comment" header="Коментарий"></p-column>
-        <p-column field="Bonus" header="Бонусы" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
+        <p-column field="name" header="Имя" [sortable]="true"></p-column>
+        <p-column field="comment" header="Коментарий"></p-column>
+        <p-column field="balance" header="Бонусы" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
         <p-footer>
           <div class="ui-g">
             <div class="ui-g-6">
               <button pButton
+                label="Редактировать данные участника"
+                (click)="onRowDoubleClick()"
+                [disabled]="!selectedLine"
+                type="button"
+                icon="fa-pencil"
+                style="float:left">
+              </button>
+              <button pButton
+                label="Добавить участника"
+                (click)="openNewParticipantForm()"
                 type="button"
                 icon="fa-plus"
-                style="float:left"
-                (click)="showDialogToAdd()"
-                label="Создать">
+                style="float: right">
               </button>
             </div>
             <div class="ui-g-6">
-              <i class="fa fa-filter" style="margin:4px 4px 0 0"></i>
-              <input #gb type="text" pInputText size="50" placeholder="значение фильтра...">
+              <input #gb type="text" pInputText size="50" placeholder="значение фильтра..." style="float: right">
+              <i class="fa fa-filter" style="margin: 10px 10px 0 0; float: right"></i>
             </div>
           </div>
         </p-footer>
@@ -38,39 +46,3 @@
     </div>
   </div>
 </div>
-
-<p-dialog [(visible)]="displayDialog" [responsive]="true"
-  showEffect="fade" [modal]="true" minWidth=400>
-  <p-header>
-    {{ participantToEditIsNew ? 'Новый участник' : 'Участник' }}
-  </p-header>
-  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="participantToEdit">
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4"><label for="phone">Телефон</label></div>
-      <div class="ui-grid-col-8"><input pInputText id="phone" [(ngModel)]="participantToEdit.phone" /></div>
-    </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4"><label for="name">Имя</label></div>
-      <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="participantToEdit.Name" /></div>
-    </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4"><label for="referrer">Кто привлек</label></div>
-      <div class="ui-grid-col-8"><input pInputText id="referrer" [(ngModel)]="participantToEdit.referrer" /></div>
-    </div>
-    <div class="ui-grid-row">
-      <textarea pInputTextarea class="ui-grid-col-12" [(ngModel)]="participantToEdit.Comment" placeholder="Комментарий">
-      </textarea>
-    </div>
-  </div>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button pButton type="button" icon="fa-check" (click)="save()" label="Сохранить">
-      </button>
-      <button pButton type="button" icon="fa-close" class="ui-button-secondary" (click)="cancel()" label="Отмена">
-      </button>
-      <button *ngIf="!participantToEditIsNew" pButton type="button" icon="fa-trash" class="ui-button-warning" (click)="delete()"
-        label="Удалить">
-      </button>
-    </div>
-  </p-footer>
-</p-dialog>

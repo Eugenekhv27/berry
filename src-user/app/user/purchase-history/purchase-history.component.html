@@ -1,0 +1,5 @@
+<p-panel header="Недавние покупки" [toggleable]="true">
+  <p-accordion>
+    <app-purchase *ngFor="let purchase of purchases" [purchase]="purchase"></app-purchase>
+  </p-accordion>
+</p-panel>

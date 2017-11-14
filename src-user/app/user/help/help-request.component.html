@@ -1,0 +1,8 @@
+<p-accordion>
+  <p-accordionTab header="Задать вопрос в службу поддержки">
+    <textarea pInputTextarea [(ngModel)]="helpRequestText" style="width: 100%; min-height: 100px; margin-bottom: 10px" placeholder="Напишите ваше сообщение здесь">
+    </textarea>
+    <button pButton type="button" icon="fa fa-envelope-o" label="Отправить вопрос" style="width: 100%" (click)="sendHelpRequest()">
+    </button>
+  </p-accordionTab>
+</p-accordion>

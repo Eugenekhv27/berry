@@ -20,7 +20,7 @@ import { Http, Response, Headers, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { SelectItem } from 'primeng/primeng';
-import { Participant } from '../participants/participant.model';
+import { Participant } from '../../shared/model/participant.model';
 
 @Injectable()
 export class DataService {
@@ -54,6 +54,10 @@ export class DataService {
     return this.getRestServiceUrl() + '/' +
       localStorage.getItem('accountEncrypt') + '/' +
       query;
+  }
+
+  private isResponseOk(r: Response) {
+    return r.json().status.toString().toLowerCase() === 'ok';
   }
 
   getGridData(className: string, query: string = '') {
@@ -123,18 +127,35 @@ export class DataService {
   }
 
   getParticipantsList() {
-    const p = new Participant();
     return this.getGridData('ent.Buyer')
       .map((resp: Response) => {
-        return resp.json().children.map(p.convertForFront);
+        return resp.json().children.map(elem => new Participant(elem));
       });
   }
 
-  saveParticipant(aParticipant: any) {
+  getParticipantDetails(id: string) {
+    return this.http.get(
+      this.getFullUrl('getObject', 'ent.Buyer', id),
+      this.getRequestOptionsArgs()
+    )
+    .map((resp: Response) => {
+      if (!resp.ok) {
+        throw new Error('Отрицательный ответ сервера.');
+      }
+      // в возвращаемом json-е ошибка: даты не заключены в кавычки
+      return JSON.parse(resp.text().replace(/(:)(\d\d\.\d\d\.\d\d(\d\d)?)(,)/g, '$1"$2"$4'));
+    })
+    .catch((error: any) => {
+      console.log(error);
+      return  Observable.of(false);
+    });
+  }
+
+  saveParticipant(aParticipant: Participant) {
     return this.saveObject('ent.Buyer', aParticipant.convertForServer());
   }
 
-  getObjectData(className: string, ID: string, phone?: string) {
+  getObjectData(className: string, id: string, phone?: string) {
     const accountEncrypt = localStorage.getItem('accountEncrypt');
 
     const akaToUrl = encodeURIComponent(phone).replace(new RegExp('%', 'g'), '~');
@@ -143,7 +164,7 @@ export class DataService {
     return this.http.get(
       'http://' + this.restServerName +
       '/csp/bonusclubrest2/' + accountEncrypt +
-      '/getObject/' + className + '/' + ID + '/' + akaToUrl,
+      '/getObject/' + className + '/' + id + '/' + akaToUrl,
       { headers }
     );
   }
@@ -156,10 +177,11 @@ export class DataService {
         this.getRequestOptionsArgs()
       )
       .map((resp: Response) => {
-        if (resp.status.toString() !== 'OK') {
-          throw new Error('Отрицательный ответ сервера при сохранении объекта.');
+        if (this.isResponseOk(resp)) {
+          return true;
+        } else {
+          throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
         }
-        return true;
       })
       .catch((error: any) => {
         console.log(error);
@@ -167,14 +189,14 @@ export class DataService {
       });
   }
 
-  deleteObject(className: string, ID: string) {
+  deleteObject(className: string, id: string) {
     const accountEncrypt = localStorage.getItem('accountEncrypt');
     const auth = localStorage.getItem('loginpassword');
     const headers = new Headers({ Authorization: 'Basic ' + auth });
     return this.http.delete(
       'http://' + this.restServerName +
       '/csp/bonusclubrest2/' + accountEncrypt +
-      '/delObject/' + className + '/' + ID,
+      '/delObject/' + className + '/' + id,
       { headers }
     );
   }
@@ -210,12 +232,11 @@ export class DataService {
       this.getRequestOptionsArgs()
       )
       .map(resp => {
-        console.log('Статус ответа: ' + resp.status);
-        if (resp.status.toString() !== 'OK') {
-          throw Error('Получен отрицательный ответ: ' + resp.status.toString());
+        if (this.isResponseOk(resp)) {
+          return true;
+        } else {
+          throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
         }
-        console.log(resp);
-        return true;
       })
       .catch(error => {
         console.error(error);

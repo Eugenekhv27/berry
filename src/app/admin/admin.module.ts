@@ -17,6 +17,7 @@ import {
   RadioButtonModule,
   CheckboxModule,
   CalendarModule,
+  TreeTableModule,
   /*
   MegaMenuModule,
   MenubarModule,
@@ -47,7 +48,8 @@ import {
 import { AdminComponent } from './admin.component';
 import { LoginComponent } from './login/login.component';
 import { HelpRequestComponent } from './help/help-request.component';
-import { NavComponent, NavMenuComponent } from './nav/nav.component';
+import { NavComponent } from './nav/nav.component';
+import { NavMenuComponent } from './nav/nav-menu.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { FooterComponent } from './footer/footer.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -59,9 +61,17 @@ import { ParticipantSelectorComponent } from './bonuses/participant-selector.com
 import { DocumentationComponent } from './documentation/documentation.component';
 import { NoticeComponent } from './notifier/notice.component';
 import { ButtonWithSpinnerComponent } from './button-with-spinner/button-with-spinner.component';
-import { ReportComponent } from './report/report.component';
+import { BonusTurnoverReportComponent } from './reports/bonus-turnover/bonus-turnover-report.component';
+import { BonusTurnoverDetailedReportComponent } from './reports/bonus-turnover/bonus-turnover-detailed-report.component';
+import { ParticipantSatisfactionReportComponent } from './reports/participant-satisfaction/participant-satisfaction-report.component';
+import { ABCAnalysisReportComponent } from './reports/abc-analysis/abc-analysis-report.component';
+import { ParticipantDetailsComponent } from './participants/participant-details.component';
+
 
 import { AdminRoutingModule } from './admin-routing.module';
+
+// специализированные сервисы
+import { BonusTurnoverService } from './reports/bonus-turnover/bonus-turnover.service';
 
 @NgModule({
   imports: [
@@ -81,6 +91,7 @@ import { AdminRoutingModule } from './admin-routing.module';
     RadioButtonModule,
     CheckboxModule,
     CalendarModule,
+    TreeTableModule,
     // routing
     AdminRoutingModule,
   ],
@@ -101,7 +112,14 @@ import { AdminRoutingModule } from './admin-routing.module';
     DocumentationComponent,
     NoticeComponent,
     ButtonWithSpinnerComponent,
-    ReportComponent,
+    BonusTurnoverReportComponent,
+    BonusTurnoverDetailedReportComponent,
+    ParticipantSatisfactionReportComponent,
+    ABCAnalysisReportComponent,
+    ParticipantDetailsComponent,
+  ],
+  providers: [
+    BonusTurnoverService,
   ]
 })
 export class AdminModule { }

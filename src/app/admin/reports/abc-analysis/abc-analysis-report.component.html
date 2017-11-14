@@ -1,0 +1,53 @@
+<div class="card">
+  <h2>ABC-анализ</h2>
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <div class="ui-g">
+        <div class="ui-g-3">
+          <label>С: </label>
+          <p-calendar
+            readonlyInput="true" [locale]="calendarLocale"
+            dateFormat="dd.mm.yy"
+            [(ngModel)]="reportData.beginDate"
+            (onSelect)="getMainReport()"
+            [showIcon]="true"></p-calendar>
+        </div>
+        <div class="ui-g-3">
+          <label>по: </label>
+          <p-calendar
+            readonlyInput="true" [locale]="calendarLocale"
+            dateFormat="dd.mm.yy"
+            [(ngModel)]="reportData.endDate"
+            (onSelect)="getMainReport()"
+            [showIcon]="true"></p-calendar>
+        </div>
+      </div>
+      <div class="ui-g">
+        <div class="ui-g-12">
+          <p-treeTable
+            [value]="reportData.table.body"
+            (onRowDblclick)="getDetails($event.node.data)"
+            selectionMode="single">
+            <p-column field="phone" header="Группа / Участник">
+            </p-column>
+            <p-column field="balance" header="Баланс баллов" [style]="{'text-align': 'right'}">
+              <ng-template let-rd="rowData" pTemplate="body">
+                <span>{{ isNumber(rd.data.balance) ? (rd.data.balance | number: '1.0-0') : rd.data.balance }}</span>
+              </ng-template>
+            </p-column>
+            <p-column field="plusPoints" header="Начислено баллов" [style]="{'text-align': 'right'}">
+              <ng-template let-rd="rowData" pTemplate="body">
+                <span>{{ isNumber(rd.data.plusPoints) ? (rd.data.plusPoints | number: '1.0-0') : rd.data.plusPoints }}</span>
+              </ng-template>
+            </p-column>
+            <p-column field="minusPoints" header="Списано баллов" [style]="{'text-align': 'right'}">
+              <ng-template let-rd="rowData" pTemplate="body">
+                <span>{{ isNumber(rd.data.minusPoints) ? (rd.data.minusPoints | number: '1.0-0') : rd.data.minusPoints }}</span>
+              </ng-template>
+            </p-column>
+          </p-treeTable>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

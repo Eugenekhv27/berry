@@ -1,0 +1,126 @@
+<div class="card">
+  <h2>{{ reportHeader }}<span style="color: red"> / under construction!</span></h2>
+
+  <!-- Основная таблица selectionMode="range" -->
+
+  <div class="ui-g" *ngIf="!showDetails">
+    <div class="ui-g-12">
+      <div class="ui-g">
+        <div class="ui-g-3">
+          <label>С: </label>
+          <p-calendar
+            readonlyInput="true" [locale]="calendarLocale"
+            dateFormat="dd.mm.yy"
+            [(ngModel)]="startDate"
+            (onSelect)="getMainReport()"
+            [showIcon]="true"></p-calendar>
+        </div>
+        <div class="ui-g-3">
+          <label>по: </label>
+          <p-calendar
+            readonlyInput="true" [locale]="calendarLocale"
+            dateFormat="dd.mm.yy"
+            [(ngModel)]="endDate"
+            (onSelect)="getMainReport()"
+            [showIcon]="true"></p-calendar>
+        </div>
+      </div>
+      <div class="ui-g">
+        <div class="ui-g-12">
+        <p-dataTable
+          [value]="tableRows"
+          [(selection)]="selection"
+          selectionMode="single"
+          (onRowDblclick)="onRowDoubleClick($event)"
+          [responsive]="true"
+          [paginator]="true"
+          [loading]="loading"
+          loadingIcon="fa-spinner"
+          [rows]="maxRowsPerPage">
+          <p-column field="phone" header="Участник" [style]="{'text-align':'center'}">
+          </p-column>
+          <p-column field="money" header="Всего покупок, руб" [style]="rowStyle">
+            <ng-template let-rd="rowData" pTemplate="body">
+              <span>{{ rd.money | number: '1.2-2' }}</span>
+            </ng-template>
+          </p-column>
+          <p-column field="balance" header="Баланс баллов" [style]="rowStyle">
+            <ng-template let-rd="rowData" pTemplate="body">
+              <span>{{ rd.balance | number: '1.0-0' }}</span>
+            </ng-template>
+          </p-column>
+          <p-column field="minusPoints" header="Списано баллов" [style]="rowStyle">
+            <ng-template let-rd="rowData" pTemplate="body">
+              <span>{{ rd.minusPoints | number: '1.0-0' }}</span>
+            </ng-template>
+          </p-column>
+          <p-column field="ratedPurchases" header="Кол-во отзывов" [style]="rowStyle">
+            <ng-template let-rd="rowData" pTemplate="body">
+              <span>{{ rd.ratedPurchases | number: '1.0-0' }}</span>
+            </ng-template>
+          </p-column>
+          <p-column field="averageRating" header="Средний рейтинг" [style]="rowStyle">
+            <ng-template let-rd="rowData" pTemplate="body">
+              <span>{{ rd.averageRating | number: '1.1-1' }}</span>
+            </ng-template>
+          </p-column>
+        </p-dataTable>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Таблица "расшифровки" -->
+
+  <div class="ui-g" *ngIf="showDetails">
+    <div class="ui-g-12">
+      <div class="ui-g">
+        <div class="ui-g-2">
+          <button pButton type="button" icon = "fa-chevron-left" (click)="back()" label="Назад">
+            </button>
+        </div>
+      </div>
+      <div class="ui-g">
+        <div class="ui-g-12">
+          <p-dataTable
+            [value]="detailsTable"
+            [responsive]="true"
+            [paginator]="true"
+            [loading]="loading"
+            loadingIcon="fa-spinner"
+            [rows]="maxRowsPerPage">
+            <p-column field="date" header="Дата и время" [style]="{'text-align':'center'}">
+              <ng-template let-rd="rowData" pTemplate="body">
+                <span>{{ rd.date | date: 'short' }}</span>
+              </ng-template>
+            </p-column>
+            <p-column field="shop" header="Точка"></p-column>
+            <p-column field="money" header="Сумма, руб" [style]="rowStyle">
+              <ng-template let-rd="rowData" pTemplate="body">
+                <span>{{ rd.money | number: '1.2-2' }}</span>
+              </ng-template>
+            </p-column>
+            <p-column field="plusBonus" header="Начислено баллов" [style]="rowStyle">
+              <ng-template let-rd="rowData" pTemplate="body">
+                <span>{{ rd.plusBonus | number: '1.0-0' }}</span>
+              </ng-template>
+            </p-column>
+            <p-column field="minusBonus" header="Списано баллов" [style]="rowStyle">
+              <ng-template let-rd="rowData" pTemplate="body">
+                <span>{{ rd.minusBonus | number: '1.0-0' }}</span>
+              </ng-template>
+            </p-column>
+            <p-column field="testimonial" header="Отзыв"></p-column>
+            <p-column field="rating" header="Рейтинг">
+              <ng-template let-rd="rowData" pTemplate="body">
+                <span>{{ rd.rating | number: '1.0-0' }}</span>
+              </ng-template>
+            </p-column>
+          </p-dataTable>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
