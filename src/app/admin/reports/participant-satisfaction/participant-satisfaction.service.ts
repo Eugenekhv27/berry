@@ -35,4 +35,22 @@ export class ParticipantSatisfactionService {
         return Observable.of([]);
       });
   }
+
+  getDetailedReportData(startDate: Date, endDate: Date) {
+    return this.rest.getData('/admin/reports/satisfaction/details', { startDate, endDate })
+      .map((data: any) => {
+        const report = new ReportModel();
+        report.beginDate = new Date(data.beginDate);
+        report.endDate = new Date(data.endDate);
+        report.table = data['table'];
+        console.log(report);
+        return report;
+      })
+      .catch((err: any, caught: Observable<any>) => {
+        // TODO: здесь надо написать вменяемую обработку ошибок и выдачу сообщений в NotifierService
+        this.notifier.error('Ошибка!', 'Данные не получены');
+        console.error(err);
+        return Observable.of([]);
+      });
+  }
 }

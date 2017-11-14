@@ -12,24 +12,25 @@
       </div>
       <div class="ui-g">
         <div class="ui-g-12">
-          <p-dataTable [value]="detailsTable" [responsive]="true" [paginator]="true" [loading]="loading" loadingIcon="fa-spinner" [rows]="maxRowsPerPage">
+          <p-dataTable [value]="reportData.table.body" [responsive]="true" [paginator]="true" [loading]="loading" loadingIcon="fa-spinner"
+            [rows]="reportData.settings.maxRowsPerPage">
             <p-column field="date" header="Дата и время" [style]="{'text-align':'center'}">
               <ng-template let-rd="rowData" pTemplate="body">
                 <span>{{ rd.date | date: 'short' }}</span>
               </ng-template>
             </p-column>
             <p-column field="shop" header="Точка"></p-column>
-            <p-column field="money" header="Сумма, руб" [style]="rowStyle">
+            <p-column field="money" header="Сумма, руб" [style]="{'text-align': 'right'}">
               <ng-template let-rd="rowData" pTemplate="body">
                 <span>{{ rd.money | number: '1.2-2' }}</span>
               </ng-template>
             </p-column>
-            <p-column field="plusBonus" header="Начислено баллов" [style]="rowStyle">
+            <p-column field="plusBonus" header="Начислено баллов" [style]="{'text-align': 'right'}">
               <ng-template let-rd="rowData" pTemplate="body">
                 <span>{{ rd.plusBonus | number: '1.0-0' }}</span>
               </ng-template>
             </p-column>
-            <p-column field="minusBonus" header="Списано баллов" [style]="rowStyle">
+            <p-column field="minusBonus" header="Списано баллов" [style]="{'text-align': 'right'}">
               <ng-template let-rd="rowData" pTemplate="body">
                 <span>{{ rd.minusBonus | number: '1.0-0' }}</span>
               </ng-template>
