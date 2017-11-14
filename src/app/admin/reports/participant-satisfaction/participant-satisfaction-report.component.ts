@@ -40,7 +40,8 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
       });
   }
 
-  getDetails(selectedRow: TableRow): void {
-//    this.router.navigate(['/admin/participants/' + encodeURIComponent(selectedRow.id)]);
+  getDetails(elem: any): void {
+    console.log(elem);
+    this.router.navigate(['/admin/reports/satisfaction/details']);
   }
 }
