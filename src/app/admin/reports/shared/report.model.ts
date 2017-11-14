@@ -1,4 +1,5 @@
 
+import { russianCalendarLocale } from '../../../shared/locale';
 import { localBeginningOfTheYear } from '../../../shared/utils';
 
 export interface ReportTable {
@@ -13,6 +14,7 @@ export class ReportModel {
   beginDate: Date;
   endDate: Date;
   table: ReportTable;
+  settings = { calendarLocale: russianCalendarLocale, maxRowsPerPage: 14};
 
   constructor() {
     this.table = { body: [], totals: {} };

@@ -5,19 +5,19 @@
       <div class="ui-g">
         <div class="ui-g-3">
           <label>С: </label>
-          <p-calendar readonlyInput="true" [locale]="calendarLocale" dateFormat="dd.mm.yy" [(ngModel)]="reportData.beginDate" (onSelect)="getMainReport()"
+          <p-calendar readonlyInput="true" [locale]="reportData.settings.calendarLocale" dateFormat="dd.mm.yy" [(ngModel)]="reportData.beginDate" (onSelect)="getMainReport()"
             [showIcon]="true"></p-calendar>
         </div>
         <div class="ui-g-3">
           <label>по: </label>
-          <p-calendar readonlyInput="true" [locale]="calendarLocale" dateFormat="dd.mm.yy" [(ngModel)]="reportData.endDate" (onSelect)="getMainReport()"
+          <p-calendar readonlyInput="true" [locale]="reportData.settings.calendarLocale" dateFormat="dd.mm.yy" [(ngModel)]="reportData.endDate" (onSelect)="getMainReport()"
             [showIcon]="true"></p-calendar>
         </div>
       </div>
       <div class="ui-g">
         <div class="ui-g-12">
           <p-dataTable #reportTable [value]="reportData.table.body" selectionMode="single" (onRowDblclick)="getDetails(reportTable.selection)"
-            [responsive]="true" [paginator]="true" [loading]="loading" loadingIcon="fa-spinner" [rows]="maxRowsPerPage">
+            [responsive]="true" [paginator]="true" [loading]="loading" loadingIcon="fa-spinner" [rows]="reportData.settings.maxRowsPerPage">
             <p-column field="phone" header="Участник" [style]="{'text-align':'center'}">
             </p-column>
             <p-column field="money" header="Всего покупок, руб" [style]="{'text-align': 'right'}">
