@@ -2,5 +2,6 @@
   "/user/bonuses": "/user?_embed=bonuses",
   "/admin/reports": "/admin-reports",
   "/admin/reports/satisfaction": "/admin-reports/2",
-  "/admin/reports/abc": "/admin-reports/3"
+  "/admin/reports/satisfaction/details": "/admin-reports/3",
+  "/admin/reports/abc": "/admin-reports/4"
 }

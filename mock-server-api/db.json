@@ -58,6 +58,32 @@
     }
   }, {
     "id": 3,
+    "title": "satisfaction-details",
+    "beginDate": "2017-01-01",
+    "endDate": "2017-07-31",
+    "table": {
+      "body": [
+        {
+          "date": "2017-09-21T12:32:43.00Z",
+          "shop": "Магазин №1",
+          "money": 123,
+          "plusPoints": 0,
+          "minusPoints": 34,
+          "testimonial": "У лукоморья дуб - зеленый.",
+          "rating": 4
+        }, {
+          "date": "2017-09-17T12:32:43.00Z",
+          "shop": "Магазин №0",
+          "money": 2344,
+          "plusPoints": 45,
+          "minusPoints": 0,
+          "testimonial": "Златая цепь на дубе том.",
+          "rating": 4
+        }
+      ]
+    }
+  }, {
+    "id": 4,
     "title": "abc",
     "beginDate": "2017-01-01",
     "endDate": "2017-01-01",
