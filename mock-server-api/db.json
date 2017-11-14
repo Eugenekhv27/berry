@@ -23,7 +23,39 @@
     "title": "satisfaction",
     "beginDate": "2017-01-01",
     "endDate": "2017-07-31",
-    "someData": 23456
+    "table": {
+      "body": [
+        {
+          "phone": "+7(123)4567890",
+          "money": 123412,
+          "balance": 345,
+          "minusPoints": 2343,
+          "ratedPurchases": 23,
+          "averageRating": 3.5
+        }, {
+          "phone": "+7(234)4567890",
+          "money": 123412,
+          "balance": 345,
+          "minusPoints": 2343,
+          "ratedPurchases": 23,
+          "averageRating": 3.5
+        }, {
+          "phone": "+7(456)4567890",
+          "money": 123412,
+          "balance": 345,
+          "minusPoints": 2343,
+          "ratedPurchases": 23,
+          "averageRating": 3.5
+        }, {
+          "phone": "+7(789)4567890",
+          "money": 123412,
+          "balance": 345,
+          "minusPoints": 2343,
+          "ratedPurchases": 23,
+          "averageRating": 3.5
+        }
+      ]
+    }
   }, {
     "id": 3,
     "title": "abc",
