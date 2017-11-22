@@ -1,8 +1,13 @@
-# BonusClub mock-server-api
+# Средства имитации **back end** сервера для **front end** разработки
 
-#### Папка содержит данные для имитации серверного [REST API](https://ru.wikipedia.org/wiki/REST) с помощью простого сервера [typicode/json-server](https://github.com/typicode/json-server):
+## Директория **\mock-server-api**
 
-Сервер [typicode/json-server](https://github.com/typicode/json-server) нужно установить глобально с помощью **npm**
+Имитация серверного [REST API](https://ru.wikipedia.org/wiki/REST) выполняется с помощью простого сервера [typicode/json-server](https://github.com/typicode/json-server). Данные для имитации находятся в директории **\mock-server-api**. Назначение файлов:
+
+ * **db.json** - файл с данными
+ * **routes.json** - файл с маршрутами
+
+Сервер [typicode/json-server](https://github.com/typicode/json-server) нужно установить глобально:
 ```
 $ npm install -g json-server
 ```
@@ -12,7 +17,8 @@ $ npm install -g json-server
 \mock-server-api> json-server --watch db.json --routes routes.json --port 3030
 ```
 
-Назначение файлов:
- * **db.json** - файл с данными
- * **routes.json** - файл с маршрутами
+Или шорткат для npm:
+```
+$ npm run json-server
+```
  

@@ -10,7 +10,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "json-server": "json-server --watch .\\mock-server-api\\db.json --routes .\\mock-server-api\\routes.json --port 3030"
   },
   "private": true,
   "dependencies": {
