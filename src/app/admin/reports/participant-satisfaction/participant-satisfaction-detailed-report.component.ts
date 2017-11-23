@@ -35,7 +35,7 @@ export class ParticipantSatisfactionDetailedReportComponent implements OnInit {
   ngOnInit() {
     const routeParams = this.route.snapshot.paramMap;
 
-    this.participantId = routeParams.get('id') || '';
+    this.participantId = routeParams.get('id');
     this.reportData.endDate = this.parseDateFromParam(routeParams.get('enddate'))
       || new Date();
     this.reportData.beginDate = this.parseDateFromParam(routeParams.get('begindate'))
