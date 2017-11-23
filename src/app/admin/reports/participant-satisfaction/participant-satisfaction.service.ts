@@ -41,7 +41,7 @@ export class ParticipantSatisfactionService {
       });
   }
 
-  getDetailedReportData(participantId: string, beginDate: Date, endDate: Date) {
+  getDetailedReportData(participantId: string | null, beginDate: Date, endDate: Date) {
     const params = {
       id: participantId,
       beginDate: beginDate.toISOString(),

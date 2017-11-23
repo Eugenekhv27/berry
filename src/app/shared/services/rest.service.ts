@@ -29,7 +29,6 @@ export class RestService {
       options.params = new HttpParams();
       Object.keys(urlParams).forEach(key => {
         options.params = options.params.append(key.toLowerCase(), encodeURIComponent(urlParams[key]));
-        console.log(key, urlParams[key], JSON.stringify(urlParams[key]));
       });
     }
 
