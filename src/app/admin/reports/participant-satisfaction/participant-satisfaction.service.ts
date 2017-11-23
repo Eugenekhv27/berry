@@ -18,8 +18,13 @@ export class ParticipantSatisfactionService {
     private notifier: NotifierService
   ) {}
 
-  getReportData(startDate: Date, endDate: Date) {
-    return this.rest.getData('/admin/reports/satisfaction', { startDate, endDate })
+  getReportData(beginDate: Date, endDate: Date) {
+    const params = {
+      beginDate: beginDate.toISOString(),
+      endDate: endDate.toISOString(),
+    };
+
+    return this.rest.getData('/admin/reports/satisfaction', params)
       .map((data: any) => {
         const report = new ReportModel();
         report.beginDate = new Date(data.beginDate);
@@ -36,8 +41,14 @@ export class ParticipantSatisfactionService {
       });
   }
 
-  getDetailedReportData(startDate: Date, endDate: Date) {
-    return this.rest.getData('/admin/reports/satisfaction/details', { startDate, endDate })
+  getDetailedReportData(participantId: string, beginDate: Date, endDate: Date) {
+    const params = {
+      id: participantId,
+      beginDate: beginDate.toISOString(),
+      endDate: endDate.toISOString(),
+    };
+
+    return this.rest.getData('/admin/reports/satisfaction/details', params)
       .map((data: any) => {
         const report = new ReportModel();
         report.beginDate = new Date(data.beginDate);

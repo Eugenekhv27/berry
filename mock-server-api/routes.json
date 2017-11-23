@@ -2,6 +2,7 @@
   "/user/bonuses": "/user?_embed=bonuses",
   "/admin/reports": "/admin-reports",
   "/admin/reports/satisfaction": "/admin-reports/2",
-  "/admin/reports/satisfaction/details": "/admin-reports/3",
+  "/admin/reports/satisfaction?begindate=:b&enddate=:e": "/admin-reports/2",
+  "/admin/reports/satisfaction/details?id=:id&begindate=:b&enddate=:e": "/admin-reports/3",
   "/admin/reports/abc": "/admin-reports/4"
 }
