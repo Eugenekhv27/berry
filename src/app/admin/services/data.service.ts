@@ -74,7 +74,6 @@ export class DataService {
   }
 
   getBonusReport(startDate: any, endDate: any) {
-    console.log(this.dateToString(startDate), this.dateToString(endDate));
     return this.http.get(
       this.getFullUrl('bonusReport', this.dateToString(startDate), this.dateToString(endDate)),
       this.getRequestOptionsArgs()
@@ -92,7 +91,6 @@ export class DataService {
   }
 
   getBonusReportDetails(date: any) {
-    console.log(this.dateToString(date));
     return this.http.get(
       this.getFullUrl('bonusReportDetails', this.dateToString(date)),
       this.getRequestOptionsArgs()
@@ -264,11 +262,9 @@ export class DataService {
       this.getRequestOptionsArgs()
       )
       .map(resp => {
-        console.log('Статус ответа: ' + resp.status);
         if (!resp.ok) {
           throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
         }
-        console.log(resp);
         return true;
       })
       .catch(error => {
@@ -297,11 +293,9 @@ export class DataService {
       this.getRequestOptionsArgs()
       )
       .map(resp => {
-        console.log('Статус ответа: ' + resp.status);
         if (!resp.ok) {
           throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
         }
-        console.log(resp);
         return true;
       })
       .catch(error => {

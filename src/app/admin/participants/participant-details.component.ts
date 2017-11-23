@@ -63,7 +63,6 @@ export class ParticipantDetailsComponent implements OnInit {
 
     this.dataService.getParticipantDetails(id)
       .subscribe((data: any) => {
-       console.log(data);
         this.detailsTable = data.result.BonusOperations.map(dataRow => new DetailsRow(dataRow));
         this.participantEditor = {
           id: data.result._id || '',
@@ -74,14 +73,8 @@ export class ParticipantDetailsComponent implements OnInit {
           referrer: data.result.SuperBuyer ? data.result.SuperBuyer.Aka : '',
           comment: data.result.Comment || ''
         };
-//        this.participant = new Participant(data.result);
-
         this.loading = false;
         this.isDeleteButtonDisabled = false;
-
-        console.log(this.detailsTable);
-        console.log(this.participantEditor);
-//        console.log(this.participant);
       });
   }
 
@@ -105,8 +98,6 @@ export class ParticipantDetailsComponent implements OnInit {
   }
 
   save(): void {
-    console.log('save()');
-    console.log(this.createParticipantObject());
     const request = this.dataService.saveParticipant(this.createParticipantObject());
     this.notifier.info(String(this.participantEditor.phone), 'Данные отправлены.');
     request.subscribe(done => {
@@ -167,7 +158,6 @@ export class ParticipantDetailsComponent implements OnInit {
   }
 
   deleteLine() {
-    console.log(this.dt.selection);
     const ind = this.detailsTable.indexOf(this.dt.selection);
     this.detailsTable = this.detailsTable.filter((val, i) => i !== ind);
     this.dt.selection = null;
@@ -175,9 +165,6 @@ export class ParticipantDetailsComponent implements OnInit {
   }
 
   onRowSelect(e: any) {
-    console.log('onRowSelect() - селектилка');
-    console.log(this.dt.selection);
-
     this.operationEditor.refreshDisplayedData(this.dt.selection);
   }
 

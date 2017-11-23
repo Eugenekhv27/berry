@@ -90,7 +90,6 @@ export class Participant {
   shop: string;
 
   constructor(serverObject: any = {}) {
-    console.log(serverObject);
     this.id = String(serverObject._id || serverObject.ID || '');
     this.date = String(serverObject.RegDate || '');
     this.phone = String(serverObject.Aka || '');

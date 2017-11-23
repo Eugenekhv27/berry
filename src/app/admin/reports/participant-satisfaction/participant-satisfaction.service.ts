@@ -30,7 +30,6 @@ export class ParticipantSatisfactionService {
         report.beginDate = new Date(data.beginDate);
         report.endDate = new Date(data.endDate);
         report.table = data['table'];
-        console.log(report);
         return report;
       })
       .catch((err: any, caught: Observable<any>) => {
@@ -54,7 +53,6 @@ export class ParticipantSatisfactionService {
         report.beginDate = new Date(data.beginDate);
         report.endDate = new Date(data.endDate);
         report.table = data['table'];
-        console.log(report);
         return report;
       })
       .catch((err: any, caught: Observable<any>) => {

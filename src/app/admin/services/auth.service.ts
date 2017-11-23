@@ -30,17 +30,14 @@ export class AuthService implements OnInit {
     const auth = btoa(login + ':' + password);
     localStorage.setItem('loginpassword', auth);
     const headers = new Headers({ Authorization: 'Basic ' + auth });
-    console.log('AuthService()');
     return this.http
       .get('http://base.progrepublic.ru/csp/bonusclubrest2/getAE',
       { headers }
       )
       .map((resp: any) => {
-        console.log('Статус ответа: ' + resp.status);
         if (resp.json().status !== 'OK') {
           throw Error('Получен отрицательный ответ: ' + JSON.stringify(resp.json()));
         }
-        console.log(resp.json());
         localStorage.setItem('accountEncrypt', resp.json().result);
         this.router.navigate([this.redirectUrl]);
         return true;
