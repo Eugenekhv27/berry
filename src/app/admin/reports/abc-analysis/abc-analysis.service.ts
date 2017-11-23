@@ -18,14 +18,13 @@ export class ABCAnalysisService {
     private notifier: NotifierService
   ) {}
 
-  getReportData(startDate: Date, endDate: Date) {
-    return this.rest.getData('/admin/reports/abc', { startDate, endDate })
+  getReportData(beginDate: Date, endDate: Date) {
+    return this.rest.getData('/admin/reports/abc', { beginDate, endDate })
       .map((data: any) => {
         const report = new ReportModel();
         report.beginDate = new Date(data.beginDate);
         report.endDate = new Date(data.endDate);
         report.table = data['table'];
-        console.log(report);
         return report;
       })
       .catch((err: any, caught: Observable<any>) => {
