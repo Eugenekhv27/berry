@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class RestService {
@@ -22,7 +22,17 @@ export class RestService {
     return `http://localhost:3030${path}`;
   }
 
-  getData(path: string, requestBody?: any) {
-    return this.http.get(this.getFullServiceUrl(path));
+  getData(path: string, urlParams?: any) {
+    const options: any = {};
+
+    if (urlParams) {
+      options.params = new HttpParams();
+      Object.keys(urlParams).forEach(key => {
+        options.params = options.params.append(key.toLowerCase(), encodeURIComponent(urlParams[key]));
+        console.log(key, urlParams[key], JSON.stringify(urlParams[key]));
+      });
+    }
+
+    return this.http.get(this.getFullServiceUrl(path), options);
   }
 }
