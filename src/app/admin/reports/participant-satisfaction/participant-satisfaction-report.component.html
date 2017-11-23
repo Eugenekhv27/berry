@@ -16,12 +16,9 @@
       </div>
       <div class="ui-g">
         <div class="ui-g-12">
-          <p-dataTable #reportTable [value]="reportData.table.body" selectionMode="single" (onRowDblclick)="getDetails(reportTable.selection)"
+          <p-dataTable #reportTable [value]="reportData.table.body" selectionMode="single" (onRowDblclick)="getDetails($event)"
             [responsive]="true" [paginator]="true" [loading]="loading" loadingIcon="fa-spinner" [rows]="reportData.settings.maxRowsPerPage">
             <p-column field="phone" header="Участник" [style]="{'text-align':'center'}">
-              <ng-template let-rd="rowData" pTemplate="body">
-                  <span (dblclick)="getParticipantCard(reportTable.selection); $event.stopPropagation();">{{ rd.phone }}</span>
-              </ng-template>
             </p-column>
             <p-column field="money" header="Всего покупок, руб" [style]="{'text-align': 'right'}">
               <ng-template let-rd="rowData" pTemplate="body">

@@ -35,11 +35,29 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
       });
   }
 
-  getDetails(selectedRow: any): void {
-    this.router.navigate(['/admin/reports/satisfaction/details']);
+  private isFirstColumnClicked(event: any): boolean {
+    let content;
+
+    if (event.originalEvent.target.tagName === 'SPAN') {
+      content = event.originalEvent.target.previousElementSibling;
+    } else if (event.originalEvent.target.tagName === 'TD') {
+      content = event.originalEvent.target.firstElementChild;
+    }
+
+    return (content.tagName.toLowerCase() === 'span'
+      && content.className.toLowerCase() === 'ui-column-title'
+      && content.innerHTML.toLowerCase() === 'участник');
   }
 
-  getParticipantCard(selectedRow: any): void {
-    this.router.navigate(['/admin/participants/' + encodeURIComponent(selectedRow.id)]);
+  getDetails(event: any): void {
+    const selectedRow = event.data;
+
+    // если клик на перовой колонке, то открыть карточку участника
+    if (this.isFirstColumnClicked(event)) {
+        this.router.navigate(['/admin/participants/' + encodeURIComponent(selectedRow.id)]);
+    } else {
+      // если на любой другой - детализированный отчет
+      this.router.navigate(['/admin/reports/satisfaction/details']);
+    }
   }
 }
