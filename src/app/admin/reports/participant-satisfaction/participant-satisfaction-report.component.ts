@@ -35,8 +35,11 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
       });
   }
 
-  getDetails(elem: any): void {
-    console.log(elem);
+  getDetails(selectedRow: any): void {
     this.router.navigate(['/admin/reports/satisfaction/details']);
+  }
+
+  getParticipantCard(selectedRow: any): void {
+    this.router.navigate(['/admin/participants/' + encodeURIComponent(selectedRow.id)]);
   }
 }
