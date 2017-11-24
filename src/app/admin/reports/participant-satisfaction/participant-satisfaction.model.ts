@@ -1,22 +1,17 @@
-import { appParseNumber } from '../../../shared/utils';
+import { ReportModel } from '../shared/report.model';
 
-export interface TableRow {
-  phone: string;
-  money: number;
-  balance: number;
-  minusPoints: number;
-  ratedPurchases: number;
-  averageRating: number;
-}
+export class SatisfactionDetailedReportModel extends ReportModel {
+  participant: { id: string, phone: string};
 
-export class DetailsRow {
-  phone: string;
-  plusBonus: number;
-  minusBonus: number;
+  constructor(dataFromJson?: any) {
+    super();
+    this.participant = { id: null, phone: null };
 
-  constructor(dataRow: any) {
-    this.phone = String(dataRow.Aka).trim();
-    this.plusBonus = parseFloat(String(dataRow.PlusPointsSum));
-    this.minusBonus = parseFloat(String(dataRow.MinusPointsSum));
+    if (dataFromJson) {
+      this.beginDate = new Date(dataFromJson.beginDate);
+      this.endDate = new Date(dataFromJson.endDate);
+      this.participant = dataFromJson.participant;
+      this.table = dataFromJson['table'];
+    }
   }
 }
