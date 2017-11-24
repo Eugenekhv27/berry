@@ -63,8 +63,12 @@
   }, {
     "id": 3,
     "title": "satisfaction-details",
-    "beginDate": "2017-01-01",
-    "endDate": "2017-07-31",
+    "participant": {
+      "id": 32,
+      "phone": "+7(909)8554982"
+    },
+    "beginDate": "2017-03-22T14:00:00.000Z",
+    "endDate": "2017-07-26T14:00:00.000Z",
     "table": {
       "body": [
         {
