@@ -49,15 +49,29 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
       && content.innerHTML.toLowerCase() === 'участник');
   }
 
+  getUrlParams() {
+    return {
+      begindate: encodeURIComponent(this.reportData.beginDate.toISOString()),
+      enddate: encodeURIComponent(this.reportData.endDate.toISOString()),
+    };
+  }
+
   getDetails(event: any): void {
     const selectedRow = event.data;
 
     // если клик на перовой колонке, то открыть карточку участника
     if (this.isFirstColumnClicked(event)) {
-        this.router.navigate(['/admin/participants/' + encodeURIComponent(selectedRow.id)]);
+      this.router.navigate(['/admin/participants/',
+        // id передаем как обязательный url-параметр (является частью пути)
+        encodeURIComponent(selectedRow.id)]);
     } else {
+      console.log(this.getUrlParams());
       // если на любой другой - детализированный отчет
-      this.router.navigate(['/admin/reports/satisfaction/details']);
+      this.router.navigate(['/admin/reports/satisfaction/details/',
+        // id передаем как обязательный url-параметр (является частью пути)
+        encodeURIComponent(selectedRow.id),
+        // интеравл дат передаем как опциональный url-параметр (через ";")
+        this.getUrlParams()]);
     }
   }
 }

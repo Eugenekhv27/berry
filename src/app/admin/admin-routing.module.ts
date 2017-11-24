@@ -31,7 +31,7 @@ const routes: Routes = [{
     { path: 'reports/bonuses', component: BonusTurnoverReportComponent, canActivate: [AuthGuard] },
     { path: 'reports/bonuses/:date', component: BonusTurnoverDetailedReportComponent, canActivate: [AuthGuard] },
     { path: 'reports/satisfaction', component: ParticipantSatisfactionReportComponent, canActivate: [AuthGuard] },
-    { path: 'reports/satisfaction/details', component: ParticipantSatisfactionDetailedReportComponent, canActivate: [AuthGuard] },
+    { path: 'reports/satisfaction/details/:id', component: ParticipantSatisfactionDetailedReportComponent, canActivate: [AuthGuard] },
     { path: 'reports/abc', component: ABCAnalysisReportComponent, canActivate: [AuthGuard] },
     { path: 'circular', component: CircularComponent, canActivate: [AuthGuard] },
     { path: 'bonuses', component: BonusCalculatorComponent, canActivate: [AuthGuard] },
