@@ -33,9 +33,9 @@
                 <span>{{ rd.money | number: '1.2-2' }}</span>
               </ng-template>
             </p-column>
-            <p-column field="plusPoints" header="Начислено баллов" [style]="{'text-align': 'right'}">
+            <p-column field="minusPoints" header="Списано баллов" [style]="{'text-align': 'right'}">
               <ng-template let-rd="rowData" pTemplate="body">
-                <span>{{ rd.plusPoints | number: '1.0-0' }}</span>
+                <span>{{ rd.minusPoints | number: '1.0-0' }}</span>
               </ng-template>
             </p-column>
             <p-column field="testimonial" header="Отзыв"></p-column>

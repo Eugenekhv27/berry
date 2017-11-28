@@ -76,31 +76,31 @@
           "shop": "Магазин №1",
           "article": "Скатерть-самодранка",
           "money": 1234,
-          "plusPoints": 10,
-          "testimonial": "У лукоморья дуб - зеленый.",
+          "minusPoints": 10,
+          "testimonial": "Улук о'морья дубзе лёный",
           "rating": 4
         }, {
           "date": "2017-04-21T12:32:43.00Z",
           "shop": "Магазин №1",
           "article": "Сапоги скорохромы",
           "money": 4321,
-          "plusPoints": 45,
-          "testimonial": "И днем и ночью ко",
+          "minusPoints": 45,
+          "testimonial": "Иднеми ночь юко",
           "rating": 4
         }, {
           "date": "2017-04-21T12:32:43.00Z",
           "shop": "Магазин №1",
           "article": "Мечь-леденец (уценка)",
           "money": 1111,
-          "plusPoints": 120,
-          "testimonial": "т ученый все ходит по ц",
+          "minusPoints": 120,
+          "testimonial": "тученый все ходит поц",
           "rating": 4
         }, {
           "date": "2017-06-06T06:00:00.00Z",
           "shop": "Магазин №666",
           "article": "Масло моторное Hell-Ultra",
           "money": 2344,
-          "plusPoints": 45,
+          "minusPoints": 45,
           "testimonial": "И вместо сердца пламенный",
           "rating": 3
         }
