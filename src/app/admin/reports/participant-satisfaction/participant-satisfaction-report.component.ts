@@ -61,13 +61,13 @@ export class ParticipantSatisfactionReportComponent implements OnInit {
 
     // если клик на перовой колонке, то открыть карточку участника
     if (this.isFirstColumnClicked(event)) {
-      this.router.navigate(['/admin/participants/',
+      this.router.navigate(['/participants/',
         // id передаем как обязательный url-параметр (является частью пути)
         encodeURIComponent(selectedRow.id)]);
     } else {
       console.log(this.getUrlParams());
       // если на любой другой - детализированный отчет
-      this.router.navigate(['/admin/reports/satisfaction/details/',
+      this.router.navigate(['/reports/satisfaction/details/',
         // id передаем как обязательный url-параметр (является частью пути)
         encodeURIComponent(selectedRow.id),
         // интеравл дат передаем как опциональный url-параметр (через ";")

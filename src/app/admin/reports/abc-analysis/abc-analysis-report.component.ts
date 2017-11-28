@@ -48,7 +48,7 @@ export class ABCAnalysisReportComponent implements OnInit {
   }
 
   getDetails(selectedRow: TableRow): void {
-    this.router.navigate(['/admin/participants/' + encodeURIComponent(selectedRow.id)]);
+    this.router.navigate(['/participants/' + encodeURIComponent(selectedRow.id)]);
   }
 
   /**

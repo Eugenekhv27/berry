@@ -8,7 +8,6 @@ import {
   MultiSelectModule, MenuItem
 } from 'primeng/primeng';
 
-// import * as gl from '../admin.globals';
 import { Participant } from '../../shared/model/participant.model';
 import { NotifierService, DataService, UtilsService } from '../services/services';
 

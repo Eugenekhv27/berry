@@ -35,10 +35,10 @@ export class ParticipantsComponent implements OnInit {
   }
 
   onRowDoubleClick() {
-    this.router.navigate(['/admin/participants/' + encodeURIComponent(this.selectedLine.id)]);
+    this.router.navigate(['/participants/' + encodeURIComponent(this.selectedLine.id)]);
   }
 
   openNewParticipantForm() {
-    this.router.navigate(['/admin/participants/new']);
+    this.router.navigate(['/participants/new']);
   }
  }
