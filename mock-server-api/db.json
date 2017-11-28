@@ -72,21 +72,37 @@
     "table": {
       "body": [
         {
-          "date": "2017-09-21T12:32:43.00Z",
+          "date": "2017-04-21T12:32:43.00Z",
           "shop": "Магазин №1",
-          "money": 123,
-          "plusPoints": 0,
-          "minusPoints": 34,
+          "article": "Скатерть-самодранка",
+          "money": 1234,
+          "plusPoints": 10,
           "testimonial": "У лукоморья дуб - зеленый.",
           "rating": 4
         }, {
-          "date": "2017-09-17T12:32:43.00Z",
-          "shop": "Магазин №0",
+          "date": "2017-04-21T12:32:43.00Z",
+          "shop": "Магазин №1",
+          "article": "Сапоги скорохромы",
+          "money": 4321,
+          "plusPoints": 45,
+          "testimonial": "И днем и ночью ко",
+          "rating": 4
+        }, {
+          "date": "2017-04-21T12:32:43.00Z",
+          "shop": "Магазин №1",
+          "article": "Мечь-леденец (уценка)",
+          "money": 1111,
+          "plusPoints": 120,
+          "testimonial": "т ученый все ходит по ц",
+          "rating": 4
+        }, {
+          "date": "2017-06-06T06:00:00.00Z",
+          "shop": "Магазин №666",
+          "article": "Масло моторное Hell-Ultra",
           "money": 2344,
           "plusPoints": 45,
-          "minusPoints": 0,
-          "testimonial": "Златая цепь на дубе том.",
-          "rating": 4
+          "testimonial": "И вместо сердца пламенный",
+          "rating": 3
         }
       ]
     }

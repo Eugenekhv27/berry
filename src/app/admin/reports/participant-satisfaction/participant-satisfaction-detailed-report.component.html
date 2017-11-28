@@ -26,20 +26,16 @@
                 <span>{{ rd.date | date: 'short' }}</span>
               </ng-template>
             </p-column>
-            <p-column field="shop" header="Точка"></p-column>
+            <p-column field="shop" header="Точка продаж"></p-column>
+            <p-column field="article" header="Товар"></p-column>
             <p-column field="money" header="Сумма, руб" [style]="{'text-align': 'right'}">
               <ng-template let-rd="rowData" pTemplate="body">
                 <span>{{ rd.money | number: '1.2-2' }}</span>
               </ng-template>
             </p-column>
-            <p-column field="plusBonus" header="Начислено баллов" [style]="{'text-align': 'right'}">
+            <p-column field="plusPoints" header="Начислено баллов" [style]="{'text-align': 'right'}">
               <ng-template let-rd="rowData" pTemplate="body">
-                <span>{{ rd.plusBonus | number: '1.0-0' }}</span>
-              </ng-template>
-            </p-column>
-            <p-column field="minusBonus" header="Списано баллов" [style]="{'text-align': 'right'}">
-              <ng-template let-rd="rowData" pTemplate="body">
-                <span>{{ rd.minusBonus | number: '1.0-0' }}</span>
+                <span>{{ rd.plusPoints | number: '1.0-0' }}</span>
               </ng-template>
             </p-column>
             <p-column field="testimonial" header="Отзыв"></p-column>
