@@ -54,6 +54,6 @@ export class BonusTurnoverReportComponent implements OnInit {
   }
 
   getDetailedReport(date: Date) {
-    this.router.navigate(['/admin/reports/bonuses/' + encodeURIComponent(date.toISOString())]);
+    this.router.navigate(['/reports/bonuses/' + encodeURIComponent(date.toISOString())]);
   }
 }

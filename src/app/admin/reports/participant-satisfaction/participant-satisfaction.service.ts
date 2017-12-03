@@ -1,5 +1,5 @@
 /**
- * Этот сервис поставляет данные для отчета "ABC-анализ" и
+ * Этот сервис поставляет данные для отчета "Удовлетворенность участников" и
  * также отвечает за обработку ошибок при получении данных.
  * Провайдер декларируется локально в компоненте.
  */
@@ -9,9 +9,10 @@ import { Observable } from 'rxjs/Observable';
 import { NotifierService } from '../../services/services';
 import { RestService } from '../../../shared/services/rest.service';
 import { ReportModel } from '../shared/report.model';
+import { SatisfactionDetailedReportModel } from './participant-satisfaction.model';
 
 @Injectable()
-export class ABCAnalysisService {
+export class ParticipantSatisfactionService {
 
   constructor(
     private rest: RestService,
@@ -19,7 +20,12 @@ export class ABCAnalysisService {
   ) {}
 
   getReportData(beginDate: Date, endDate: Date) {
-    return this.rest.getData('/admin/reports/abc', { beginDate, endDate })
+    const params = {
+      beginDate: beginDate.toISOString(),
+      endDate: endDate.toISOString(),
+    };
+
+    return this.rest.getData('/admin/reports/satisfaction', params)
       .map((data: any) => {
         const report = new ReportModel();
         report.beginDate = new Date(data.beginDate);
@@ -27,6 +33,23 @@ export class ABCAnalysisService {
         report.table = data['table'];
         return report;
       })
+      .catch((err: any, caught: Observable<any>) => {
+        // TODO: здесь надо написать вменяемую обработку ошибок и выдачу сообщений в NotifierService
+        this.notifier.error('Ошибка!', 'Данные не получены');
+        console.error(err);
+        return Observable.of([]);
+      });
+  }
+
+  getDetailedReportData(participantId: string | null, beginDate: Date, endDate: Date): Observable<SatisfactionDetailedReportModel> {
+    const params = {
+      id: participantId,
+      beginDate: beginDate.toISOString(),
+      endDate: endDate.toISOString(),
+    };
+
+    return this.rest.getData('/admin/reports/satisfaction/details', params)
+      .map(data => new SatisfactionDetailedReportModel(data))
       .catch((err: any, caught: Observable<any>) => {
         // TODO: здесь надо написать вменяемую обработку ошибок и выдачу сообщений в NotifierService
         this.notifier.error('Ошибка!', 'Данные не получены');

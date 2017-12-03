@@ -23,9 +23,91 @@
     "title": "satisfaction",
     "beginDate": "2017-01-01",
     "endDate": "2017-07-31",
-    "someData": 23456
+    "table": {
+      "body": [
+        {
+          "id": "132",
+          "phone": "+7(123)4567890",
+          "money": 123412,
+          "balance": 345,
+          "minusPoints": 2343,
+          "ratedPurchases": 23,
+          "averageRating": 3.5
+        }, {
+          "id": "32",
+          "phone": "+7(909)8554982",
+          "money": 123412,
+          "balance": 345,
+          "minusPoints": 2343,
+          "ratedPurchases": 23,
+          "averageRating": 3.5
+        }, {
+          "id": "70",
+          "phone": "+7(909)8968904",
+          "money": 123412,
+          "balance": 345,
+          "minusPoints": 2343,
+          "ratedPurchases": 23,
+          "averageRating": 3.5
+        }, {
+          "id": "28",
+          "phone": "+7(924)1194808",
+          "money": 123412,
+          "balance": 345,
+          "minusPoints": 2343,
+          "ratedPurchases": 23,
+          "averageRating": 3.5
+        }
+      ]
+    }
   }, {
     "id": 3,
+    "title": "satisfaction-details",
+    "participant": {
+      "id": 32,
+      "phone": "+7(909)8554982"
+    },
+    "beginDate": "2017-03-22T14:00:00.000Z",
+    "endDate": "2017-07-26T14:00:00.000Z",
+    "table": {
+      "body": [
+        {
+          "date": "2017-04-21T12:32:43.00Z",
+          "shop": "Магазин №1",
+          "article": "Скатерть-самодранка",
+          "money": 1234,
+          "minusPoints": 10,
+          "testimonial": "Улук о'морья дубзе лёный",
+          "rating": 4
+        }, {
+          "date": "2017-04-21T12:32:43.00Z",
+          "shop": "Магазин №1",
+          "article": "Сапоги скорохромы",
+          "money": 4321,
+          "minusPoints": 45,
+          "testimonial": "Иднеми ночь юко",
+          "rating": 4
+        }, {
+          "date": "2017-04-21T12:32:43.00Z",
+          "shop": "Магазин №1",
+          "article": "Мечь-леденец (уценка)",
+          "money": 1111,
+          "minusPoints": 120,
+          "testimonial": "тученый все ходит поц",
+          "rating": 4
+        }, {
+          "date": "2017-06-06T06:00:00.00Z",
+          "shop": "Магазин №666",
+          "article": "Масло моторное Hell-Ultra",
+          "money": 2344,
+          "minusPoints": 45,
+          "testimonial": "И вместо сердца пламенный",
+          "rating": 3
+        }
+      ]
+    }
+  }, {
+    "id": 4,
     "title": "abc",
     "beginDate": "2017-01-01",
     "endDate": "2017-01-01",

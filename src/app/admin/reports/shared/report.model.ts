@@ -1,3 +1,7 @@
+
+import { russianCalendarLocale } from '../../../shared/locale';
+import { localBeginningOfTheYear } from '../../../shared/utils';
+
 export interface ReportTable {
   body: Array<any>;
   totals: {
@@ -10,8 +14,11 @@ export class ReportModel {
   beginDate: Date;
   endDate: Date;
   table: ReportTable;
+  settings = { calendarLocale: russianCalendarLocale, maxRowsPerPage: 14};
 
   constructor() {
     this.table = { body: [], totals: {} };
+    this.endDate = new Date();
+    this.beginDate = localBeginningOfTheYear(this.endDate);
   }
 }
