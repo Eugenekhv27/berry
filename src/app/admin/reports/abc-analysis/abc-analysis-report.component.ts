@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 // import { TreeNode } from 'primeng/primeng';
 
 import { russianCalendarLocale } from '../../../shared/locale';
-import { localBeginningOfTheYear } from '../../../shared/utils';
 import { ABCAnalysisService } from './abc-analysis.service';
 import { ReportModel } from '../shared/report.model';
 
@@ -32,9 +31,6 @@ export class ABCAnalysisReportComponent implements OnInit {
     private dataService: ABCAnalysisService,
   ) {
     this.reportData = new ReportModel();
-    this.reportData.table.body = [];
-    this.reportData.endDate = new Date();
-    this.reportData.beginDate = localBeginningOfTheYear(this.reportData.endDate);
   }
 
   ngOnInit(): void {
@@ -52,9 +48,12 @@ export class ABCAnalysisReportComponent implements OnInit {
   }
 
   getDetails(selectedRow: TableRow): void {
-    this.router.navigate(['/admin/participants/' + encodeURIComponent(selectedRow.id)]);
+    this.router.navigate(['/participants/' + encodeURIComponent(selectedRow.id)]);
   }
 
+  /**
+   * Функция isNumber() используется в шаблоне
+   */
   isNumber(v: any): boolean {
     return typeof v === 'number';
   }

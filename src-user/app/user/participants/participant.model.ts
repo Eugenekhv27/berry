@@ -87,7 +87,6 @@ export class Participant {
   balance: number;
 
   constructor(serverObject: any = {}) {
-    console.log(serverObject);
     this.id = String(serverObject._id || serverObject.ID || '');
     this.phone = String(serverObject.Aka || '');
     this.name = String(serverObject.Name || '');

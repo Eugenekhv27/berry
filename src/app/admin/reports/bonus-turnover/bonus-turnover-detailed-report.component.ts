@@ -42,20 +42,13 @@ export class BonusTurnoverDetailedReportComponent implements OnInit {
   }
 
   getReport(date: Date) {
-    console.log(date);
     this.loading = true;
     this.resetReportData();
 
     this.reportDataService.getDetailedReportData(date)
       .subscribe((reportData: any) => {
         this.reportData = reportData;
-        // this.reportData.totals.plusBonus = reportData.totals.plusBonus;
-        // this.reportData.totals.minusBonus = reportData.totals.minusBonus;
-        // this.detailsTable = reportData.rows.map(dataRow => new DetailsRow(dataRow));
-        // this.detailsTotals.plusBonus = appParseNumber(reportData.totals.PlusPointsSum);
-        // this.detailsTotals.minusBonus = appParseNumber(reportData.totals.MinusPointsSum);
         this.loading = false;
-        console.log(this.reportData);
       });
   }
 

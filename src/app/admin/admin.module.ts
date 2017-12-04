@@ -63,7 +63,10 @@ import { NoticeComponent } from './notifier/notice.component';
 import { ButtonWithSpinnerComponent } from './button-with-spinner/button-with-spinner.component';
 import { BonusTurnoverReportComponent } from './reports/bonus-turnover/bonus-turnover-report.component';
 import { BonusTurnoverDetailedReportComponent } from './reports/bonus-turnover/bonus-turnover-detailed-report.component';
-import { ParticipantSatisfactionReportComponent } from './reports/participant-satisfaction/participant-satisfaction-report.component';
+import { ParticipantSatisfactionReportComponent
+} from './reports/participant-satisfaction/participant-satisfaction-report.component';
+import { ParticipantSatisfactionDetailedReportComponent
+} from './reports/participant-satisfaction/participant-satisfaction-detailed-report.component';
 import { ABCAnalysisReportComponent } from './reports/abc-analysis/abc-analysis-report.component';
 import { ParticipantDetailsComponent } from './participants/participant-details.component';
 
@@ -115,6 +118,7 @@ import { BonusTurnoverService } from './reports/bonus-turnover/bonus-turnover.se
     BonusTurnoverReportComponent,
     BonusTurnoverDetailedReportComponent,
     ParticipantSatisfactionReportComponent,
+    ParticipantSatisfactionDetailedReportComponent,
     ABCAnalysisReportComponent,
     ParticipantDetailsComponent,
   ],

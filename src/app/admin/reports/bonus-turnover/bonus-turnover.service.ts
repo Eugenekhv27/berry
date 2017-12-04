@@ -13,8 +13,6 @@ export class BonusTurnoverService {
   ) {}
 
   getMainReportData(startDate: Date, endDate: Date) {
-    console.log('BonusTurnoverService::getMainReportData()', startDate, endDate);
-
     return this.dataService.getBonusReport(startDate, endDate)
       .map((data: any) => {
         const reportData = {
@@ -34,11 +32,8 @@ export class BonusTurnoverService {
   }
 
   getDetailedReportData(date: Date) {
-    console.log('BonusTurnoverService::getDetailedReportData()', date);
-
     return this.dataService.getBonusReportDetails(date)
       .map((data: any) => {
-        console.log(data);
         const reportData = {
           table: {},
           totals: {

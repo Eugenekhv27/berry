@@ -71,6 +71,6 @@ export class AuthService implements OnInit {
 
   loginAndRedirectTo(path: string) {
     this.redirectUrl = path;
-    this.router.navigate(['/admin/login']);
+    this.router.navigate(['/login']);
   }
 }
