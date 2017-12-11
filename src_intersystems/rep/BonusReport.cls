@@ -1,4 +1,5 @@
 /// Сводный отчет по бонусам
+/// DataStorage ^||rep.BonusReportD - не работает на zui интерфейсе
 Class rep.BonusReport Extends p6.Persistent [ ClassType = persistent, LegacyInstanceContext ]
 {
 
@@ -43,6 +44,10 @@ Method Report() As %Status
 	}
 	set qStartBonus = 0
 	
+	set ^a("beginDate")=beginDate
+	set ^a("endDate")=endDate
+	
+	
 	&sql(select sum(PointsSum) into :qStartBonus from doc.BonusOperation
 		where DocDate<:beginDate and Buyer->Shop=:shopId)
 		
@@ -62,7 +67,7 @@ Method Report() As %Status
 		
 		
 		&sql(insert into rep.BonusReport 
-			set RepDate=:qDocDate,StartBonus= :startBonus,EndBonus=(:curBonus+:startBonus),
+			set RepDate=:qDocDate,StartBonus= :startBonus,EndBonus=(+:startBonus+nvl(:qPlusBonus,0)-nvl(:qMinusBonus,0)),
 			PlusBonus=:qPlusBonus,MinusBonus=:qMinusBonus)
 	
 		&sql(fetch line)	
@@ -141,11 +146,11 @@ Storage Default
 <Value>Shop</Value>
 </Value>
 </Data>
-<DataLocation>^||rep.BonusReportD</DataLocation>
+<DataLocation>^rep.BonusReportD</DataLocation>
 <DefaultData>BonusReportDefaultData</DefaultData>
-<IdLocation>^||rep.BonusReportD</IdLocation>
-<IndexLocation>^||rep.BonusReportI</IndexLocation>
-<StreamLocation>^||rep.BonusReportS</StreamLocation>
+<IdLocation>^rep.BonusReportD</IdLocation>
+<IndexLocation>^rep.BonusReportI</IndexLocation>
+<StreamLocation>^rep.BonusReportS</StreamLocation>
 <Type>%Library.CacheStorage</Type>
 }
 
