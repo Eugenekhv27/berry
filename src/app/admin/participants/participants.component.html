@@ -1,7 +1,7 @@
 <div class="ui-g">
   <div class="ui-g-12">
     <div class="card">
-      <h2>Участники бонусной программы</h2>
+      <h2>Активная клиентская база</h2>
       <p-dataTable
         selectionMode="single"
         [(selection)]="selectedLine"
@@ -13,10 +13,13 @@
         [loading]="loading"
         loadingIcon="fa-spinner"
         [globalFilter]="gb">
-        <p-column field="phone" header="Номер" [sortable]="true"></p-column>
-        <p-column field="name" header="Имя" [sortable]="true"></p-column>
-        <p-column field="comment" header="Коментарий"></p-column>
+        <p-column field="name" header="Имя/Телефон" [sortable]="true"></p-column>
+        <p-column field="age" header="Возраст" [sortable]="true"></p-column>
         <p-column field="balance" header="Бонусы" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
+        <p-column field="guestLevel" header="Ранг"></p-column>
+        <p-column field="abcGroup" header="Группа ABC"></p-column>
+        <p-column field="comment" header="Коментарий"></p-column>
+        
         <p-footer>
           <div class="ui-g">
             <div class="ui-g-6">

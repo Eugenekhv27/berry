@@ -14,7 +14,7 @@ export class NavComponent implements OnInit {
   ngOnInit() {
     this.mainMenu = [
       { label: 'Показатели', icon: 'fa fa-fw fa-dashboard', routerLink: ['/dashboard'] },
-      { label: 'Участники бонус-клуба', icon: 'fa fa-fw fa-users', routerLink: ['/participants'] },
+      { label: 'АКБ', icon: 'fa fa-fw fa-users', routerLink: ['/participants'] },
       {
         label: 'Отчеты', icon: 'fa fa-fw fa-pie-chart',
         items: [

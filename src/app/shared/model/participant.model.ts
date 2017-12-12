@@ -70,6 +70,9 @@ export class Participant {
     date: 'RegDate',
     phone: 'Aka',
     name: 'Name',
+    age: 'age',
+    birthDate: 'BirthDate',
+    sex: 'Sex',
     comment: 'Comment',
     referrer: 'SuperBuyer',
     referrals: 'BottomBuyers',
@@ -82,18 +85,28 @@ export class Participant {
   date: string;
   phone: string;
   name: string;
+  age: string;
+  birthDate: string;
   comment: string;
   referrer: ParticipantLink;
   referrals: ParticipantLink[];
   operations: BonusAccountOperation[];
   balance: number;
   shop: string;
+  guestLevel: string;
+  abcGroup: string;
+  sex: string;
 
   constructor(serverObject: any = {}) {
     this.id = String(serverObject._id || serverObject.ID || '');
     this.date = String(serverObject.RegDate || '');
     this.phone = String(serverObject.Aka || '');
-    this.name = String(serverObject.Name || '');
+    this.name = String(serverObject.name || '');
+    this.age = String(serverObject.age || '');
+    this.birthDate = String(serverObject.BirthDate || '');
+    this.guestLevel = String(serverObject.guestLevel || '');
+    this.abcGroup = String(serverObject.abcGroup || '');
+    this.sex = String(serverObject.Sex || '');
     this.comment = String(serverObject.Comment || '');
     this.referrer = new ParticipantLink(serverObject.SuperBuyer);
     if (serverObject.BottomBuyers) {

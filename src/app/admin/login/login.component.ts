@@ -9,6 +9,7 @@ import { AuthService, NotifierService } from '../services/services';
 export class LoginComponent implements OnInit {
   login = '';
   password = '';
+  server = '';
 
   constructor(
     private router: Router,
@@ -18,11 +19,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const server = this.route.snapshot.paramMap.get('server');
-    if (server !== null) {
-      localStorage.setItem('restServiceUrl', decodeURIComponent(server));
-    }
-
+    this.server = localStorage.getItem(encodeURIComponent('restServiceUrl'));
     this.auths.logout();
   }
 
@@ -30,6 +27,7 @@ export class LoginComponent implements OnInit {
     this.auths
       .login({ login: this.login, password: this.password })
       .subscribe(loginSuccess => {
+        localStorage.setItem('restServiceUrl', decodeURIComponent(this.server));
         if (!loginSuccess) {
           this.notifier.warning('Ошибка!', 'Не удалось войти в систему.');
         }

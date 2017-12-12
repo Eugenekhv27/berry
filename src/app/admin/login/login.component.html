@@ -16,6 +16,16 @@
         </div>
       </div>
       <div class="ui-g">
+          <div class="ui-g-12">
+              <p-panel header="Настройка" [toggleable]="true" collapsed="true">
+                  <label for="lgn">Адрес сервера:</label>
+                  <input pInputText name="lgn" type="text" [(ngModel)]="server" style="width: 100%" />
+              </p-panel>
+          </div>
+        </div>
+
+      
+      <div class="ui-g">
         <div class="ui-g-12">
           <button pButton type="button" (click)="doLogin()" label="Войти" icon="fa-sign-in" style="width: 100%"></button>
         </div>

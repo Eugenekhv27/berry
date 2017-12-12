@@ -43,7 +43,7 @@ export class DataService {
   private getRequestOptionsArgs(): RequestOptionsArgs {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json;charset=utf-8');
-    headers.append('Authorization', 'Basic ' + localStorage.getItem('loginpassword')); 7
+    headers.append('Authorization', 'Basic ' + localStorage.getItem('loginpassword'));
     return { headers };
   }
 
@@ -330,5 +330,26 @@ export class DataService {
     )
       .map((resp: Response) => resp.json())
       .catch((error: any) => Observable.throw(error));
+  }
+  /// Добавить бонусов из карточки клиента
+  doPlusBonus(data: any) {
+    console.log(this.getFullUrl('doplusbonus'));
+    return this.http
+      .post(
+        this.getFullUrl('doplusbonus'),
+        JSON.stringify(data),
+        this.getRequestOptionsArgs()
+      )
+      .map((resp: Response) => {
+        if (this.isResponseOk(resp)) {
+          return true;
+        } else {
+          throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        return  Observable.of(false);
+      });
   }
 }
