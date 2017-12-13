@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Participant } from '../../shared/model/participant.model';
 import { DataService, NotifierService } from '../services/services';
+import {SelectItem} from 'primeng/primeng';
 
 @Component({
   selector: 'app-participants',
@@ -14,6 +15,13 @@ export class ParticipantsComponent implements OnInit {
   selectedLine: Participant;
   maxRowsPerPage = 11;
   loading: boolean;
+  abcGroupOptions =
+   [
+    {label: 'Не важно', value: null},
+    {label: 'A', value: 'A'},
+    {label: 'B', value: 'B'},
+    {label: 'C', value: 'C'}
+];
 
   // для фильтров
   beginRegDate: string;
@@ -21,6 +29,7 @@ export class ParticipantsComponent implements OnInit {
   beginBonusSum: number;
   endBonusSum: number;
   withOnePurchase: boolean;
+  abcGroup: string;
 
   ru = {
       firstDayOfWeek: 1,
@@ -65,7 +74,8 @@ export class ParticipantsComponent implements OnInit {
       'endRegDate': this.endRegDate,
       'beginBonusSum': this.beginBonusSum,
       'endBonusSum': this.endBonusSum,
-      'withOnePurchase': this.withOnePurchase
+      'withOnePurchase': this.withOnePurchase,
+      'abcGroup': this.abcGroup
     };
     this.refreshParticipantsList(a);
   }

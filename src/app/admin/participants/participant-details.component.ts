@@ -18,7 +18,22 @@ import { OperationEditor } from './operation-editor.class';
 })
 export class ParticipantDetailsComponent implements OnInit {
   @ViewChild('dt') dt: DataTable;
-  participantEditor = { id: '', date: '', balance: '', phone: '', name: '', referrer: '', comment: '', birthDate: null, sex: 'Неизвестно', age: null, payRubSum:'',payBonus:'',attractedCount:''};
+  participantEditor = {
+    id: '',
+    date: '',
+    balance: '',
+    phone: '',
+    name: '',
+    referrer: '',
+    comment: '',
+    birthDate: null,
+    sex: 'Неизвестно',
+    age: null,
+    payRubSum: '',
+    payBonus: '',
+    attractedCount: '',
+    abcGroup: ''
+  };
 //  participant: Participant;
   isNew: false;
   detailsTable = [];
@@ -33,7 +48,7 @@ export class ParticipantDetailsComponent implements OnInit {
   readOnly = true;
   toDoItems: MenuItem[];
   sexOptions: SelectItem[];
-  displayPlusBonusDialog: boolean = false;
+  displayPlusBonusDialog = false;
   
   plusBonusEditor;
   ru = {
@@ -121,11 +136,11 @@ export class ParticipantDetailsComponent implements OnInit {
           comment: data.result.Comment || '',
           payRubSum: data.result.payRubSum || '',
           payBonus: data.result.payBonus || '',
-          attractedCount: data.result.attractedCount || ''
+          attractedCount: data.result.attractedCount || '',
+          abcGroup: data.result.abcGroup || ''
         };
 
         console.log(this.participantEditor);
-        
         this.loading = false;
         this.isDeleteButtonDisabled = false;
       });

@@ -360,5 +360,33 @@ export class DataService {
         return  Observable.of(false);
       });
   }
-  
+  /// Универсальный метод для получения данных для всех отчетов
+  /// Принимает JSON с названием отчета и критериями
+  // {
+  //   'reportName': 'abc-analysis-report',
+  //   'beginDate': this.beginDate,
+  //   'endDate': this.endDate,
+  //   'aPrecent': this.aPrecent,
+  //   'bPrecent': this.bPrecent,
+  //   'cPrecent': this.bPrecent
+  // }
+  getReportData(data: any) {
+    return this.http
+      .post(
+        this.getFullUrl('getreportdata'),
+        JSON.stringify(data),
+        this.getRequestOptionsArgs()
+      )
+      .map((resp: Response) => {
+        if (this.isResponseOk(resp)) {
+          return resp.json().report;
+        } else {
+          throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        return  Observable.of(false);
+      });
+  }
 }

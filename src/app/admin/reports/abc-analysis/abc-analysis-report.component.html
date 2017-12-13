@@ -7,8 +7,8 @@
           <label>С: </label>
           <p-calendar
             readonlyInput="true" [locale]="calendarLocale"
-            dateFormat="dd.mm.yy"
-            [(ngModel)]="reportData.beginDate"
+            dateFormat="dd.mm.yy" dataType="string"
+            [(ngModel)]="beginDate"
             (onSelect)="getMainReport()"
             [showIcon]="true"></p-calendar>
         </div>
@@ -16,16 +16,51 @@
           <label>по: </label>
           <p-calendar
             readonlyInput="true" [locale]="calendarLocale"
-            dateFormat="dd.mm.yy"
-            [(ngModel)]="reportData.endDate"
+            dateFormat="dd.mm.yy" dataType="string"
+            [(ngModel)]="endDate"
             (onSelect)="getMainReport()"
             [showIcon]="true"></p-calendar>
+        </div>
+        <div class="ui-g-4">
+            <button pButton type="button" label="Зафиксировать группу начислений в карточке клиента" icon="fa fa-anchor" (click)="getMainReport(true)"></button>
+        </div>
+        <div class="ui-g-2">
+          <button pButton type="button" label="Настроить" icon="fa fa-cog" (click)="settingClick()"></button>
         </div>
       </div>
       <div class="ui-g">
         <div class="ui-g-12">
+            <p-dataTable
+            selectionMode="single"
+            [(selection)]="selectedLine"
+            [responsive]="true"
+            [value]="reportData"
+            [paginator]="true"
+            [rows]="100"
+            (onRowDblclick)="onRowDoubleClick()"
+            [loading]="loading"
+            loadingIcon="fa-spinner"
+            [globalFilter]="gb"
+            sortMode="multiple">
+            <p-column field="name" header="Имя/Телефон" [sortable]="true"></p-column>
+            <p-column field="balance" header="На балансе" [sortable]="true"></p-column>
+            <p-column field="balanceCaregory" header="Группа" [sortable]="true"></p-column>
+            <p-column field="plusPoints" header="Начислено за период" [sortable]="true"></p-column>
+            <p-column field="plusPointsCaregory" header="Группа" [sortable]="true"></p-column>
+            <p-column field="minusPoints" header="Списано за период" [sortable]="true"></p-column>
+            <p-column field="minusPointsCaregory" header="Группа" [sortable]="true"></p-column>
+            <!--
+            <p-column field="balance" header="Бонусы" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
+            <p-column field="guestLevel" header="Ранг"></p-column>
+            <p-column field="abcGroup" header="Группа ABC"></p-column>
+            <p-column field="comment" header="Коментарий"></p-column>
+            -->
+            </p-dataTable>
+
+
+<!--
           <p-treeTable
-            [value]="reportData.table.body"
+            [value]="reportData"
             (onRowDblclick)="getDetails($event.node.data)"
             selectionMode="single">
             <p-column field="phone" header="Группа / Участник">
@@ -46,8 +81,28 @@
               </ng-template>
             </p-column>
           </p-treeTable>
+        -->
         </div>
       </div>
     </div>
   </div>
 </div>
+<p-dialog header="Настроить отчет" [(visible)]="displaySetting" [width]="220">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <label for="a">Процент для категории А</label>
+      <input pInputText id="a" [(ngModel)]="aPrecent" style="width: 100%" />
+    </div>
+    <div class="ui-g-12">
+        <label for="a">Процент для категории B</label>
+        <input pInputText id="a" [(ngModel)]="bPrecent" style="width: 100%" />
+      </div>
+      <div class="ui-g-12">
+          <label for="a">Процент для категории C</label>
+          <input pInputText id="a" [(ngModel)]="cPrecent" style="width: 100%" />
+        </div>
+  </div>
+  <p-footer>
+      <button type="button" pButton icon="fa-check" (click)="getMainReport();displaySetting=false" label="ОК"></button>
+  </p-footer>
+</p-dialog>

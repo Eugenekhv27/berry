@@ -68,6 +68,13 @@ Property attractedCount As %Integer [ Calculated, SqlComputeCode = {
 		&sql(select count(Id) into :result from ent.Buyer where SuperBuyer=:buyerId)
 		set {attractedCount}=result}, SqlComputed ];
 
+/// Группа ABC
+Property abcGroup As %String [ Calculated, SqlComputeCode = {
+		new result,buyerId
+		set buyerId = {%%ID}
+		&sql(select top 1 groupName into :result from ent.BuyerAbcGroup where buyer=:buyerId order by onDate desc)
+		set {abcGroup}=result}, SqlComputed ];
+
 ClassMethod SendHelloBuyer(tel = "") As %Status
 {
 	//if '(($e(tel)="8") || ($e(tel,1,2)="+7")) {
@@ -151,8 +158,10 @@ ClassMethod GetBuyerIdByAka(aAka, prentBuyerId = "", ByRef sc = {$$$OK}, fromTel
 
 ClassMethod GetForGrid(query = "", accountId = "", citeriaObject = {{}}) As %Status
 {
+ //	kill ^a.sql
+	//set ^a.citeriaObject = citeriaObject.%ToJSON()
+
     set st = $$$OK
-    
     set sql = "select Id,nvl(Name,'') ||' '||Aka as name,age,Comment,(select sum(PointsSum) from doc.BonusOperation where Buyer=b.Id) as Bonus,"
     	_" (select top 1 guestLevel->name from ent.BuyerLevel where Buyer=b.Id order by onDate desc) as guestLevel,"
     	_" (select top 1 groupName from ent.BuyerAbcGroup where Buyer=b.Id order by onDate desc) as abcGroup"
@@ -178,12 +187,17 @@ ClassMethod GetForGrid(query = "", accountId = "", citeriaObject = {{}}) As %Sta
     if (citeriaObject.withOnePurchase) { // с одной покупкой
 	    set sql = sql _" and ((select count(Id) from doc.BonusOperation where Buyer = b.Id)=1)"
     }
+    if (citeriaObject.abcGroup]"") { // Группа ABC
+	    set sql = sql _" and (abcGroup = '"_citeriaObject.abcGroup_"')"
+    }
     	
     if query]"" {
 	 set sql = sql _" and "_query  
     }
 	set sql = sql _ " order by Aka"
-    do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,sql,,3000)
+	// set ^a.sql = sql
+    // set ^a.sql(1) = citeriaObject.abcGroup
+    do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,sql,,1000)
     quit st
 }
 

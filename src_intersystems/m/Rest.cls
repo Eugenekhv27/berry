@@ -53,6 +53,8 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 
 <Route Method="POST" Url="/:encriptId/filteredgrid" Call="GetFilteredGrid" />
 
+<Route Method="POST" Url="/:encriptId/getreportdata" Call="GetReportData" />
+
 <!-- сервис для DashBoard -->
 <Route Method="GET" Url="/:encriptId/dashboard" Call="GetDashboardData" />
 
@@ -1010,6 +1012,68 @@ ClassMethod GetFilteredGrid(encriptId) As %Status
 
 	
 	quit $$$OK
+}
+
+/// Отчет ABC-анализ. Запрос: {"reportName":"abc-analysis-report","aPrecent":80,"bPrecent":15,"cPrecent":15}
+ClassMethod GetReportData(encriptId) As %Status
+{
+	do ##class(Utils.JsonProvider).%ConvertJSONToObject(%request.Content,"",.clientObj,1)
+	set accountId=$system.Encryption.Base32Decode(encriptId,1)
+	// абс - анализ
+	if clientObj.reportName = "abc-analysis-report" {
+		$$$QuitOnError(##class(rep.ABCAnalysisReport).GetData(clientObj,.reportData))
+	}
+	set result = {}
+	set result.report = reportData
+	set result.status = "OK"
+	write result.%ToJSON()
+	
+	quit $$$OK
+	
+	/*
+	set report = 
+	{
+		"status": "OK",
+		"report": {
+		  "children":[
+			{
+				"id":245,
+				"name":" +7(000)0000000",
+				"balance":120,
+				"balanceCaregory":"A",
+				"plusPoints":45,
+				"plusPointsCaregory":"B",
+				"minusPoints":20,
+				"minusPointsCaregory":"C"
+			},		
+			{
+				"id":246,
+				"name":" +7(000)0000000",
+				"balance":120,
+				"balanceCaregory":"A",
+				"plusPoints":45,
+				"plusPointsCaregory":"B",
+				"minusPoints":20,
+				"minusPointsCaregory":"C"
+			},
+			{
+				"id":247,
+				"name":" +7(000)0000000",
+				"balance":120,
+				"balanceCaregory":"A",
+				"plusPoints":45,
+				"plusPointsCaregory":"B",
+				"minusPoints":20,
+				"minusPointsCaregory":"C"
+			}
+		],
+		"totals":{
+			"balance":1200,
+			"plusPoints":1150,
+			"minusPoints":432	
+		}
+  	  }
+  	  */
 }
 
 }

@@ -4,34 +4,42 @@
       <h2>Активная клиентская база</h2>
       <p-fieldset legend="Критерии отбора" [toggleable]="true" [collapsed]="true">
           <div class="ui-g">
-            <div class="ui-g-4">
+            <div class="ui-g-3">
               <div class="ui-g">
                 <div class="ui-g-12">
                   <label for="date">Зарегистрировался</label>
                 </div>
                 <div class="ui-g-12">
-                  <p-calendar dateFormat="dd.mm.yy"  [(ngModel)]="beginRegDate" showButtonBar="true" [locale]="ru" dataType="string" (onSelect)="refreshParticipantsListByFilter()" (onBlur)="refreshParticipantsListByFilter()" ></p-calendar>
+                  <p-calendar dateFormat="dd.mm.yy"  [(ngModel)]="beginRegDate"  [locale]="ru" dataType="string" (onSelect)="refreshParticipantsListByFilter()" (onBlur)="refreshParticipantsListByFilter()" [showIcon]="true" showButtonBar="true"></p-calendar>
                 </div>
                 <div class="ui-g-12">
-                  <p-calendar dateFormat="dd.mm.yy"  [(ngModel)]="endRegDate" showButtonBar="true" [locale]="ru" dataType="string" (onSelect)="refreshParticipantsListByFilter()" (onBlur)="refreshParticipantsListByFilter()"></p-calendar>
+                  <p-calendar dateFormat="dd.mm.yy"  [(ngModel)]="endRegDate" showButtonBar="true" [locale]="ru" dataType="string" (onSelect)="refreshParticipantsListByFilter()" (onBlur)="refreshParticipantsListByFilter()" [showIcon]="true" showButtonBar="true"></p-calendar>
                 </div>
               </div>
             </div>
-            <div class="ui-g-4">
+            <div class="ui-g-3">
               <div class="ui-g">
                 <div class="ui-g-12">
                   <label for="date">Кол-во бонусов</label>
                 </div>
                 <div class="ui-g-12">
-                    <p-spinner size="30" [(ngModel)]="beginBonusSum" [min]="0" (onChange)="refreshParticipantsListByFilter()"></p-spinner>
+                    <p-spinner size="10" [(ngModel)]="beginBonusSum" [min]="0" (onChange)="refreshParticipantsListByFilter()"></p-spinner>
                 </div>
                 <div class="ui-g-12">
-                    <p-spinner size="30" [(ngModel)]="endBonusSum" [min]="0" (onChange)="refreshParticipantsListByFilter()"></p-spinner>
+                    <p-spinner size="10" [(ngModel)]="endBonusSum" [min]="0" (onChange)="refreshParticipantsListByFilter()"></p-spinner>
                 </div>
               </div>
             </div> 
-            <div class="ui-g-4"> 
-              <p-checkbox [(ngModel)]="withOnePurchase" binary="true" label="С одной покупкой" (onChange)="refreshParticipantsListByFilter()"></p-checkbox>
+            <div class="ui-g-3"> 
+              <div class="ui-g">
+                <div class="ui-g-12">
+                  <p-checkbox [(ngModel)]="withOnePurchase" binary="true" label="С одной покупкой" (onChange)="refreshParticipantsListByFilter()"></p-checkbox>
+                </div>
+                <div class="ui-g-12"> 
+                    <label for="abcGroup">Группа ABC</label>
+                    <p-dropdown id="abcGroup" [options]="abcGroupOptions" [(ngModel)]="abcGroup" (onChange)="refreshParticipantsListByFilter()"></p-dropdown>
+                </div>
+              </div>
             </div>
           </div>
       </p-fieldset>
@@ -49,7 +57,8 @@
         (onRowDblclick)="onRowDoubleClick()"
         [loading]="loading"
         loadingIcon="fa-spinner"
-        [globalFilter]="gb">
+        [globalFilter]="gb"
+        sortMode="multiple">
         <p-column field="name" header="Имя/Телефон" [sortable]="true"></p-column>
         <p-column field="age" header="Возраст" [sortable]="true"></p-column>
         <p-column field="balance" header="Бонусы" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
