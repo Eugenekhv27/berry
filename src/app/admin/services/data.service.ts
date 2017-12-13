@@ -66,6 +66,13 @@ export class DataService {
       this.getRequestOptionsArgs()
     );
   }
+ // параметры фильтрации задаются в теле
+  getFilteredGrid(criterionObject: any) {
+    return this.http.post(
+      this.getFullUrl('filteredgrid'), criterionObject,
+      this.getRequestOptionsArgs()
+    );
+  }
 
   private dateToString(d: Date) {
     return d.getFullYear() +
@@ -124,8 +131,9 @@ export class DataService {
     });
   }
 
-  getParticipantsList() {
-    return this.getGridData('ent.Buyer')
+  getParticipantsList(a: any) {
+    a.className = 'ent.Buyer';
+    return this.getFilteredGrid(a)
       .map((resp: Response) => {
         return resp.json().children.map(elem => new Participant(elem));
       });
@@ -352,4 +360,5 @@ export class DataService {
         return  Observable.of(false);
       });
   }
+  
 }

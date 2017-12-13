@@ -149,20 +149,41 @@ ClassMethod GetBuyerIdByAka(aAka, prentBuyerId = "", ByRef sc = {$$$OK}, fromTel
 	quit result
 }
 
-ClassMethod GetForGrid(query = "", accountId = "") As %Status
+ClassMethod GetForGrid(query = "", accountId = "", citeriaObject = {{}}) As %Status
 {
     set st = $$$OK
     
-    set sql = "select Id,nvl(Name,'') ||' '||Aka as name,age,Comment,(select sum(PointsSum) from doc.BonusOperation where Buyer=ent.Buyer.Id) as Bonus,"
-    	_" (select top 1 guestLevel->name from ent.BuyerLevel where Buyer=ent.Buyer.Id order by onDate desc) as guestLevel,"
-    	_" (select top 1 groupName from ent.BuyerAbcGroup where Buyer=ent.Buyer.Id order by onDate desc) as abcGroup"
-    	_" from "_ ..%ClassName(1)
+    set sql = "select Id,nvl(Name,'') ||' '||Aka as name,age,Comment,(select sum(PointsSum) from doc.BonusOperation where Buyer=b.Id) as Bonus,"
+    	_" (select top 1 guestLevel->name from ent.BuyerLevel where Buyer=b.Id order by onDate desc) as guestLevel,"
+    	_" (select top 1 groupName from ent.BuyerAbcGroup where Buyer=b.Id order by onDate desc) as abcGroup"
+    	_" from ent.Buyer b"
     	_ " where Shop="_accountId 
+    	
+    if (citeriaObject.beginRegDate]"") {
+	 	set beginRegDate = ##class(p6.Date).DisplayToLogical(citeriaObject.beginRegDate)
+	 	set beginRegDate = $ZD(beginRegDate,3)
+	 	set sql = sql _" and RegDate>='"_beginRegDate_"'"
+    }
+    if (citeriaObject.endRegDate]"") {
+	 	set beginRegDate = ##class(p6.Date).DisplayToLogical(citeriaObject.endRegDate)
+	 	set beginRegDate = $ZD(beginRegDate,3)
+	 	set sql = sql _" and RegDate<='"_beginRegDate_"'"
+    }
+    if (citeriaObject.beginBonusSum]"") {
+	 	set sql = sql _" and BonusSum>="_citeriaObject.beginBonusSum
+    }
+    if (citeriaObject.endBonusSum]"") {
+	 	set sql = sql _" and BonusSum<="_citeriaObject.endBonusSum
+    }
+    if (citeriaObject.withOnePurchase) { // с одной покупкой
+	    set sql = sql _" and ((select count(Id) from doc.BonusOperation where Buyer = b.Id)=1)"
+    }
+    	
     if query]"" {
 	 set sql = sql _" and "_query  
     }
 	set sql = sql _ " order by Aka"
-    do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,sql,,1000)
+    do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,sql,,3000)
     quit st
 }
 

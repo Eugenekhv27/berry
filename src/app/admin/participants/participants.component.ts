@@ -15,6 +15,24 @@ export class ParticipantsComponent implements OnInit {
   maxRowsPerPage = 11;
   loading: boolean;
 
+  // для фильтров
+  beginRegDate: string;
+  endRegDate: string;
+  beginBonusSum: number;
+  endBonusSum: number;
+  withOnePurchase: boolean;
+
+  ru = {
+      firstDayOfWeek: 1,
+      dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+      dayNamesShort: ["Вск", "Пон", "Вт", "Сред", "Чет", "Птн", "Суб"],
+      dayNamesMin: ["Вс","Пн","Вт","Ср","Чт","Пт","Сб"],
+      monthNames: [ "Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь" ],
+      monthNamesShort: [ "Янв", "Фев", "Мар", "Апр", "Май", "Июн","Июл", "Авг", "Сент", "Окт", "Нбр", "Дек" ],
+      today: 'Сегодня',
+      clear: 'Очистить'
+    };
+
   constructor(
     private router: Router,
     private dataService: DataService,
@@ -22,12 +40,12 @@ export class ParticipantsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.refreshParticipantsList();
+    this.refreshParticipantsList({});
   }
 
-  refreshParticipantsList() {
+  refreshParticipantsList(a: any ) {
     this.loading = true;
-    this.dataService.getParticipantsList()
+    this.dataService.getParticipantsList(a)
       .subscribe((freshList: Participant[]) => {
         this.participantsList = freshList;
         this.loading = false;
@@ -40,5 +58,15 @@ export class ParticipantsComponent implements OnInit {
 
   openNewParticipantForm() {
     this.router.navigate(['/participants/new']);
+  }
+  refreshParticipantsListByFilter() {
+    const a = {
+      'beginRegDate': this.beginRegDate,
+      'endRegDate': this.endRegDate,
+      'beginBonusSum': this.beginBonusSum,
+      'endBonusSum': this.endBonusSum,
+      'withOnePurchase': this.withOnePurchase
+    };
+    this.refreshParticipantsList(a);
   }
  }

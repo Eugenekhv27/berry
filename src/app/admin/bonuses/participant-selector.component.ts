@@ -52,7 +52,7 @@ export class ParticipantSelectorComponent implements OnInit {
   refreshParticipantsList() {
     this.loading = true;
 
-    this.dataService.getParticipantsList()
+    this.dataService.getParticipantsList({})
       .subscribe((freshList: Participant[]) => {
         this.tableRows = freshList.map(p => new TableRow(p));
         this.clearChanges();

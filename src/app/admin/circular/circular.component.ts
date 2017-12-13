@@ -40,7 +40,7 @@ export class CircularComponent implements OnInit {
   refreshAddresseeList() {
     this.loading = true;
 
-    this.dataService.getParticipantsList()
+    this.dataService.getParticipantsList({})
       .subscribe((freshList: Participant[]) => {
         this.receivers = freshList;
         this.loading = false;

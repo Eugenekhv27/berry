@@ -19,7 +19,9 @@ import {
   CalendarModule,
   TreeTableModule,
   TabViewModule,
-  DropdownModule
+  DropdownModule,
+  FieldsetModule,
+  SpinnerModule
   /*
   MegaMenuModule,
   MenubarModule,
@@ -27,7 +29,6 @@ import {
   SharedModule,
   ButtonModule,
   SelectItem,
-  FieldsetModule,
   ListboxModule,
   AutoCompleteModule,
   SelectButtonModule,
@@ -97,6 +98,8 @@ import { BonusTurnoverService } from './reports/bonus-turnover/bonus-turnover.se
     TreeTableModule,
     TabViewModule,
     DropdownModule,
+    FieldsetModule,
+    SpinnerModule,
     // routing
     AdminRoutingModule,
   ],

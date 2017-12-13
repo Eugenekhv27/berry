@@ -51,6 +51,8 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Route Method="GET" Url="/getAE" Call="GetAE" /> 
 <Route Method="GET" Url="/:encriptId/grid/:className/" Call="GetForGridByClassName" />
 
+<Route Method="POST" Url="/:encriptId/filteredgrid" Call="GetFilteredGrid" />
+
 <!-- сервис для DashBoard -->
 <Route Method="GET" Url="/:encriptId/dashboard" Call="GetDashboardData" />
 
@@ -995,6 +997,19 @@ ClassMethod SaveProfile(encriptId, userTel As %String = "") As %Status
  
  write result.%ToJSON()
  quit $$$OK
+}
+
+ClassMethod GetFilteredGrid(encriptId) As %Status
+{
+	//set ^a.GetFilteredGrid= %request.Content.Read()
+	do ##class(Utils.JsonProvider).%ConvertJSONToObject(%request.Content,"",.clientObj,1)
+	set accountId=$system.Encryption.Base32Decode(encriptId,1)
+	if accountId?.N {
+		do $CLASSMETHOD(clientObj.className, "GetForGrid",,accountId,clientObj)
+	}
+
+	
+	quit $$$OK
 }
 
 }
