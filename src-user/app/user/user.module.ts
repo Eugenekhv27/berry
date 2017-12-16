@@ -12,6 +12,9 @@ import {
   AccordionModule,
   RatingModule,
   PanelModule,
+  FieldsetModule,
+  DropdownModule,
+  CalendarModule
 /*
   ProgressBarModule,
   OverlayPanelModule,
@@ -29,14 +32,13 @@ import {
   InputTextModule,
   RadioButtonModule,
   CheckboxModule,
-  CalendarModule,
+  
   MegaMenuModule,
   MenubarModule,
   MenuItem,
   SharedModule,
-  DropdownModule,
+  
   SelectItem,
-  FieldsetModule,
   ListboxModule,
   AutoCompleteModule,
   SelectButtonModule,
@@ -62,6 +64,9 @@ import { AdvertisementPanelComponent } from './adv-panel/adv-panel.component';
 import { BalanceComponent } from './balance/balance.component';
 import { HistoryComponent } from './purchase-history/purchase-history.component';
 import { PurchaseComponent } from './purchase-history/purchase.component';
+import { ProfileComponent } from './profile/profile.component';
+import { FriendsComponent } from './friends/friends.component';
+
 
 // Application pipes
 import { SafeHtmlPipe } from './adv-panel/safe-html.pipe';
@@ -82,6 +87,9 @@ import { UserRoutingModule } from './user-routing.module';
     AccordionModule,
     RatingModule,
     PanelModule,
+    FieldsetModule,
+    DropdownModule,
+    CalendarModule,
     // ProgressBarModule,
     // OverlayPanelModule,
     // TreeTableModule,
@@ -94,7 +102,6 @@ import { UserRoutingModule } from './user-routing.module';
     // InputTextModule,
     // RadioButtonModule,
     // CheckboxModule,
-    // CalendarModule,
     // routing
     UserRoutingModule,
   ],
@@ -111,6 +118,8 @@ import { UserRoutingModule } from './user-routing.module';
     BalanceComponent,
     HistoryComponent,
     PurchaseComponent,
+    ProfileComponent,
+    FriendsComponent,
     // pipes
     SafeHtmlPipe,
   ]

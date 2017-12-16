@@ -1,15 +1,20 @@
 import { Component } from '@angular/core';
 import { DataService, NotifierService } from '../services/services';
+import { Router, ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html'
 })
+
 export class HomepageComponent {
-  balance = {
+  constructor(
+    private route: ActivatedRoute, private dataService: DataService
+  ) { }
+  balance = {points: 0,  details: []};
+  /*
+  {
     points: 12345,
-    plusPoints: 345,
-    minusPoints: 456,
     details: [
       {
         shop: 'Магазин "Клюковка"',
@@ -26,4 +31,30 @@ export class HomepageComponent {
       }
     ]
   };
+  */
+  profile = {
+    name: '',
+    sex: '',
+    birthDate: ''
+  };
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnInit() {
+    // запоминаем с какого магазина ссылка
+    const q4 = this.route.snapshot.paramMap.get('q4');
+    if (q4) {
+      const shopId = atob(q4);
+      if (shopId !== null) {
+        localStorage.setItem('shopId', shopId);
+      }
+    }
+    //
+    this.getBalance();
+  }
+  getBalance() {
+    this.dataService.getBalance()
+      .subscribe((dd: any) => {
+        this.balance = dd.result;
+        console.log(dd);
+      });
+  }
 }

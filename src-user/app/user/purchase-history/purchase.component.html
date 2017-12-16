@@ -1,11 +1,15 @@
-<p-accordionTab>
+<p-accordionTab [selected]="true">
   <p-header>
+    <!--
     <span style="font-weight: bold">{{ purchase.date | date:'shortDate' }}</span>
+    -->
     <span style="margin-left: 1.2em; margin-right: 1.2em;">{{ purchase.shop }}</span>
+    <!--
     <span style="font-weight: bold; float: right">{{ purchase.points }}&nbsp;баллов</span>
+    -->
   </p-header>
-  <p-accordion *ngIf="isTestimonialFormVisible" [activeIndex]="tabIndex">
-    <p-accordionTab header="Отзыв о покупке">
+  <p-accordion [activeIndex]="tabIndex">
+    <p-accordionTab header="Написать отзыв и получить 30 бонусов">
       <textarea pInputTextarea [(ngModel)]="testimonialText" style="width: 100%; min-height: 100px; margin-bottom: 10px" placeholder="Напишите ваш отзыв здесь">
       </textarea>
       <button pButton type="button" icon="fa fa-envelope-o" label="Отправить отзыв" style="width: 100%" (click)="postTestimonial()">
@@ -13,24 +17,38 @@
     </p-accordionTab>
   </p-accordion>
   <div class="ui-g">
+    <!--
     <div class="ui-g-4">
       Оценка: {{ purchase.rating }}
     </div>
-    <div class="ui-g-4">
+  -->
+    <div class="ui-g-6">оценка 
       <p-rating [(ngModel)]="purchase.rating" (onRate)="changeRating()" [cancel]="false"></p-rating>
     </div>
-    <div class="ui-g-4">
+    <!--
+    <div class="ui-g-6">
       <a style="font-weight: bold; float: right; cursor: pointer;" (click)="toggleTestimonialForm()">Написать отзыв</a>
     </div>
+  -->
   </div>
-  <p-accordion>
-    <p-accordionTab [header]="purchase.detailsSummary">
+    <p-panel>
+      <p-header>
+        <!--
+        <span style="font-weight: bold">{{ purchase.date | date:'shortDate' }}</span>
+        -->
+        <span style="margin-right: 1.2em;">Покупка</span>
+        
+        <span style="font-weight: bold; float: right">{{ purchase.points }}&nbsp;баллов</span>
+      </p-header>
       <table style="width: 100%">
         <tr *ngFor="let det of purchase.details">
           <td style="border-bottom: 1px dashed grey; padding-top: 10px;">{{ det.article }}</td>
           <td style="border-bottom: 1px dashed grey; text-align: right; padding-top: 10px;">{{ det.money }}&nbsp;руб</td>
         </tr>
+        <tr>
+            <td style="border-bottom: 1px dashed grey; padding-top: 10px; font-weight: bold">Итого</td>
+            <td style="border-bottom: 1px dashed grey; text-align: right; padding-top: 10px; font-weight: bold">{{purchase.money}}&nbsp;руб</td>
+          </tr>
       </table>
-    </p-accordionTab>
-  </p-accordion>
+    </p-panel>
 </p-accordionTab>

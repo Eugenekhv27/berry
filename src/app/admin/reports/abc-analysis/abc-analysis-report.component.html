@@ -32,15 +32,12 @@
         <div class="ui-g-12">
             <p-dataTable
             selectionMode="single"
-            [(selection)]="selectedLine"
             [responsive]="true"
             [value]="reportData"
             [paginator]="true"
             [rows]="100"
-            (onRowDblclick)="onRowDoubleClick()"
             [loading]="loading"
             loadingIcon="fa-spinner"
-            [globalFilter]="gb"
             sortMode="multiple">
             <p-column field="name" header="Имя/Телефон" [sortable]="true"></p-column>
             <p-column field="balance" header="На балансе" [sortable]="true"></p-column>

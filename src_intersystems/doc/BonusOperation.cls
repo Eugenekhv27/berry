@@ -41,6 +41,9 @@ Relationship bonusOperationGoods As doc.BonusOperationGoods(JSONIGNORE = 1) [ Ca
 /// Кодовое слово
 Property CodeWord As %String;
 
+/// Рейтинг к отзыву
+Property rating As %Integer;
+
 Storage Default
 {
 <Data name="BonusOperationDefaultData">
@@ -73,6 +76,9 @@ Storage Default
 </Value>
 <Value name="10">
 <Value>DocNo</Value>
+</Value>
+<Value name="11">
+<Value>rating</Value>
 </Value>
 </Data>
 <DataLocation>^doc.BonusOperationD</DataLocation>

@@ -33,9 +33,12 @@ Relationship BottomBuyers As ent.Buyer [ Cardinality = many, Inverse = SuperBuye
 Relationship BonusOperations As doc.BonusOperation [ Cardinality = many, Inverse = Buyer ];
 
 /// Магазин
-Relationship Shop As ent.Shop(JSONIGNORE = 1) [ Cardinality = one, Inverse = Buyer ];
+Relationship Shop As ent.Shop(JSONIGNORE = 1) [ Cardinality = one, Inverse = Buyer, Required ];
 
 Property RegDate As p6.dt.Date [ SqlComputeCode = {set {RegDate} = +$H }, SqlComputed, SqlComputeOnChange = %%INSERT ];
+
+/// Код доступа для входа в ЛК
+Property accessCode As %String;
 
 /// Бонусов на счете
 Property BonusSum As p6.dt.Float [ Calculated, SqlComputeCode = {
@@ -125,7 +128,7 @@ ClassMethod GetBuyerIdByAka(aAka, prentBuyerId = "", ByRef sc = {$$$OK}, fromTel
 	&sql(select Id into :result from ent.Buyer where Aka[:aAka and Shop=:accountId)	
 	if SQLCODE set result=""
 	if ('isCreate) && (result="") {
-		set sc = $$$ERROR(1000,"Данного номера нет в базе")
+		set sc = $$$ERROR(10000,"Данного номера нет в базе")
 		quit result
 	}
 	
@@ -150,7 +153,7 @@ ClassMethod GetBuyerIdByAka(aAka, prentBuyerId = "", ByRef sc = {$$$OK}, fromTel
 		}	
 		
 	} else {
-		set sc = $$$ERROR(1000,"Этот номер уже есть в базе")
+		set sc = $$$ERROR(10000,"Этот номер уже есть в базе")
 	}
 	
 	quit result
@@ -241,6 +244,9 @@ Storage Default
 </Value>
 <Value name="10">
 <Value>city</Value>
+</Value>
+<Value name="11">
+<Value>accessCode</Value>
 </Value>
 </Data>
 <DataLocation>^ent.BuyerD</DataLocation>

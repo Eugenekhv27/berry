@@ -5,7 +5,7 @@ import { DataService } from '../user/services/data.service';
 
 @Component({
   selector: 'app-user',
-  templateUrl: '/user.component.html'
+  templateUrl: './user.component.html'
 })
 export class UserComponent implements OnDestroy, OnInit {
   /// сюда выводим ошибки
@@ -65,7 +65,7 @@ export class UserComponent implements OnDestroy, OnInit {
       this.isAuth = false;
     }
   }
-
+/*
   genSms() {
     if (!this.userTel) {
       this.errors.push({
@@ -82,7 +82,7 @@ export class UserComponent implements OnDestroy, OnInit {
       this.errors = [];
       return;
     }
-
+ 
     this.dataService.genSmsCode(this.userTel).subscribe(
       (data: any) => {
         console.log(data);
@@ -139,4 +139,5 @@ export class UserComponent implements OnDestroy, OnInit {
       }
     );
   }
+  */
 }

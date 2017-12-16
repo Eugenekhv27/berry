@@ -746,10 +746,10 @@ body {
   height: 100%;
   background-color: #D9E0E7; }
   body a {
-    color: #00acac;
+    color: #C19B36;
     text-decoration: none; }
     body a:hover {
-      color: #00c6c6; }
+      color: #C19B36; }
 
 .layout-mask {
   position: fixed;

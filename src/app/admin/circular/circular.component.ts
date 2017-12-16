@@ -101,7 +101,7 @@ export class CircularComponent implements OnInit {
     return isReady;
   }
 
-  private sendRequestForSmsCircular(): void {
+  sendRequestForSmsCircular(): void {
     if (!this.isReadyToSend()) {
       return;
     }
@@ -117,7 +117,7 @@ export class CircularComponent implements OnInit {
       });
   }
 
-  private sendRequestForVoiceCircular(): void {
+  sendRequestForVoiceCircular(): void {
     if (!this.isReadyToSend()) {
       return;
     }

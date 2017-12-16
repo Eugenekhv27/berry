@@ -16,7 +16,10 @@ body .ui-widget-content {
   background-color: #ffffff;
   border: 1px solid #c9cdd2; }
 body .ui-widget-header {
+  /*
   background-color: #2d353c;
+  */
+  background-color: #E42A40;
   color: #ffffff; }
 body .ui-state-active, body .ui-state-highlight {
   background-color: #00acac;
@@ -863,7 +866,7 @@ body .ui-fieldset {
   padding: 0 0 .5em 0; }
   body .ui-fieldset .ui-fieldset-legend {
     color: #ffffff;
-    background-color: #2d353c;
+    background-color: #C19B36;
     margin-left: .75em;
     padding: 0.5em 1em;
     -moz-transition: background-color 0.3s;
@@ -882,7 +885,7 @@ body .ui-notificationbar {
   background-color: #00acac;
   color: #ffffff; }
 body .ui-accordion .ui-accordion-header {
-  background-color: #2d353c;
+  background-color: #C19B36;
   padding: 0;
   color: #ffffff;
   font-size: 14px;

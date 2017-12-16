@@ -27,11 +27,11 @@ export class AuthService implements OnInit {
   }
 
   isLoggedIn(): boolean {
-    return Boolean(localStorage.getItem('accountEncrypt'));
+    return Boolean(localStorage.getItem('q1'));
   }
 
   logout(): void {
-    localStorage.setItem('accountEncrypt', '');
+    localStorage.setItem('q1', '');
   }
 
   login({ login = '', password = '' }): Observable<boolean> {
@@ -49,7 +49,7 @@ export class AuthService implements OnInit {
           throw Error('Получен отрицательный ответ: ' + JSON.stringify(resp.json()));
         }
         console.log(resp.json());
-        localStorage.setItem('accountEncrypt', resp.json().result);
+        localStorage.setItem('q1', resp.json().result);
         this.router.navigate([this.redirectUrl]);
         return true;
       })
@@ -59,18 +59,61 @@ export class AuthService implements OnInit {
       });
   }
 
-  smsLogin({ phone = '', code = '' }): Observable<boolean> {
-    console.log(this.normalizePhone(phone), code);
-    // имитация: вероятность успешного логина 1/2
-    return Observable.of(
-      Math.random() > 0.5 ?
-      (this.router.navigate([this.redirectUrl]), true) :
-      false
-    ).delay(2000);
-  }
-
   loginAndRedirectTo(path: string) {
     this.redirectUrl = path;
     this.router.navigate(['/login']);
+  }
+  getSmsCode(phone = ''): Observable<boolean> {
+    console.log(this.normalizePhone(phone));
+    const auth = btoa('getsms:PHWEEj');
+    const headers = new Headers({ Authorization: 'Basic ' + auth });
+    console.log('getSmsCode()' + phone);
+    const serverUrl = localStorage.getItem('q2');
+    const pPhone = btoa(this.normalizePhone(phone));
+    return this.http
+      .get(serverUrl +  '/getaccesscode/' + pPhone + '/' + localStorage.getItem('shopId'),
+      { headers }
+      )
+      .map((resp: any) => {
+        console.log('Статус ответа: ' + resp.status);
+        if (resp.json().status !== 'OK') {
+          throw Error('Получен отрицательный ответ: ' + JSON.stringify(resp.json()));
+        }
+        console.log(resp.json());
+        // localStorage.setItem('q1', phone + ':' + resp.json().result.accesscode);
+        // this.router.navigate([this.redirectUrl]);
+        return true;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Observable.of(false);
+      });
+  }
+  confirmCode(phone = '' , code = ''): Observable<boolean> {
+    console.log(code);
+    const auth = btoa('getsms:PHWEEj');
+    const headers = new Headers({ Authorization: 'Basic ' + auth });
+    const serverUrl = localStorage.getItem('q2');
+    const pPhone = btoa(this.normalizePhone(phone));
+    return this.http
+      .get(serverUrl +  '/confirmcode/' + pPhone + '/' + localStorage.getItem('shopId') + '/' + code,
+      { headers }
+      )
+      .map((resp: any) => {
+        console.log('Статус ответа: ' + resp.status);
+        if (resp.json().status !== 'OK') {
+          throw Error('Получен отрицательный ответ: ' + JSON.stringify(resp.json()));
+        } else {
+          console.log(resp.json());
+          console.log('q1=' + this.normalizePhone(phone) + ':' + code);
+          localStorage.setItem('q1', this.normalizePhone(phone) + ':' + code);
+          this.router.navigate(['/']);
+        }
+        return true;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Observable.of(false);
+      });
   }
 }

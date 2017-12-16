@@ -16,7 +16,8 @@ body .ui-widget-content {
   background-color: #ffffff;
   border: 1px solid #c9cdd2; }
 body .ui-widget-header {
-  background-color: #2d353c;
+  /* background-color: #2d353c; */
+  background-color: #E42A40;
   color: #ffffff; }
 body .ui-state-active, body .ui-state-highlight {
   background-color: #00acac;

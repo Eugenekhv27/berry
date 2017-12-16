@@ -1,0 +1,51 @@
+<p-accordion>
+  <p-accordionTab >
+      <p-header>
+          <span style="">АНКЕТА</span>
+          <span style="float: right">Заполнить и получить 30 бонусов</span>
+      </p-header>
+  <div class="card" style="text-align: center; margin-bottom: 10px">
+    <div class="ui-g">
+      <div class="ui-g-12" *ngIf="readOnly">
+        <span  style="font-size: 2em; font-weight: bold; color: black;"> ФИО</span>
+      </div>
+      <div *ngIf="!readOnly">   
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <label for="name">Имя *</label>
+          <input pInputText id="name" [(ngModel)]="profile.name" style="width: 70%" />
+        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <label for="sex">Пол *</label>
+          <p-dropdown id="sex" [(ngModel)]="profile.sex" [options]="sexOptions" [style]="{width: '70%'}"></p-dropdown> 
+        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <label for="date">Дата рождения *</label><br>
+          <p-calendar dateFormat="dd.mm.yy"  [(ngModel)]="profile.birthDate" [locale]="ru" dataType="string" [yearNavigator]="true" yearRange="1920:2020" [showIcon]="true" ></p-calendar>
+        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <button pButton type="button" (click)="onclick()" label="Отправить" [disabled]="!activeButton()"></button>
+        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <span style="float: right;font-size: 0.7em;">Нажимая кнопку "Отправить" Вы соглашаетесь на обработку учетных данных и получение рекламных и информационных сообщений</span>
+        </div>
+      </div>
+    </div>
+    <!--
+    <div class="ui-g" style="font-weight: bold; font-size: 1.6em;">
+      <div class="ui-g-3" style="margin-top: 0; padding-top: 2px;">
+        <span style="color: blue">+{{ balance.plusPoints | number: '1.0-0' }}</span>
+      </div>
+      <div class="ui-g-6" style="margin-top: 0; padding-top: 2px; ">
+        <span style="font-weight: normal; font-size: 0.8em;">за неделю</span>
+      </div>
+      <div class="ui-g-3" style="margin-top: 0; padding-top: 2px;">
+        <span style="color: red">-{{ balance.minusPoints | number:'1.0-0' }}</span>
+      </div>
+    </div>
+  -->
+    
+      
+    
+  </div>
+</p-accordionTab>
+</p-accordion>

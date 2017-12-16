@@ -2,9 +2,10 @@
   <div class="card" style="text-align: center; margin-bottom: 10px">
     <div class="ui-g">
       <div class="ui-g-12">
-        <span style="font-size: 2em; font-weight: bold; color: black;">{{ balance.points | number:'1.0-0' }}</span>
+        <span style="font-size: 2em; font-weight: bold; color: black;">{{ balance.points | number:'1.0-0' }} бонусов</span>
       </div>
     </div>
+    <!--
     <div class="ui-g" style="font-weight: bold; font-size: 1.6em;">
       <div class="ui-g-3" style="margin-top: 0; padding-top: 2px;">
         <span style="color: blue">+{{ balance.plusPoints | number: '1.0-0' }}</span>
@@ -16,15 +17,16 @@
         <span style="color: red">-{{ balance.minusPoints | number:'1.0-0' }}</span>
       </div>
     </div>
-    <p-accordion>
-      <p-accordionTab header="подробнее">
+  -->
+    
+      <p-fieldset legend="подробнее">
         <table style="width: 100%">
           <tr *ngFor="let det of balance.details">
             <td style="border-bottom: 1px dashed grey; padding-top: 10px; text-align: left;">{{ det.shop }}</td>
             <td style="border-bottom: 1px dashed grey; text-align: right; padding-top: 10px;">{{ det.points }}</td>
           </tr>
         </table>
-      </p-accordionTab>
-    </p-accordion>
+      </p-fieldset>
+    
   </div>
 </p-panel>

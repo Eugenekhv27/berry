@@ -5,13 +5,18 @@ import { ButtonWithSpinnerComponent } from '../button-with-spinner/button-with-s
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  // tslint:disable-next-line:use-host-property-decorator
+  host: {'(window:keydown)': 'hotkeys($event)'}
 })
 export class LoginComponent implements OnInit {
   phone = '';
   code = '';
+  // serverUrl = 'http://base.progrepublic.ru/csp/bonusclubrest';
+  serverUrl = 'http://localhost:57773/csp/yagoda';
   isPhoneEntered = false;
   isCodeEntered = false;
+  urlDialogdispaly = false;
 
   @ViewChild(ButtonWithSpinnerComponent)
   private confirmButton: ButtonWithSpinnerComponent;
@@ -24,11 +29,11 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const server = this.route.snapshot.paramMap.get('server');
-    if (server !== null) {
-      localStorage.setItem('restServiceUrl', decodeURIComponent(server));
+    const q4 = this.route.snapshot.paramMap.get('q4');
+    const shopId = atob(q4);
+    if (shopId !== null) {
+      localStorage.setItem('shopId', shopId);
     }
-
     this.auths.logout();
   }
 
@@ -43,19 +48,20 @@ export class LoginComponent implements OnInit {
   // }
 
   requestSMS(): void {
-    // this.auths
-    //   .login({ login: this.login, password: this.password })
-    //   .subscribe(loginSuccess => {
-    //     if (!loginSuccess) {
-    //       this.notifier.warning('Ошибка!', 'Не удалось войти в систему.');
-    //     }
-    //   });
+    localStorage.setItem('q2', this.serverUrl);
+    this.auths
+       .getSmsCode(this.phone)
+       .subscribe(loginSuccess => {
+         if (!loginSuccess) {
+           this.notifier.warning('Ошибка!', 'Не удалось отправить запрос.');
+         }
+       });
   }
 
   confirmCode(): void {
     this.confirmButton.spin();
     this.auths
-      .smsLogin({ phone: this.phone, code: this.code })
+      .confirmCode( this.phone, this.code )
       .subscribe(loginSuccess => {
         if (!loginSuccess) {
           this.notifier.warning('Ошибка!', 'Недействительный код.');
@@ -63,4 +69,10 @@ export class LoginComponent implements OnInit {
         this.confirmButton.stopSpin();
       });
   }
+  // форма для изменния адреса сервера
+  hotkeys(event) {
+    if ((event.key === 'U') && (event.altKey) && (event.ctrlKey) && (event.shiftKey)) {
+      this.urlDialogdispaly = true;
+    }
+ }
 }

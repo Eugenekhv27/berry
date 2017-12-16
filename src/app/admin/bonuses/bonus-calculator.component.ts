@@ -32,14 +32,14 @@ export class BonusCalculatorComponent implements OnInit {
     });
   }
 
-  private onKey(e: any) {
+  onKey(e: any) {
     if (['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-',
       'Enter', 'Backspace', 'Delete'].includes(e.key)) {
       this.calculatePoints();
     }
   }
 
-  private calculatePoints(): void {
+  calculatePoints(): void {
     this.selectionTable.calculateChanges();
   }
 
@@ -65,7 +65,7 @@ export class BonusCalculatorComponent implements OnInit {
     return isReady;
   }
 
-  private save(): void {
+  save(): void {
     if (!this.isReadyToSave()) {
       return;
     }
