@@ -5,11 +5,14 @@
     </div>
   </div>
   <div class="ui-g">
-    <div class="ui-g-12 ui-md-12">
+    <div class="ui-g-6 ui-md-6">
       <p-inputMask [(ngModel)]="phone" mask="+7 (999) 999-9999" [style]="{'width': '100%'}" placeholder="телефонный номер" (onComplete)="isPhoneEntered=true;"></p-inputMask>
     </div>
+    <div class="ui-g-6">
+        <p-inputMask [(ngModel)]="shopCode" mask="****" placeholder="Введите код" [autoClear]="false" (onComplete)="isShopCodeEntered=true;"></p-inputMask>
+      </div>
     <div class="ui-g-12 ui-md-12">
-      <button pButton type="text" icon="fa fa-envelope-o" label="Получить SMS с кодом" (click)="requestSMS()" style="width: 100%" [disabled]="!isPhoneEntered"></button>
+      <button pButton type="text" icon="fa fa-envelope-o" label="Получить SMS с кодом" (click)="requestSMS()" style="width: 100%" [disabled]="!(isPhoneEntered && isShopCodeEntered)"></button>
     </div>
   </div>
   <!--

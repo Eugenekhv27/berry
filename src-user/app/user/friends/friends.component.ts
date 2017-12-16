@@ -7,6 +7,8 @@ import { Friends } from './friends.model';
   templateUrl: './friends.component.html',
 })
 export class FriendsComponent {
+
+  isPhoneEntered = false;
  
   constructor(
     private dataService: DataService,
@@ -17,6 +19,6 @@ export class FriendsComponent {
     transferBonuses: 0
   }
   onclick() {
-    
+
   }
 }

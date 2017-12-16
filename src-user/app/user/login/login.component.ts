@@ -12,9 +12,11 @@ import { ButtonWithSpinnerComponent } from '../button-with-spinner/button-with-s
 export class LoginComponent implements OnInit {
   phone = '';
   code = '';
-  // serverUrl = 'http://base.progrepublic.ru/csp/bonusclubrest';
-  serverUrl = 'http://localhost:57773/csp/yagoda';
+  shopCode = '';
+  serverUrl = 'http://base.progrepublic.ru/csp/yagodarest';
+  // serverUrl = 'http://localhost:57773/csp/yagoda';
   isPhoneEntered = false;
+  isShopCodeEntered = false;
   isCodeEntered = false;
   urlDialogdispaly = false;
 
@@ -29,12 +31,13 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const q4 = this.route.snapshot.paramMap.get('q4');
-    const shopId = atob(q4);
-    if (shopId !== null) {
-      localStorage.setItem('shopId', shopId);
+    if (this.route.snapshot.paramMap.get('q4')) {
+      this.shopCode = this.route.snapshot.paramMap.get('q4');
+      this.isShopCodeEntered = true;
     }
-    this.auths.logout();
+    if (localStorage.getItem('q1') && localStorage.getItem('q2')) {
+      this.router.navigate(['/']);
+    }
   }
 
   // doLogin(): void {
@@ -50,10 +53,10 @@ export class LoginComponent implements OnInit {
   requestSMS(): void {
     localStorage.setItem('q2', this.serverUrl);
     this.auths
-       .getSmsCode(this.phone)
+       .getSmsCode(this.phone, this.shopCode)
        .subscribe(loginSuccess => {
          if (!loginSuccess) {
-           this.notifier.warning('Ошибка!', 'Не удалось отправить запрос.');
+           this.notifier.warning('Ошибка!', 'Скорее всего неверно ввели код.');
          }
        });
   }

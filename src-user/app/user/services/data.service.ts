@@ -35,7 +35,7 @@ export class DataService {
   getBalance() {
     const q1 = localStorage.getItem('q1');
     const q2 = localStorage.getItem('q2');
-    const shopId = localStorage.getItem('shopId');
+    const shopId = localStorage.getItem('q5');
     return this.http.post(
       q2 + '/getbalance', {'q1': q1},
       this.getRequestOptionsArgs()
@@ -54,7 +54,7 @@ export class DataService {
   getPurchase() {
     const q1 = localStorage.getItem('q1');
     const q2 = localStorage.getItem('q2');
-    const shopId = localStorage.getItem('shopId');
+    const shopId = localStorage.getItem('q5');
     return this.http.post(
       q2 + '/getpurchase', {'q1': q1},
       this.getRequestOptionsArgs()
@@ -71,16 +71,6 @@ export class DataService {
     });
   }
 
-  /*
-  private getFullUrl(...args) {
-    const query = args
-      .map(val => encodeURIComponent(val).replace(new RegExp('%', 'g'), '~'))
-      .join('/');
-    return this.getRestServiceUrl() + '/' +
-      localStorage.getItem('accountEncrypt') + '/' +
-      query;
-  }
-*/
   private isResponseOk(r: Response) {
     return r.json().status.toString().toLowerCase() === 'ok';
   }

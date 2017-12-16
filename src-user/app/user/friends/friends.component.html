@@ -9,11 +9,10 @@
         <span style="float: right;font-size: 0.9em;">Пригласите друга. Вы и Ваш друг получите по 20 бонусов, когда Ваш друг заполнит данные в своем личном кабинете</span>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
-        <label for="tel">Телефон друга</label>
-        <input pInputText id="tel" [(ngModel)]="friend.tel" style="width: 70%" />
+        <p-inputMask id="tel" [(ngModel)]="friend.tel" mask="+7 (999) 999-9999" [style]="{'width': '100%'}" placeholder="Телефон друга" (onComplete)="isPhoneEntered=true;"></p-inputMask>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
-        <button pButton type="button" (click)="onclick()" label="Пригласить"></button>
+        <button pButton type="button" (click)="onclick()" [disabled]="!isPhoneEntered" label="Пригласить"></button>
       </div>
       <!-- TODO: Надо учечть что передавать бонусы можем только в рамках одного магазина
       <div class="ui-g-6 ui-md-6 ui-lg-6">

@@ -74,6 +74,7 @@ Property attractedCount As %Integer [ Calculated, SqlComputeCode = {
 /// Группа ABC
 Property abcGroup As %String [ Calculated, SqlComputeCode = {
 		new result,buyerId
+		set result = ""
 		set buyerId = {%%ID}
 		&sql(select top 1 groupName into :result from ent.BuyerAbcGroup where buyer=:buyerId order by onDate desc)
 		set {abcGroup}=result}, SqlComputed ];

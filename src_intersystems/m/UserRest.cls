@@ -31,7 +31,7 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 </Routes>
 }
 
-ClassMethod getAccessCode(encodeUserTel As %String = "", shopId = "") As %Status
+ClassMethod getAccessCode(encodeUserTel As %String = "", shopAccessCode = "") As %Status
 {
  kill ^a.temp	
  set ^a.temp("encodeUserTel") = encodeUserTel
@@ -42,33 +42,42 @@ ClassMethod getAccessCode(encodeUserTel As %String = "", shopId = "") As %Status
  }
  set ^a.temp("encodeUserTel3") = userTel
  
- set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel, ,.sc,, 1, shopId)
+ set shopId="" 
+ &sql(select Id into :shopId from ent.Shop where AccessCode=:shopAccessCode)
+ if SQLCODE set shopId="" 
  
- if buyerId]"" {
+ if (shopId="") {
+	 set sc = $$$ERROR(10000,"Неверно ввели код")
+	 
+ } else {
+ 
+ 	set buyerId = ##class(ent.Buyer).GetBuyerIdByAka(userTel, ,.sc,, 1, shopId)
+ 
+ 	if buyerId]"" {
 	
- 	set code=$RANDOM(9999)
- 	if $l(code)=3 {
-		set code = "0"_code	 
- 	} elseif $l(code)=2 {
-		set code = "00"_code	 
- 	} elseif $l(code)=1 {
-		set code = "000"_code	 
+ 		set code=$RANDOM(9999)
+ 		if $l(code)=3 {
+			set code = "0"_code	 
+ 		} elseif $l(code)=2 {
+			set code = "00"_code	 
+	 	} elseif $l(code)=1 {
+			set code = "000"_code	 
+ 		}
+	 	set ^a.temp($H,"code",userTel) = code
+	 	set ^smscode(userTel,"code") = code
+	 	set ^smscode(userTel,"datetime") = $H
+ 	
+	 	do ##class(p6.Sms).SendSms(userTel,"Код для входа: "_code,,,,,,,,"Код отправлен.")
+ 	
+	 	set buyer = ##class(ent.Buyer).%OpenId(buyerId)
+	 	set buyer.accessCode = code
+	 	set sc = buyer.Save()
+	
+	 	set output = {}
+	 	set output.status = "OK"
+	 	set output.result = {}
+	 	set output.result.shop = shopId
  	}
- 	set ^a.temp($H,"code",userTel) = code
- 	set ^smscode(userTel,"code") = code
- 	set ^smscode(userTel,"datetime") = $H
- 	
- 	do ##class(p6.Sms).SendSms(userTel,"Код для входа: "_code,,,,,,,,"Код отправлен.")
- 	
- 	set buyer = ##class(ent.Buyer).%OpenId(buyerId)
- 	set buyer.accessCode = code
- 	set sc = buyer.Save()
-	
- 	set output = {}
- 	set output.status = "OK"
- 	set output.result = {}
- 	set output.result.accesscode = code
- 
  
  
  } 

@@ -27,6 +27,9 @@ Relationship bonusOperationGoods As doc.BonusOperationGoods [ Cardinality = many
 /// Примечание
 Property Comment As %String(MAXLEN = 2000);
 
+/// Код для доступа в приложение для покупателей
+Property AccessCode As %String(MAXLEN = 4, MINLEN = 4);
+
 ClassMethod CreateLogin(shopId, login, role) As %Status
 {
 	if (role="admin") || (role="seller") {
@@ -61,6 +64,9 @@ Storage Default
 </Value>
 <Value name="5">
 <Value>Comment</Value>
+</Value>
+<Value name="6">
+<Value>AccessCode</Value>
 </Value>
 </Data>
 <DataLocation>^ent.ShopD</DataLocation>

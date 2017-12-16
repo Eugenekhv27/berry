@@ -44,7 +44,7 @@ export class HomepageComponent {
     if (q4) {
       const shopId = atob(q4);
       if (shopId !== null) {
-        localStorage.setItem('shopId', shopId);
+        localStorage.setItem('q5', shopId);
       }
     }
     //

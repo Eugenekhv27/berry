@@ -16,7 +16,7 @@ export class AuthService implements OnInit {
   ) { }
 
   ngOnInit() {
-    localStorage.setItem('accountEncrypt', '');
+    
   }
 
   private normalizePhone(phone: string):string {
@@ -34,36 +34,11 @@ export class AuthService implements OnInit {
     localStorage.setItem('q1', '');
   }
 
-  login({ login = '', password = '' }): Observable<boolean> {
-    const auth = btoa(login + ':' + password);
-    localStorage.setItem('loginpassword', auth);
-    const headers = new Headers({ Authorization: 'Basic ' + auth });
-    console.log('AuthService()');
-    return this.http
-      .get('http://base.progrepublic.ru/csp/bonusclubrest2/getAE',
-      { headers }
-      )
-      .map((resp: any) => {
-        console.log('Статус ответа: ' + resp.status);
-        if (resp.json().status !== 'OK') {
-          throw Error('Получен отрицательный ответ: ' + JSON.stringify(resp.json()));
-        }
-        console.log(resp.json());
-        localStorage.setItem('q1', resp.json().result);
-        this.router.navigate([this.redirectUrl]);
-        return true;
-      })
-      .catch((error) => {
-        console.error(error);
-        return Observable.of(false);
-      });
-  }
-
   loginAndRedirectTo(path: string) {
     this.redirectUrl = path;
     this.router.navigate(['/login']);
   }
-  getSmsCode(phone = ''): Observable<boolean> {
+  getSmsCode(phone = '', shopCode = ''): Observable<boolean> {
     console.log(this.normalizePhone(phone));
     const auth = btoa('getsms:PHWEEj');
     const headers = new Headers({ Authorization: 'Basic ' + auth });
@@ -71,7 +46,7 @@ export class AuthService implements OnInit {
     const serverUrl = localStorage.getItem('q2');
     const pPhone = btoa(this.normalizePhone(phone));
     return this.http
-      .get(serverUrl +  '/getaccesscode/' + pPhone + '/' + localStorage.getItem('shopId'),
+      .get(serverUrl +  '/getaccesscode/' + pPhone + '/' + shopCode,
       { headers }
       )
       .map((resp: any) => {
@@ -80,6 +55,7 @@ export class AuthService implements OnInit {
           throw Error('Получен отрицательный ответ: ' + JSON.stringify(resp.json()));
         }
         console.log(resp.json());
+        localStorage.setItem('q5', resp.json().result.shop);
         // localStorage.setItem('q1', phone + ':' + resp.json().result.accesscode);
         // this.router.navigate([this.redirectUrl]);
         return true;
@@ -90,13 +66,14 @@ export class AuthService implements OnInit {
       });
   }
   confirmCode(phone = '' , code = ''): Observable<boolean> {
+    console.log(phone);
     console.log(code);
     const auth = btoa('getsms:PHWEEj');
     const headers = new Headers({ Authorization: 'Basic ' + auth });
     const serverUrl = localStorage.getItem('q2');
     const pPhone = btoa(this.normalizePhone(phone));
     return this.http
-      .get(serverUrl +  '/confirmcode/' + pPhone + '/' + localStorage.getItem('shopId') + '/' + code,
+      .get(serverUrl +  '/confirmcode/' + pPhone + '/' + localStorage.getItem('q5') + '/' + code,
       { headers }
       )
       .map((resp: any) => {
