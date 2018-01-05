@@ -44,6 +44,55 @@ Property CodeWord As %String;
 /// Рейтинг к отзыву
 Property rating As %Integer;
 
+/// Продавец
+Relationship seller As ent.Seller [ Cardinality = one, Inverse = bonusOperations ];
+
+ClassMethod GetForGrid(query = "", accountId = "", citeriaObject = {{}}) As %Status
+{
+     kill ^a.sql
+	//set ^a.citeriaObject = citeriaObject.%ToJSON()
+
+    set st = $$$OK
+    //set sql = "select top 1000 Id,DocDate,nvl(Buyer->Name,'') ||' '||Buyer->Aka as name,DocNo,"
+    set sql = "select top 1000 Id,DocDate,Buyer->Aka as name,DocNo,"
+    	_" RubSum, PlusPointsSum, MinusPointsSum"
+    	_" from doc.BonusOperation b"
+    	_ " where Shop="_accountId 
+    	
+    if (citeriaObject.beginRegDate]"") {
+	 	set beginRegDate = ##class(p6.Date).DisplayToLogical(citeriaObject.beginRegDate)
+	 	set beginRegDate = $ZD(beginRegDate,3)
+	 	set sql = sql _" and DocDate>='"_beginRegDate_"'"
+    }
+    if (citeriaObject.endRegDate]"") {
+	 	set beginRegDate = ##class(p6.Date).DisplayToLogical(citeriaObject.endRegDate)
+	 	set beginRegDate = $ZD(beginRegDate,3)
+	 	set sql = sql _" and DocDate<='"_beginRegDate_"'"
+    }
+    if (citeriaObject.beginBonusSum]"") {
+	 	set sql = sql _" and PointsSum>="_citeriaObject.beginBonusSum
+    }
+    if (citeriaObject.endBonusSum]"") {
+	 	set sql = sql _" and PointsSum<="_citeriaObject.endBonusSum
+    }
+    if (citeriaObject.tel]"") {
+	 	set sql = sql _" and Buyer->Aka='"_citeriaObject.tel_"'"
+    }
+    
+    //if (citeriaObject.abcGroup]"") { // Группа ABC
+	//    set sql = sql _" and (abcGroup = '"_citeriaObject.abcGroup_"')"
+    //}
+    	
+    if query]"" {
+	 set sql = sql _" and "_query  
+    }
+	set sql = sql _ " order by DocDate"
+	set ^a.sql = sql
+    set ^a.sql(1) = citeriaObject.abcGroup
+    do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,sql,,1000)
+    quit st
+}
+
 Storage Default
 {
 <Data name="BonusOperationDefaultData">
@@ -79,6 +128,9 @@ Storage Default
 </Value>
 <Value name="11">
 <Value>rating</Value>
+</Value>
+<Value name="12">
+<Value>seller</Value>
 </Value>
 </Data>
 <DataLocation>^doc.BonusOperationD</DataLocation>

@@ -166,9 +166,10 @@ ClassMethod GetForGrid(query = "", accountId = "", citeriaObject = {{}}) As %Sta
 	//set ^a.citeriaObject = citeriaObject.%ToJSON()
 
     set st = $$$OK
-    set sql = "select Id,nvl(Name,'') ||' '||Aka as name,age,Comment,(select sum(PointsSum) from doc.BonusOperation where Buyer=b.Id) as Bonus,"
+    set sql = "select Id,nvl(Name,'') as name,Aka, age,Comment,(select sum(PointsSum) from doc.BonusOperation where Buyer=b.Id) as Bonus,"
     	_" (select top 1 guestLevel->name from ent.BuyerLevel where Buyer=b.Id order by onDate desc) as guestLevel,"
-    	_" (select top 1 groupName from ent.BuyerAbcGroup where Buyer=b.Id order by onDate desc) as abcGroup"
+    	_" (select top 1 groupName from ent.BuyerAbcGroup where Buyer=b.Id order by onDate desc) as abcGroup,"
+    	_" Sex"
     	_" from ent.Buyer b"
     	_ " where Shop="_accountId 
     	
@@ -193,6 +194,17 @@ ClassMethod GetForGrid(query = "", accountId = "", citeriaObject = {{}}) As %Sta
     }
     if (citeriaObject.abcGroup]"") { // Группа ABC
 	    set sql = sql _" and (abcGroup = '"_citeriaObject.abcGroup_"')"
+    }
+    if (citeriaObject.withAttractBuyers]"") { // Есть привлеченные
+	    set sql = sql _" and (Id in (select SuperBuyer from ent.Buyer))"
+    }
+    if (citeriaObject.sex]"") { // Пол
+    	set aSex = $zconvert(citeriaObject.sex,"I","UTF8")
+    	if aSex="Неизвестно" {
+	    	set sql = sql _"and ((Sex is null) or (Sex = '"_aSex_"'))"
+    	} else {
+	    	set sql = sql _" and (Sex = '"_aSex_"')"
+    	}
     }
     	
     if query]"" {

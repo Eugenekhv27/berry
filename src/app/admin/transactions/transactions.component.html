@@ -1,0 +1,97 @@
+<div class="ui-g">
+        <div class="ui-g-12">
+          <div class="card">
+            <h2>Информация о транзакциях</h2>
+            <p-fieldset legend="Критерии отбора" [toggleable]="true" [collapsed]="true">
+                <div class="ui-g">
+                  <div class="ui-g-4">
+                    <div class="ui-g">
+                      <div class="ui-g-12">
+                        <label for="date">Дата транзакции</label>
+                      </div>
+                      <div class="ui-g-12">
+                        <p-calendar dateFormat="dd.mm.yy"  [(ngModel)]="beginRegDate"  [locale]="ru" dataType="string" (onSelect)="refreshTransactionsListByFilter()" (onBlur)="refreshTransactionsListByFilter()" [showIcon]="true" showButtonBar="true"></p-calendar>
+                      </div>
+                      <div class="ui-g-12">
+                        <p-calendar dateFormat="dd.mm.yy"  [(ngModel)]="endRegDate" showButtonBar="true" [locale]="ru" dataType="string" (onSelect)="refreshTransactionsListByFilter()" (onBlur)="refreshTransactionsListByFilter()" [showIcon]="true" showButtonBar="true"></p-calendar>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ui-g-2">
+                    <div class="ui-g">
+                      <div class="ui-g-12">
+                        <label for="date">Кол-во бонусов</label>
+                      </div>
+                      <div class="ui-g-12">
+                          <p-spinner size="5" [(ngModel)]="beginBonusSum"  (onChange)="refreshTransactionsListByFilter()"></p-spinner>
+                      </div>
+                      <div class="ui-g-12">
+                          <p-spinner size="5" [(ngModel)]="endBonusSum"  (onChange)="refreshTransactionsListByFilter()"></p-spinner>
+                      </div>
+                    </div>
+                  </div> 
+                  <div class="ui-g-3"> 
+                    <div class="ui-g-12">
+                      <label for="tel">Телефон клиента</label>
+                    </div>
+                    <div class="ui-g-12">
+                      <p-inputMask id="tel" [(ngModel)]="tel" mask="+7(999)9999999" (onComplete)="refreshTransactionsListByFilter()"></p-inputMask>
+                    </div>
+                    <div class="ui-g-12">
+                        <button pButton type="button" (click)="refreshTransactionsListByFilter()" icon="fa fa-search" label="Обновить"></button>
+                    </div>
+                  </div>
+                  <div class="ui-g-3"> 
+                      <div class="ui-g-12">
+                          <label for="tel"></label>
+                      </div>
+                      
+                  </div>
+                </div>
+            </p-fieldset>
+            <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
+              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+              <input #gb type="text" pInputText size="50" placeholder="Быстрый поиск">
+            </div>
+            <!--  (onRowDblclick)="onRowDoubleClick()" -->
+            <p-dataTable
+              selectionMode="single"
+              [(selection)]="selectedLine"
+              [responsive]="true"
+              [value]="transactionsList"
+              [paginator]="true"
+              [rows]="maxRowsPerPage"
+             
+              [loading]="loading"
+              loadingIcon="fa-spinner"
+              [globalFilter]="gb"
+              sortMode="multiple">
+              <p-column field="date" header="Дата" [sortable]="true"></p-column>
+              <p-column field="participantName" header="Клиент" [sortable]="true" [style]="{'width':'15%'}"></p-column>
+              <p-column field="docNo" header="Номер чека"></p-column>
+              <p-column field="money" header="Сумма чека" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
+              <p-column field="plusPoints" header="Начисленных бонусов" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
+              <p-column field="minusPoints" header="Списанных бонусов" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
+              <p-column field="comment" header="Коментарий"></p-column>
+              
+              <p-footer>
+                <div class="ui-g">
+                  <div class="ui-g-6">
+                  <!--
+                    <button pButton
+                      label="Открыть транзакцию"
+                      (click)="onRowDoubleClick()"
+                      [disabled]="!selectedLine"
+                      type="button"
+                      icon="fa-pencil"
+                      style="float:left">
+                    </button>
+                -->
+                  </div>
+                </div>
+              </p-footer>
+            </p-dataTable>
+          </div>
+        </div>
+      </div>
+      

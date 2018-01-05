@@ -1,0 +1,57 @@
+<div class="card">
+  <h2>KPI продавцов</h2>
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <div class="ui-g">
+        <div class="ui-g-3">
+          <label>С: </label>
+          <p-calendar
+            readonlyInput="true" [locale]="calendarLocale"
+            dateFormat="dd.mm.yy" dataType="string"
+            [(ngModel)]="beginDate"
+            (onSelect)="getMainReport()"
+            [showIcon]="true"
+            [inputStyle]="{'width':'90px'}"></p-calendar>
+        </div>
+        <div class="ui-g-3">
+          <label>по: </label>
+          <p-calendar
+            readonlyInput="true" [locale]="calendarLocale"
+            dateFormat="dd.mm.yy" dataType="string"
+            [(ngModel)]="endDate"
+            (onSelect)="getMainReport()"
+            [showIcon]="true"
+            [inputStyle]="{'width':'90px'}"></p-calendar>
+        </div>
+      </div>
+      <div class="ui-g">
+        <div class="ui-g-12">
+            <p-dataTable
+            selectionMode="single"
+            [responsive]="true"
+            [value]="reportData"
+            [paginator]="true"
+            [rows]="100"
+            [loading]="loading"
+            loadingIcon="fa-spinner"
+            sortMode="multiple">
+              <p-column field="name" header="Продавец" [sortable]="true" [style]="{'width': '30%'}"></p-column>
+              <p-column field="attractedClients" header="Привлеченных клиентов" [sortable]="true"  [style]="{'text-align': 'right'}"></p-column>
+              <p-column field="saleSum" header="Сумма продаж, руб." [sortable]="true" [style]="{'text-align': 'right'}"></p-column>
+              <p-column field="averageCheck" header="Средний чек, руб." [sortable]="true" [style]="{'text-align': 'right'}"></p-column>
+              <p-column field="qtyCheck" header="Количество чеков, шт." [sortable]="true" [style]="{'text-align': 'right'}"></p-column>
+              <p-footerColumnGroup>
+                  <p-row>
+                      <p-column footer="Всего:" colspan="1" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
+                      <p-column footer="{{reportTotals.attractedClients}}" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
+                      <p-column footer="{{reportTotals.saleSum}}" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
+                      <p-column footer="" colspan="1"></p-column>
+                      <p-column footer="{{reportTotals.qtyCheck}}" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
+                  </p-row>
+              </p-footerColumnGroup>
+            </p-dataTable>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

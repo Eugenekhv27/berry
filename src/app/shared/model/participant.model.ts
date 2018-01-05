@@ -24,6 +24,7 @@ export class BonusAccountOperation {
 
   id: string; // "_id"
   participant: ParticipantLink; // "Buyer"
+  participantName?: string; // Имя клиентов для гридов
   date: string; // "DocDate"
   docUUID: string;  // "ByDocUUID"
   money: number; // "RubSum"
@@ -31,6 +32,7 @@ export class BonusAccountOperation {
   plusPoints: number; // "PlusPointsSum"
   minusPoints: number; // "MinusPointsSum"
   comment: string; // "Comment"
+  docNo: string; // "DocNo" - номер чека
 
   /**
    * @param op - объект "Операция", полученный от сервера
@@ -45,6 +47,8 @@ export class BonusAccountOperation {
     this.plusPoints = parseNumber(op.PlusPointsSum);
     this.minusPoints = parseNumber(op.MinusPointsSum);
     this.comment = String(op.Comment || '');
+    this.docNo = String(op.DocNo || '');
+    this.participantName = String(op.name || '');
   }
 }
 

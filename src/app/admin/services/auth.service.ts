@@ -31,7 +31,7 @@ export class AuthService implements OnInit {
     localStorage.setItem('loginpassword', auth);
     const headers = new Headers({ Authorization: 'Basic ' + auth });
     return this.http
-      .get('http://base.progrepublic.ru/csp/bonusclubrest2/getAE',
+      .get(localStorage.getItem('restServiceUrl') + '/getAE',
       { headers }
       )
       .map((resp: any) => {

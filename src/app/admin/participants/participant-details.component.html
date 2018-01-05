@@ -9,25 +9,59 @@
       <div class="ui-g">
         <!-- Режим только для просмотра  -->
         <div class="ui-g-12" *ngIf="readOnly" style="font-weight: bold; margin-left: 18px; font-size:larger">
-            {{participantEditor.name}}<span *ngIf="!participantEditor.name">Имя не указано</span>, 
-            пол {{participantEditor.sex}}<span *ngIf="!participantEditor.sex">не указан</span>, 
-            {{participantEditor.age}}<span *ngIf="participantEditor.age"> лет, </span> 
-            дата рождения {{participantEditor.birthDate}} <span *ngIf="!participantEditor.sex">не указана</span> 
+          <table>
+            <tr>
+             <td>Имя:</td>
+             <td>{{participantEditor.name}}<span *ngIf="!participantEditor.name">не указано</span></td> 
+            </tr>
+            <tr>
+              <td>Пол:</td>
+              <td>{{participantEditor.sex}}<span *ngIf="!participantEditor.sex">не указан</span></td>
+            </tr>
+            <tr>
+              <td>Дата рождения:</td>
+              <td>{{participantEditor.birthDate}} <span *ngIf="!participantEditor.sex">не указана</span></td>
+            </tr>  
+            <tr>
+              <td>Возраст:</td>
+              <td>{{participantEditor.age}}<span *ngIf="participantEditor.age"> лет</span></td>
+            <tr>
+          </table> 
         </div>
         <!-- Режим для редактирования  -->
         <div *ngIf="!readOnly">  
+          <table style="font-weight: bold; margin-left: 18px; font-size:larger">
+            <tr>
+              <td>Имя:</td>
+              <td><input pInputText id="name" [(ngModel)]="participantEditor.name" size="40" style="width: 100%" /></td> 
+            </tr>
+            <tr>
+              <td>Пол:</td>
+              <td><p-dropdown id="sex" [(ngModel)]="participantEditor.sex" [options]="sexOptions"></p-dropdown> </td>
+            </tr>
+            <tr>
+              <td>Дата рождения:</td>
+              <td><p-calendar dateFormat="dd.mm.yy"  [(ngModel)]="participantEditor.birthDate" [locale]="ru" dataType="string" [yearNavigator]="true" yearRange="1920:2020" [showIcon]="true"></p-calendar></td>
+            </tr>  
+            <tr>
+              <td>Возраст:</td>
+              <td>{{participantEditor.age}}<span *ngIf="participantEditor.age"> лет</span></td>
+            <tr>
+          </table> 
+          <!--
           <div class="ui-g-6">
             <label for="name">Имя</label>
             <input pInputText id="name" [(ngModel)]="participantEditor.name" style="width: 100%" />
           </div>
           <div class="ui-g-3">
-            <label for="sex">Пол</label>
+            <label for="sex">Пол</label><br/>
             <p-dropdown id="sex" [(ngModel)]="participantEditor.sex" [options]="sexOptions"></p-dropdown> 
           </div>
           <div class="ui-g-3">
             <label for="date">Дата рождения</label>
-            <p-calendar dateFormat="dd.mm.yy"  [(ngModel)]="participantEditor.birthDate" [locale]="ru" dataType="string" [yearNavigator]="true" yearRange="1920:2020"></p-calendar>
+            <p-calendar dateFormat="dd.mm.yy"  [(ngModel)]="participantEditor.birthDate" [locale]="ru" dataType="string" [yearNavigator]="true" yearRange="1920:2020" [showIcon]="true"></p-calendar>
           </div>
+        -->
         </div>
 
         <div class="ui-g-12">

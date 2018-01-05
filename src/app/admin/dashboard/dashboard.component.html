@@ -10,4 +10,88 @@
     <app-overview-box color=3 icon="fa-rub" label="На сумму" [value]="purchaseAmount"></app-overview-box>
     <app-overview-box color=4 icon="fa-rub" label="Средний чек" [value]="averagePurchaseAmount"></app-overview-box>
   </div>
+  <div class="ui-g-6">
+      <h2>KPI продавцов</h2>
+      <b>Период: </b>
+      <p-calendar 
+        [(ngModel)]="kpiPeriod" 
+        selectionMode="range" 
+        readonlyInput="true"
+        [locale]="calendarLocale"
+        dateFormat="dd.mm.yy"
+        [showIcon]="true"
+        >
+      </p-calendar>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button pButton type="button" icon="fa fa-refresh" iconPos="right" (click)="kpiDateOnClose()"></button>
+      <p-dataTable
+      [responsive]="true"
+      [value]="sellersKpiData.children"
+      [paginator]="true"
+      [rows]="100"
+      [loading]="loading"
+      loadingIcon="fa-spinner"
+      sortMode="multiple">
+        <p-column field="name" header="Продавец" [sortable]="false"></p-column>
+        <p-column field="attractedClients" header="Привлеченных клиентов" [sortable]="false"  [style]="{'text-align': 'right'}"></p-column>
+        <!--
+        <p-column field="saleSum" header="Сумма продаж" [sortable]="true" [style]="{'text-align': 'right'}"></p-column>
+        -->
+        <p-column field="averageCheck" header="Средний чек" [sortable]="false" [style]="{'text-align': 'right'}"></p-column>
+        <!--
+        <p-column field="qtyCheck" header="Количество чеков" [sortable]="true" [style]="{'text-align': 'right'}"></p-column>
+        -->
+        <p-footerColumnGroup>
+          <p-row>
+            <p-column footer="Всего:" colspan="1" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
+            <p-column footer="{{sellersKpiData.totals.attractedClients}}" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
+            <!--
+            <p-column footer="{{sellersKpiData.totals.saleSum}}" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
+            -->
+            <p-column footer="" colspan="1"></p-column>
+            <!--
+            <p-column footer="{{sellersKpiData.totals.qtyCheck}}" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
+            -->
+          </p-row>
+        </p-footerColumnGroup>
+      </p-dataTable>
+  </div>
+  <div class="ui-g-6">
+    <div style="margin: auto">
+      <h2>Выручка по дням недели</h2>
+      <b>Период с {{incomingByWeekDayBeginDate}} по {{endDate}}</b>
+      <p-chart type="bar" [data]="incomingByWeekDay"></p-chart>
+    </div> 
+  </div>
+  <div class="ui-g-6">
+
+  </div>
+  <div class="ui-g-6">
+      <h2>ТОП клиентов</h2>
+      <b>Период с {{beginDate}} по {{endDate}}</b>
+      <p-dataTable
+      [responsive]="true"
+      [value]="topClientsData.children"
+      [paginator]="true"
+      [rows]="100"
+      [loading]="loading"
+      loadingIcon="fa-spinner"
+      sortMode="multiple">
+        <p-column field="no" header="№" [sortable]="false" [style]="{'text-align': 'center'}"></p-column>
+        <p-column field="name" header="Клиент" [sortable]="false"></p-column>
+        <p-column field="sum" header="Сумма покупок" [sortable]="false"  [style]="{'text-align': 'right'}"></p-column>
+      </p-dataTable>
+  </div>
+  <div class="ui-g-4">
+      <h2 style="text-align:center">Пол</h2>
+      <p-chart type="doughnut" [data]="sexData"></p-chart>
+  </div>
+  <div class="ui-g-4">
+      <h2 style="text-align:center">Возраст</h2>
+      <p-chart type="pie" [data]="sexData"></p-chart>
+  </div>
+  <div class="ui-g-4">
+      <h2 style="text-align:center">Средний чек</h2>
+      <p-chart type="doughnut" [data]="sexData"></p-chart>
+  </div>
 </div>

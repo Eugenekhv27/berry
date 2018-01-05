@@ -70,7 +70,13 @@ import { ParticipantSatisfactionDetailedReportComponent
 } from './reports/participant-satisfaction/participant-satisfaction-detailed-report.component';
 import { ABCAnalysisReportComponent } from './reports/abc-analysis/abc-analysis-report.component';
 import { ParticipantDetailsComponent } from './participants/participant-details.component';
+import { TransactionsComponent } from './transactions/transactions.component';
+import { SellersKpiReportComponent } from './reports/sellers-kpi/sellers-kpi-report.component';
 
+
+// липкие маршруты
+import { RouteReuseStrategy } from './routeReuseStrategy';
+import { CustomReuseStrategy } from './participants/customReuseStrategy';
 
 import { AdminRoutingModule } from './admin-routing.module';
 
@@ -126,9 +132,12 @@ import { BonusTurnoverService } from './reports/bonus-turnover/bonus-turnover.se
     ParticipantSatisfactionDetailedReportComponent,
     ABCAnalysisReportComponent,
     ParticipantDetailsComponent,
+    TransactionsComponent,
+    SellersKpiReportComponent
   ],
   providers: [
     BonusTurnoverService,
+    {provide: RouteReuseStrategy, useClass: CustomReuseStrategy}
   ]
 })
 export class AdminModule { }

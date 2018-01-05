@@ -144,6 +144,7 @@ ClassMethod PostData(encriptId As %String = "") As %Status
  	set codeWord = $ZCONVERT(clientObj.codeWord,"I","UTF8")
  	set checkNo = $ZCONVERT(clientObj.checkNo,"I","UTF8")
  	set uuid = clientObj.uuid
+ 	set sellerId = ##class(ent.Seller).getSellerId(accountId,clientObj.seller)
 
 	set ^a.resttest($h,"buyerTel2")=userTel
    
@@ -155,8 +156,8 @@ ClassMethod PostData(encriptId As %String = "") As %Status
  	
  	if (+payByBonus>0) { // списание бонусов
 	 	
-		&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Shop,CodeWord,DocNo) 
- 										values (:checkAmount,-(:payByBonus),:buyerId,:uuid,:accountId,:codeWord,:checkNo))
+		&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Shop,CodeWord,DocNo,seller) 
+ 										values (:checkAmount,-(:payByBonus),:buyerId,:uuid,:accountId,:codeWord,:checkNo,:sellerId))
  
 		set ^a.resttest($h,"SQLCODE")=SQLCODE
  		set ^a.resttest($h,"SQLCODE","%msg")= %msg
@@ -177,8 +178,8 @@ ClassMethod PostData(encriptId As %String = "") As %Status
  		}	
 	} else { // начисление бонусов
  
- 		&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Shop,CodeWord,DocNo) 
- 				values (:checkAmount,:bonusAmount*.5,:buyerId,:uuid,:accountId,:codeWord,:checkNo))
+ 		&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Shop,CodeWord,DocNo,seller) 
+ 				values (:checkAmount,:bonusAmount*.5,:buyerId,:uuid,:accountId,:codeWord,:checkNo,:sellerId))
  		if SQLCODE<0{
  			set ^a.resttest($h,"SQLCODE")=SQLCODE
  			set ^a.resttest($h,"SQLCODE","%msg")= %msg
@@ -189,13 +190,13 @@ ClassMethod PostData(encriptId As %String = "") As %Status
  		set superBuyerId = ##class(ent.Buyer).SuperBuyerGetStored(buyerId)
  		if superBuyerId]"" {
  			set comment = "от "_userTel
- 			&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Comment,Shop) 
- 										values (0,:bonusAmount*.3,:superBuyerId,:uuid,:comment,:accountId))
+ 			&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Comment,Shop,seller) 
+ 										values (0,:bonusAmount*.3,:superBuyerId,:uuid,:comment,:accountId,:sellerId))
  			set superSuperBuyerId = ##class(ent.Buyer).SuperBuyerGetStored(superBuyerId)
  			if superSuperBuyerId]"" {
  				set comment = "от "_userTel
- 				&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Comment,Shop) 
-	 				values (0,:bonusAmount*.2,:superSuperBuyerId,:uuid,:comment,:accountId))										
+ 				&sql(INSERT OR UPDATE into doc.BonusOperation (RubSum,PointsSum,Buyer,ByDocUUID,Comment,Shop,seller) 
+	 				values (0,:bonusAmount*.2,:superSuperBuyerId,:uuid,:comment,:accountId,:sellerId))										
  			}
  		}
  	}
@@ -1014,18 +1015,34 @@ ClassMethod GetFilteredGrid(encriptId) As %Status
 	quit $$$OK
 }
 
-/// Отчет ABC-анализ. Запрос: {"reportName":"abc-analysis-report","aPrecent":80,"bPrecent":15,"cPrecent":15}
+/// Обработка для всех отчетов. 
+/// reportName определяет вид отчета {"reportName":"abc-analysis-report"}
 ClassMethod GetReportData(encriptId) As %Status
 {
+	set status = "OK"
 	do ##class(Utils.JsonProvider).%ConvertJSONToObject(%request.Content,"",.clientObj,1)
 	set accountId=$system.Encryption.Base32Decode(encriptId,1)
 	// абс - анализ
 	if clientObj.reportName = "abc-analysis-report" {
 		$$$QuitOnError(##class(rep.ABCAnalysisReport).GetData(clientObj,.reportData))
+	} elseif clientObj.reportName = "sellers-kpi-report" {
+		// KPI продавцов
+		$$$QuitOnError(##class(rep.SellersKpiReport).GetData(clientObj,.reportData))
+	} elseif clientObj.reportName = "incoming-by-week-day-report" {
+		// График выручка по дням неделям
+		$$$QuitOnError(##class(rep.IncomingByWeekDayReport).GetData(clientObj,.reportData))
+	} elseif clientObj.reportName = "top-clients-report" {
+		// Топ клиентов
+		$$$QuitOnError(##class(rep.TopClientsReport).GetData(clientObj,.reportData))
+	} elseif clientObj.reportName = "sex-chart" {
+		// Пол диаграмма
+		$$$QuitOnError(##class(rep.SexChart).GetData(clientObj,.reportData))	
+	} else {
+		set status = "Нет такого отчета: "_	clientObj.reportName
 	}
 	set result = {}
 	set result.report = reportData
-	set result.status = "OK"
+	set result.status = status
 	write result.%ToJSON()
 	
 	quit $$$OK

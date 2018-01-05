@@ -4,10 +4,10 @@
       <h2>Активная клиентская база</h2>
       <p-fieldset legend="Критерии отбора" [toggleable]="true" [collapsed]="true">
           <div class="ui-g">
-            <div class="ui-g-3">
+            <div class="ui-g-4">
               <div class="ui-g">
                 <div class="ui-g-12">
-                  <label for="date">Зарегистрировался</label>
+                  <label for="date">Дата вступления</label>
                 </div>
                 <div class="ui-g-12">
                   <p-calendar dateFormat="dd.mm.yy"  [(ngModel)]="beginRegDate"  [locale]="ru" dataType="string" (onSelect)="refreshParticipantsListByFilter()" (onBlur)="refreshParticipantsListByFilter()" [showIcon]="true" showButtonBar="true"></p-calendar>
@@ -17,30 +17,47 @@
                 </div>
               </div>
             </div>
-            <div class="ui-g-3">
+            <div class="ui-g-2">
               <div class="ui-g">
                 <div class="ui-g-12">
                   <label for="date">Кол-во бонусов</label>
                 </div>
                 <div class="ui-g-12">
-                    <p-spinner size="10" [(ngModel)]="beginBonusSum" [min]="0" (onChange)="refreshParticipantsListByFilter()"></p-spinner>
+                    <p-spinner size="5" [(ngModel)]="beginBonusSum" [min]="0" (onChange)="refreshParticipantsListByFilter()"></p-spinner>
                 </div>
                 <div class="ui-g-12">
-                    <p-spinner size="10" [(ngModel)]="endBonusSum" [min]="0" (onChange)="refreshParticipantsListByFilter()"></p-spinner>
+                    <p-spinner size="5" [(ngModel)]="endBonusSum" [min]="0" (onChange)="refreshParticipantsListByFilter()"></p-spinner>
                 </div>
               </div>
             </div> 
             <div class="ui-g-3"> 
               <div class="ui-g">
-                <div class="ui-g-12">
-                  <p-checkbox [(ngModel)]="withOnePurchase" binary="true" label="С одной покупкой" (onChange)="refreshParticipantsListByFilter()"></p-checkbox>
-                </div>
-                <div class="ui-g-12"> 
-                    <label for="abcGroup">Группа ABC</label>
-                    <p-dropdown id="abcGroup" [options]="abcGroupOptions" [(ngModel)]="abcGroup" (onChange)="refreshParticipantsListByFilter()"></p-dropdown>
-                </div>
+                  <div class="ui-g-12"> 
+                      <label for="abcGroup">Группа накопления</label>
+                  </div>
+                  <div class="ui-g-12"> 
+                      <p-dropdown id="abcGroup" [options]="abcGroupOptions" [(ngModel)]="abcGroup" (onChange)="refreshParticipantsListByFilter()"></p-dropdown>
+                  </div>
+                  <div class="ui-g-12">
+                      <p-checkbox [(ngModel)]="withOnePurchase" binary="true" label="С одной покупкой" (onChange)="refreshParticipantsListByFilter()"></p-checkbox>
+                  </div>  
+                
               </div>
             </div>
+            <div class="ui-g-3"> 
+                <div class="ui-g">
+                    <div class="ui-g-12"> 
+                        <label for="abcGroup">Пол</label>
+                    </div>
+                    <div class="ui-g-12"> 
+                        <p-dropdown id="abcGroup" [options]="sexOptions" [(ngModel)]="sex" (onChange)="refreshParticipantsListByFilter()"></p-dropdown>
+                    </div>
+                  <div class="ui-g-12">
+                    <p-checkbox [(ngModel)]="withAttractBuyers" binary="true" label="С привлеченными" (onChange)="refreshParticipantsListByFilter()"></p-checkbox>
+                  </div>
+                  
+                </div>
+              </div>
           </div>
       </p-fieldset>
       <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
@@ -58,17 +75,20 @@
         [loading]="loading"
         loadingIcon="fa-spinner"
         [globalFilter]="gb"
-        sortMode="multiple">
-        <p-column field="name" header="Имя/Телефон" [sortable]="true"></p-column>
-        <p-column field="age" header="Возраст" [sortable]="true"></p-column>
-        <p-column field="balance" header="Бонусы" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
-        <p-column field="guestLevel" header="Ранг"></p-column>
-        <p-column field="abcGroup" header="Группа ABC"></p-column>
+        sortMode="multiple"
+        resizableColumns="true">
+        <p-column field="name" header="Имя" [sortable]="true" [style]="{'width':'15%'}"></p-column>
+        <p-column field="phone" header="Телефон" [sortable]="true" [style]="{'width':'15%'}"></p-column>
+        <p-column field="age" header="Возраст" [sortable]="true" [style]="{'width':'10%'}"></p-column>
+        <p-column field="sex" header="Пол" [sortable]="true" [style]="{'width':'10%'}"></p-column>
+        <p-column field="balance" header="Бонусы" [sortable]="true" [style]="{'text-align':'right','width':'12%'}"></p-column>
+        <p-column field="guestLevel" header="Ранг" [style]="{'width':'10%'}"></p-column>
+        <p-column field="abcGroup" header="Группа ABC" [style]="{'text-align':'center','width':'12%'}"></p-column>
         <p-column field="comment" header="Коментарий"></p-column>
         
         <p-footer>
           <div class="ui-g">
-            <div class="ui-g-6">
+            <div class="ui-g-12">
               <button pButton
                 label="Редактировать данные участника"
                 (click)="onRowDoubleClick()"

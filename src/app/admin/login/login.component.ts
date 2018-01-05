@@ -19,7 +19,9 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.server = localStorage.getItem(encodeURIComponent('restServiceUrl'));
+    if (localStorage.getItem('restServiceUrl')) {
+      this.server = localStorage.getItem('restServiceUrl');
+    }
     this.auths.logout();
   }
 

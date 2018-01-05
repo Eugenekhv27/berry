@@ -10,7 +10,8 @@
             dateFormat="dd.mm.yy" dataType="string"
             [(ngModel)]="beginDate"
             (onSelect)="getMainReport()"
-            [showIcon]="true"></p-calendar>
+            [showIcon]="true"
+            [inputStyle]="{'width':'90px'}"></p-calendar>
         </div>
         <div class="ui-g-3">
           <label>по: </label>
@@ -19,17 +20,73 @@
             dateFormat="dd.mm.yy" dataType="string"
             [(ngModel)]="endDate"
             (onSelect)="getMainReport()"
-            [showIcon]="true"></p-calendar>
+            [showIcon]="true"
+            [inputStyle]="{'width':'90px'}"></p-calendar>
         </div>
         <div class="ui-g-4">
-            <button pButton type="button" label="Зафиксировать группу начислений в карточке клиента" icon="fa fa-anchor" (click)="getMainReport(true)"></button>
+            <button pButton type="button" label="Зафиксировать группу накоплений в карточке клиента" icon="fa fa-anchor" (click)="getMainReport(true)"></button>
         </div>
         <div class="ui-g-2">
           <button pButton type="button" label="Настроить" icon="fa fa-cog" (click)="settingClick()"></button>
         </div>
       </div>
+      <p-fieldset legend="Критерии для действий" [toggleable]="true" [collapsed]="true">
+        <div class="ui-g">
+          <div class="ui-g-2"> 
+            <div class="ui-g">
+              <div class="ui-g-12"> 
+                <label for="abcGroup">Пол</label>
+              </div>
+              <div class="ui-g-12"> 
+                <p-dropdown id="abcGroup" [options]="sexOptions" [(ngModel)]="sex" (onChange)="refreshParticipantsListByFilter()"></p-dropdown>
+              </div>
+            </div>
+          </div>
+          <div class="ui-g-4">
+            <div class="ui-g">
+              <div class="ui-g-12">
+                <label for="date">Возраст</label>
+              </div>
+              <div class="ui-g-6">
+                С <p-spinner size="5" [(ngModel)]="beginAge" [min]="0" (onChange)="refreshParticipantsListByFilter()"></p-spinner>
+              </div>
+              <div class="ui-g-6">
+                по <p-spinner size="5" [(ngModel)]="endAge" [min]="0" (onChange)="refreshParticipantsListByFilter()"></p-spinner>
+              </div>
+            </div>
+          </div> 
+          <div class="ui-g-2">  
+            <div class="ui-g-12"> 
+                <label for="abcGroup">Группа накопления</label>
+            </div>
+            <div class="ui-g-12"> 
+                <p-dropdown id="abcGroup" [options]="abcGroupOptions" [(ngModel)]="abcPlus" (onChange)="refreshParticipantsListByFilter()"></p-dropdown>
+            </div>
+          </div>
+          <div class="ui-g-2">  
+              <div class="ui-g-12"> 
+                  <label for="abcGroup">Группа на балансе</label>
+              </div>
+              <div class="ui-g-12"> 
+                  <p-dropdown id="abcGroup" [options]="abcGroupOptions" [(ngModel)]="abcBalance" (onChange)="refreshParticipantsListByFilter()"></p-dropdown>
+              </div>
+            </div>
+            <div class="ui-g-2">  
+                <div class="ui-g-12"> 
+                    <label for="abcGroup">Группа <br/> списано</label>
+                </div>
+                <div class="ui-g-12"> 
+                    <p-dropdown id="abcGroup" [options]="abcGroupOptions" [(ngModel)]="abcMinus" (onChange)="refreshParticipantsListByFilter()"></p-dropdown>
+                </div>
+              </div>
+        </div>
+      </p-fieldset>
       <div class="ui-g">
         <div class="ui-g-12">
+            <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input #gb type="text" pInputText size="50" placeholder="Быстрый поиск">
+              </div>
             <p-dataTable
             selectionMode="single"
             [responsive]="true"
@@ -38,14 +95,31 @@
             [rows]="100"
             [loading]="loading"
             loadingIcon="fa-spinner"
-            sortMode="multiple">
+            sortMode="multiple"
+            [globalFilter]="gb">
+            <p-headerColumnGroup>
+                <p-row>
+                    <p-column header="Имя/Телефон" rowspan="2" [style]="{'width': '20%'}"></p-column>
+                    <p-column header="Накопленно за период" colspan="2" [style]="{'border-left-width': '2px'}"></p-column>
+                    <p-column header="На балансе" colspan="2" [style]="{'border-left-width': '2px'}"></p-column>
+                    <p-column header="Списано за период" colspan="2" [style]="{'border-left-width': '2px'}"></p-column>
+                </p-row>
+                <p-row>
+                    <p-column header="Значение"></p-column>
+                    <p-column header="Группа" [style]="{'width': '5%'}"></p-column>
+                    <p-column header="Значение"></p-column>
+                    <p-column header="Группа" ></p-column>
+                    <p-column header="Значение"></p-column>
+                    <p-column header="Группа" ></p-column>
+                </p-row>
+            </p-headerColumnGroup>
             <p-column field="name" header="Имя/Телефон" [sortable]="true"></p-column>
-            <p-column field="balance" header="На балансе" [sortable]="true"></p-column>
-            <p-column field="balanceCaregory" header="Группа" [sortable]="true"></p-column>
-            <p-column field="plusPoints" header="Начислено за период" [sortable]="true"></p-column>
-            <p-column field="plusPointsCaregory" header="Группа" [sortable]="true"></p-column>
-            <p-column field="minusPoints" header="Списано за период" [sortable]="true"></p-column>
-            <p-column field="minusPointsCaregory" header="Группа" [sortable]="true"></p-column>
+            <p-column field="plusPoints" header="Начислено за период" [sortable]="true" [style]="{'text-align':'right','border-left-width': '2px'}"></p-column>
+            <p-column field="plusPointsCaregory" header="Группа" [sortable]="true" [style]="{'text-align':'center','width': '5%'}"></p-column>
+            <p-column field="balance" header="На балансе" [sortable]="true" [style]="{'text-align':'right','border-left-width': '2px'}"></p-column>
+            <p-column field="balanceCaregory" header="Группа" [sortable]="true" [style]="{'text-align':'center','width': '5%'}"></p-column>
+            <p-column field="minusPoints" header="Списано за период" [sortable]="true" [style]="{'text-align':'right','border-left-width': '2px'}"></p-column>
+            <p-column field="minusPointsCaregory" header="Группа" [sortable]="true" [style]="{'text-align':'center','width': '5%'}"></p-column>
             <!--
             <p-column field="balance" header="Бонусы" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
             <p-column field="guestLevel" header="Ранг"></p-column>

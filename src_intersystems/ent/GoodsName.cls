@@ -1,7 +1,7 @@
 Class ent.GoodsName Extends p6.Integrity [ ClassType = persistent ]
 {
 
-Property aka As %String;
+Property aka As %String(MAXLEN = 300);
 
 Index IndexAka On (shop, aka) [ Data = aka, Unique ];
 

@@ -21,7 +21,14 @@ export class ParticipantsComponent implements OnInit {
     {label: 'A', value: 'A'},
     {label: 'B', value: 'B'},
     {label: 'C', value: 'C'}
-];
+  ];
+  sexOptions =
+   [
+    {label: 'Не важно', value: null},
+    {label: 'Неизвестно', value: 'Неизвестно'},
+    {label: 'Мужской', value: 'Мужской'},
+    {label: 'Женский', value: 'Женский'}
+  ];
 
   // для фильтров
   beginRegDate: string;
@@ -30,6 +37,8 @@ export class ParticipantsComponent implements OnInit {
   endBonusSum: number;
   withOnePurchase: boolean;
   abcGroup: string;
+  withAttractBuyers: boolean;
+  sex: string;
 
   ru = {
       firstDayOfWeek: 1,
@@ -75,7 +84,9 @@ export class ParticipantsComponent implements OnInit {
       'beginBonusSum': this.beginBonusSum,
       'endBonusSum': this.endBonusSum,
       'withOnePurchase': this.withOnePurchase,
-      'abcGroup': this.abcGroup
+      'abcGroup': this.abcGroup,
+      'withAttractBuyers': this.withAttractBuyers,
+      'sex': this.sex
     };
     this.refreshParticipantsList(a);
   }

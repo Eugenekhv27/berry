@@ -1,57 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-// import { TreeNode } from 'primeng/primeng';
-
 import { russianCalendarLocale } from '../../../shared/locale';
-// import { ABCAnalysisService } from './abc-analysis.service';
 import { ReportModel } from '../shared/report.model';
 import { DataService, NotifierService } from '../../../admin/services/services';
 
 interface TableRow {
   id: string;
   name: string;
-  balance: number;
-  balanceCaregory: string;
-  plusPoints: number;
-  plusPointsCaregory: string;
-  minusPoints: number;
-  minusPointsCaregory: string;
+  attractedClients: number;
+  saleSum: number;
+  averageCheck: number;
+  qtyCheck: number;
 }
 
 @Component({
-  selector: 'app-abc-analysis-report',
-  templateUrl: './abc-analysis-report.component.html',
+  // tslint:disable-next-line:component-selector
+  selector: 'sellers-kpi-report',
+  templateUrl: './sellers-kpi-report.component.html',
   providers: [ DataService ]
 })
-export class ABCAnalysisReportComponent implements OnInit {
+export class SellersKpiReportComponent implements OnInit {
   readonly calendarLocale = russianCalendarLocale;
   maxRowsPerPage = 14;
   reportData: Array<TableRow>;
+  reportTotals = {'attractedClients': 0, 'saleSum': 0, 'qtyCheck': 0};
   loading: boolean;
-  displaySetting = false;
   /// Критерии отчета
   beginDate;
   endDate;
-  aPrecent = 80;
-  bPrecent = 15;
-  cPrecent = 5;
-  sex: string;
-
-  sexOptions =
-   [
-    {label: 'Не важно', value: null},
-    {label: 'Неизвестно', value: 'Неизвестно'},
-    {label: 'Мужской', value: 'Мужской'},
-    {label: 'Женский', value: 'Женский'}
-  ];
-  abcGroupOptions =
-  [
-   {label: 'Не важно', value: null},
-   {label: 'A', value: 'A'},
-   {label: 'B', value: 'B'},
-   {label: 'C', value: 'C'}
- ];
 
   constructor(
     private router: Router,
@@ -61,7 +38,6 @@ export class ABCAnalysisReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
     const curDate = new Date();
     this.beginDate = this.dateToString(new Date(curDate.getFullYear(), curDate.getMonth(), 1)) ;
     this.endDate = this.dateToString(curDate) ;
@@ -73,27 +49,21 @@ export class ABCAnalysisReportComponent implements OnInit {
     this.loading = true;
     this.reportData = [];
     const reportCriteria = {
-      'reportName': 'abc-analysis-report',
+      'reportName': 'sellers-kpi-report',
       'beginDate': this.beginDate,
-      'endDate': this.endDate,
-      'aPrecent': this.aPrecent,
-      'bPrecent': this.bPrecent,
-      'cPrecent': this.cPrecent,
-      'saveInBuyer': isFix
+      'endDate': this.endDate
     };
     this.dataService.getReportData(reportCriteria)
       .subscribe((repData) => {
         this.reportData = repData.children;
+        this.reportTotals = repData.totals;
         this.loading = false;
       });
   }
 
-  getDetails(selectedRow: TableRow): void {
-    this.router.navigate(['/participants/' + encodeURIComponent(selectedRow.id)]);
-  }
-  settingClick() {
-    this.displaySetting = true;
-  }
+  // getDetails(selectedRow: TableRow): void {
+  //   this.router.navigate(['/participants/' + encodeURIComponent(selectedRow.id)]);
+  // }
 
   /**
    * Функция isNumber() используется в шаблоне

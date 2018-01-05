@@ -20,7 +20,7 @@ import { Http, Response, Headers, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { SelectItem } from 'primeng/primeng';
-import { Participant } from '../../shared/model/participant.model';
+import { Participant, BonusAccountOperation } from '../../shared/model/participant.model';
 
 @Injectable()
 export class DataService {
@@ -130,7 +130,7 @@ export class DataService {
       return  Observable.of(false);
     });
   }
-
+  // АКБ
   getParticipantsList(a: any) {
     a.className = 'ent.Buyer';
     return this.getFilteredGrid(a)
@@ -160,6 +160,17 @@ export class DataService {
   saveParticipant(aParticipant: Participant) {
     return this.saveObject('ent.Buyer', aParticipant.convertForServer());
   }
+  // конец АКБ
+
+  // Транзакции (операции движения бонусов)
+  getTransactionsList(a: any) {
+    a.className = 'doc.BonusOperation';
+    return this.getFilteredGrid(a)
+      .map((resp: Response) => {
+        return resp.json().children.map(elem => new BonusAccountOperation(elem));
+      });
+  }
+
 
   getObjectData(className: string, id: string, phone?: string) {
     const accountEncrypt = localStorage.getItem('accountEncrypt');
