@@ -67,7 +67,7 @@ ClassMethod getAccessCode(encodeUserTel As %String = "", shopAccessCode = "") As
 	 	set ^smscode(userTel,"code") = code
 	 	set ^smscode(userTel,"datetime") = $H
  	
-	 	do ##class(p6.Sms).SendSms(userTel,"Код для входа: "_code,,,,,,,,"Код отправлен.")
+	 	do ##class(p6.Sms).SendSms(shopId,,userTel,"Код для входа: "_code,,,,,,,,"Код отправлен.")
  	
 	 	set buyer = ##class(ent.Buyer).%OpenId(buyerId)
 	 	set buyer.accessCode = code

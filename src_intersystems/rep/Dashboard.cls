@@ -11,7 +11,7 @@ ClassMethod GetData(accountId, Output result) As %Status
 	&sql(select count(Id) into :buyerCount from ent.Buyer where Shop=:accountId)
 	
 	set bonusOperationCount=0,rubSum =0
-	&sql(select count(Id),sum(RubSum) 
+	&sql(select count(Id),Round(sum(RubSum),0)
 		into :bonusOperationCount,:rubSum 
 		from doc.BonusOperation where Buyer->Shop=:accountId and PointsSum>0)
 	

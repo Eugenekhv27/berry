@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { russianCalendarLocale } from '../../../shared/locale';
 import { localBeginningOfTheYear } from '../../../shared/utils';
 import { BonusTurnoverService } from './bonus-turnover.service';
@@ -24,6 +24,8 @@ export class BonusTurnoverReportComponent implements OnInit {
   constructor(
     private router: Router,
     private reportDataService: BonusTurnoverService,
+    private route: ActivatedRoute,
+    private location: Location
   ) {
     this.endDate = new Date();
     this.startDate = localBeginningOfTheYear(this.endDate);
@@ -38,6 +40,17 @@ export class BonusTurnoverReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    const begindateParam = this.route.snapshot.paramMap.get('begindate');
+    const enddateParam = this.route.snapshot.paramMap.get('enddate');
+    console.log(this.route.snapshot.paramMap.get('begindate'));
+    console.log(this.route.snapshot.paramMap.get('enddate'));
+    // если параметр есть и он парсится как дата, то берем это значение
+    begindateParam && !isNaN(Date.parse(decodeURIComponent(begindateParam))) ?
+      this.startDate = new Date(decodeURIComponent(begindateParam)) :
+      this.startDate = new Date(); // иначе берем текущую дату
+    enddateParam && !isNaN(Date.parse(decodeURIComponent(enddateParam))) ?
+      this.endDate = new Date(decodeURIComponent(enddateParam)) :
+      this.endDate = new Date();
     this.getMainReport();
   }
 
@@ -55,5 +68,8 @@ export class BonusTurnoverReportComponent implements OnInit {
 
   getDetailedReport(date: Date) {
     this.router.navigate(['/reports/bonuses/' + encodeURIComponent(date.toISOString())]);
+  }
+  goBack(): void {
+    this.location.back();
   }
 }

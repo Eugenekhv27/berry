@@ -47,4 +47,15 @@ export class OverviewBoxComponent {
   toggleState() {
     this.state = this.state === 'active' ? 'inactive' : 'active';
   }
+  setFontSize() {
+    if (this.value > 99999) {
+      return {'font-size': '30px'};
+    }
+    if (this.value > 999999) {
+      return {'font-size': '24px'};
+    }
+    if (this.value > 9999999) {
+      return {'font-size': '20px'};
+    }
+  }
 }

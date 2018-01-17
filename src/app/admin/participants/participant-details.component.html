@@ -25,7 +25,15 @@
             <tr>
               <td>Возраст:</td>
               <td>{{participantEditor.age}}<span *ngIf="participantEditor.age"> лет</span></td>
+            </tr>
             <tr>
+              <td>Город:</td>
+              <td>{{participantEditor.cityString}}<span *ngIf="!participantEditor.cityString">не указан</span></td>
+            </tr>
+            <tr>
+              <td>E-mail:</td>
+              <td>{{participantEditor.email}}<span *ngIf="!participantEditor.email">не указан</span></td>
+            </tr>  
           </table> 
         </div>
         <!-- Режим для редактирования  -->
@@ -46,7 +54,22 @@
             <tr>
               <td>Возраст:</td>
               <td>{{participantEditor.age}}<span *ngIf="participantEditor.age"> лет</span></td>
+            </tr>
             <tr>
+              <td>Город:</td>
+              <td>
+                  <p-autoComplete [(ngModel)]="participantEditor.cityString" [suggestions]="citySuggestions" (completeMethod)="getCity($event)" >
+                    <!--[forceSelection]="true" глючит надо обновиться до  PrimeNG 5.0.0-RC0 [Angular v5]   -->
+                  </p-autoComplete>
+              </td>
+            </tr>
+            <tr>
+              <td>E-mail:</td>
+              <td>
+                <p-autoComplete [(ngModel)]="participantEditor.email" [suggestions]="emailSuggestions" (completeMethod)="getEmail($event)">
+                </p-autoComplete>
+              </td>
+            </tr>    
           </table> 
           <!--
           <div class="ui-g-6">

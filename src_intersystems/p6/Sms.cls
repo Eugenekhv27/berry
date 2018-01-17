@@ -2,11 +2,13 @@
 Class p6.Sms Extends %RegisteredObject
 {
 
-/// логин клиента
-Parameter SMSCLOGIN = "HookahLab";
+// логин клиента
 
-/// пароль или MD5-хеш пароля в нижнем регистре
-Parameter SMSCPASSWORD = 22110099;
+// Parameter SMSCLOGIN = "HookahLab";
+
+// пароль или MD5-хеш пароля в нижнем регистре
+
+// Parameter SMSCPASSWORD = 22110099;
 
 /// использовать протокол HTTPS
 Parameter SMSCHTTPS = 0;
@@ -40,7 +42,7 @@ Parameter SMSCDEBUG = 0;
 /// 
 /// возвращает массив (<id>, <количество sms>, <стоимость>, <баланс>) в случае успешной отправки
 /// либо (<id>, -<код ошибки>) в случае ошибки
-ClassMethod SendSms(phones As %String, message As %String, format As %Integer = 0, subj As %String = "", translit As %Integer = 0, time As %String = "", id As %Integer = 0, sender As %String = "", query As %String = "", returnMessage = "") As %String
+ClassMethod SendSms(accountId = 0, isCost = 0, phones As %String, message As %String, format As %Integer = 0, subj As %String = "", translit As %Integer = 0, time As %String = "", id As %Integer = 0, sender As %String = "", query As %String = "", returnMessage = "") As %String
 {
 	//if sender="" set sender="OOO VTK"
 	//if format=8 set sender="info@vtkkhv.ru"
@@ -49,10 +51,11 @@ ClassMethod SendSms(phones As %String, message As %String, format As %Integer = 
 	for i=1:50:$Length(phones,",") {
 		
 		set phonesPart = $p(phones,",",i,i+49)
-		set m = ..SmscSendCmd("send", "cost=3&phones=" _ phonesPart 
+		set m = ..SmscSendCmd(accountId,"send", "cost=3&phones=" _ phonesPart 
 			_"&mes=" _message _ "&id=" _ id _ "&translit=" _ translit _ $select(format > 0: "&" _$List(formats,format),1 : "") 
 			_$select((sender]""):"&sender=" _ sender ,1: "") _ $select(time] "":"&time=" _ time , 1:"") 
-			_$select(query] "":"&" _ query,1: "")_$select(subj] "":"&subj=" _ subj,1: ""))
+			_$select(query] "":"&" _ query,1: "")_$select(subj] "":"&subj=" _ subj,1: "")
+			_$select(isCost:"&cost=1",1:""))
 		set ^a.sms.error($h,i)=m
 		set ^a.sms.phonesPart($h,i)=phonesPart
 		set str = str_"/n Отправлено: "_ $Piece(m,",",2) _ " смс, потрачено:"_$Piece(m,",",3)_ " руб. На балансе осталось:"_$Piece(m,",",4)_ " руб."
@@ -68,16 +71,18 @@ ClassMethod SendSms(phones As %String, message As %String, format As %Integer = 
 
 // Метод вызова запроса. Формирует URL и делает 3 попытки чтения
 
-ClassMethod SmscSendCmd(cmd, arg) As %String [ Private ]
+ClassMethod SmscSendCmd(accountId = 0, cmd, arg) As %String [ Private ]
 {
 	
+	set login = ##class(ent.Shop).smscLoginGetStored(accountId)
+	set password = ##class(ent.Shop).smscPasswordGetStored(accountId)
 	//set ^a.sms($H,"cmd")=cmd
 	//set ^a.sms($H,"arg")=arg
 		set cnt = 0
 		
 		//set appSet = ##class(admin.AppSet).GetCurrent()
 
-		set arg = "login=" _..#SMSCLOGIN _ "&psw=" _ ..#SMSCPASSWORD _ "&fmt=1&charset=" _ ..#SMSCCHARSET _ "&" _ arg
+		set arg = "login=" _login _ "&psw=" _ password _ "&fmt=1&charset=" _ ..#SMSCCHARSET _ "&" _ arg
 		
 		Set httprequest=##class(%Net.HttpRequest).%New()
 		Do httprequest.SetHeader("Content-Type","application/x-www-form-urlencoded")
@@ -115,6 +120,7 @@ ClassMethod SmscSendCmd(cmd, arg) As %String [ Private ]
  	quit result
 }
 
+/*
 /// Метод получения баланса
 ClassMethod GetBalance() As %String
 {
@@ -124,6 +130,7 @@ ClassMethod GetBalance() As %String
 	 }
 	 quit "Остаток на счете "_m_" руб."
 }
+*/
 
 // 
 

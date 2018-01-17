@@ -1,8 +1,8 @@
-/// График выручка по дням неделям
-Class rep.IncomingByWeekDayReport Extends %RegisteredObject
+/// График выручка по месяцам
+Class rep.IncomingByMonthReport Extends %RegisteredObject
 {
 
-/// Запрос: {"reportName":"incoming-by-week-day-report","beginDate":"05.12.2017","endDate":"31.12.2017"}
+/// Запрос: {"reportName":"incoming-by-month-report","beginDate":"05.12.2017","endDate":"31.12.2017"}
 ClassMethod GetData(CriteriaReport, Output result) As %Status
 {
 	//kill ^a.rep
@@ -21,12 +21,14 @@ ClassMethod GetData(CriteriaReport, Output result) As %Status
 
 	while (SQLCODE=0) {
 		if qDocDate]"" {
-			set weekDate = $zdate(qDocDate,10)
+			//set monthDate = $P($zdate(qDocDate,3),"-",1,2)
+			set monthDate = $zd(qDocDate,2,",янв,фев,мар,апр,май,июн,июл,авг,сен,окт,ноя,дек",2)
+			set monthDate = $tr($p(monthDate,",",2,3),",","`")
 					
 			if (qBuyerRegDate=qDocDate) {
-				set array(weekDate,"first")=+$get(array(weekDate,"first")) + qRubSum
+				set array(monthDate,"first")=+$get(array(monthDate,"first")) + qRubSum
 			} else {
-				set array(weekDate,"another")=+$get(array(weekDate,"another")) + qRubSum	
+				set array(monthDate,"another")=+$get(array(monthDate,"another")) + qRubSum
 			}
 		}
 		&sql(fetch rep)	
@@ -37,18 +39,14 @@ ClassMethod GetData(CriteriaReport, Output result) As %Status
 	set result.labels = []
 	set firstData = []
 	set anotherData = []
-	//set weekDate1 = $zdate(beginDate,10)
-	for i=1:1:6,0 {
-		set weekDateName = $select(i=0:"ВС",
-			i=1:"ПН",
-			i=2:"ВТ",
-			i=3:"СР",
-			i=4:"ЧТ",
-			i=5:"ПТ",
-			i=6:"СБ")
-		do result.labels.%Push(weekDateName)
-		do firstData.%Push(+$get(array(i,"first")))
-		do anotherData.%Push(+$get(array(i,"another")))
+	
+	set aa= $o(array(""))
+	while aa]"" {
+	
+		do result.labels.%Push(aa)
+		do firstData.%Push(+$get(array(aa,"first")))
+		do anotherData.%Push(+$get(array(aa,"another")))
+		set aa= $o(array(aa))
 	}
 	set firstDataSet = {}
 	set firstDataSet.label = "Новые клиенты"

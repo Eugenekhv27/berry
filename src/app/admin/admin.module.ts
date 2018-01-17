@@ -21,7 +21,11 @@ import {
   TabViewModule,
   DropdownModule,
   FieldsetModule,
-  SpinnerModule
+  SpinnerModule,
+  DataListModule,
+  ColorPickerModule,
+  SliderModule,
+  AutoCompleteModule
   /*
   MegaMenuModule,
   MenubarModule,
@@ -30,7 +34,6 @@ import {
   ButtonModule,
   SelectItem,
   ListboxModule,
-  AutoCompleteModule,
   SelectButtonModule,
   InputSwitchModule,
   OverlayPanelModule,
@@ -40,8 +43,7 @@ import {
   ToolbarModule,
   InputTextareaModule,
   TriStateCheckboxModule,
-  AccordionModule,
-  DataListModule
+  AccordionModule
 */
 } from 'primeng/primeng';
 
@@ -62,6 +64,7 @@ import { ParticipantSelectorComponent } from './bonuses/participant-selector.com
 import { DocumentationComponent } from './documentation/documentation.component';
 import { NoticeComponent } from './notifier/notice.component';
 import { ButtonWithSpinnerComponent } from './button-with-spinner/button-with-spinner.component';
+import { BonusTurnoverYearReportComponent } from './reports/bonus-turnover/bonus-turnover-year-report.component';
 import { BonusTurnoverReportComponent } from './reports/bonus-turnover/bonus-turnover-report.component';
 import { BonusTurnoverDetailedReportComponent } from './reports/bonus-turnover/bonus-turnover-detailed-report.component';
 import { ParticipantSatisfactionReportComponent
@@ -106,6 +109,10 @@ import { BonusTurnoverService } from './reports/bonus-turnover/bonus-turnover.se
     DropdownModule,
     FieldsetModule,
     SpinnerModule,
+    DataListModule,
+    ColorPickerModule,
+    SliderModule,
+    AutoCompleteModule,
     // routing
     AdminRoutingModule,
   ],
@@ -126,6 +133,7 @@ import { BonusTurnoverService } from './reports/bonus-turnover/bonus-turnover.se
     DocumentationComponent,
     NoticeComponent,
     ButtonWithSpinnerComponent,
+    BonusTurnoverYearReportComponent,
     BonusTurnoverReportComponent,
     BonusTurnoverDetailedReportComponent,
     ParticipantSatisfactionReportComponent,

@@ -50,6 +50,12 @@ Property BonusSum As p6.dt.Float [ Calculated, SqlComputeCode = {
 /// Город
 Property city As ent.City;
 
+/// Город строкой (для заполнения через dadata.ru)
+Property cityString As %String(MAXLEN = 200);
+
+/// Электронная почта
+Property email As %String(MAXLEN = 200);
+
 /// Потрачено рублей
 Property payRubSum As p6.dt.Float [ Calculated, SqlComputeCode = {
 		new result,buyerId
@@ -79,7 +85,7 @@ Property abcGroup As %String [ Calculated, SqlComputeCode = {
 		&sql(select top 1 groupName into :result from ent.BuyerAbcGroup where buyer=:buyerId order by onDate desc)
 		set {abcGroup}=result}, SqlComputed ];
 
-ClassMethod SendHelloBuyer(tel = "") As %Status
+ClassMethod SendHelloBuyer(tel = "", accaountId = 0) As %Status
 {
 	//if '(($e(tel)="8") || ($e(tel,1,2)="+7")) {
 	//	set tel = "+7"_tel
@@ -100,18 +106,39 @@ ClassMethod SendHelloBuyer(tel = "") As %Status
 		_"Перейдите по ссылке и добавьте друзей. Там же смотрите накопленные баллы:"
 		_" http://"_servername_"/csp/bc/main.csp?acc="_$system.Encryption.Base32Encode(tel,1)
 	*/	
-	$$$QuitOnError(##class(p6.Sms).SendSms(tel,message))	
+	$$$QuitOnError(##class(p6.Sms).SendSms(accaountId,,tel,message))	
 	quit $$$OK
 }
 
-/// разрешаем сохранять объект только через метод Save()
 Method %OnBeforeSave(Insert As p6.dt.Boolean) As %Status [ Private, PublicList = (NewObject, canSave) ]
 {
-   $$$QuitOnError(##super(Insert))	
+  $$$QuitOnError(##super(Insert))	
   if Insert {
-	do ..SendHelloBuyer(..Aka)
+	if ..Shop]"" {
+		set accaountId = ..Shop.%Id()	
+	} else {
+		set accaountId = 0	
+	} 
+	do ..SendHelloBuyer(..Aka,accaountId)
   }
+  
   quit $$$OK
+}
+
+/// This callback method is invoked when the current object is added to the SaveSet,
+/// either because %Save() was invoked on this object or on an object that references this object.
+/// %OnAddToSaveSet can modify the current object. It can also add other objects to the current
+/// SaveSet by invoking %AddToSaveSet or remove objects by calling %RemoveFromSaveSet.
+/// 
+/// <P>If this method returns an error status then %Save() will fail and the transaction
+/// will be rolled back.
+Method %OnAddToSaveSet(depth As %Integer = 3, insert As %Integer = 0, callcount As %Integer = 0) As %Status [ Private, ServerOnly = 1 ]
+{
+ 	if ..cityString]"" {
+		set ..city = ##class(ent.City).GetByAka(..Shop,..cityString)
+	
+  	}
+	Quit $$$OK
 }
 
 /// получить Id по номеру телефона
@@ -166,10 +193,10 @@ ClassMethod GetForGrid(query = "", accountId = "", citeriaObject = {{}}) As %Sta
 	//set ^a.citeriaObject = citeriaObject.%ToJSON()
 
     set st = $$$OK
-    set sql = "select Id,nvl(Name,'') as name,Aka, age,Comment,(select sum(PointsSum) from doc.BonusOperation where Buyer=b.Id) as Bonus,"
+    set sql = "select Id as id,nvl(Name,'') as name,Aka as phone, age,Comment as comment,(select sum(PointsSum) from doc.BonusOperation where Buyer=b.Id) as balance,"
     	_" (select top 1 guestLevel->name from ent.BuyerLevel where Buyer=b.Id order by onDate desc) as guestLevel,"
     	_" (select top 1 groupName from ent.BuyerAbcGroup where Buyer=b.Id order by onDate desc) as abcGroup,"
-    	_" Sex"
+    	_" Sex as sex"
     	_" from ent.Buyer b"
     	_ " where Shop="_accountId 
     	
@@ -192,10 +219,13 @@ ClassMethod GetForGrid(query = "", accountId = "", citeriaObject = {{}}) As %Sta
     if (citeriaObject.withOnePurchase) { // с одной покупкой
 	    set sql = sql _" and ((select count(Id) from doc.BonusOperation where Buyer = b.Id)=1)"
     }
+    if (citeriaObject.moreOnePurchase) { // больше одной покупки
+	    set sql = sql _" and ((select count(Id) from doc.BonusOperation where Buyer = b.Id)>1)"
+    }
     if (citeriaObject.abcGroup]"") { // Группа ABC
 	    set sql = sql _" and (abcGroup = '"_citeriaObject.abcGroup_"')"
     }
-    if (citeriaObject.withAttractBuyers]"") { // Есть привлеченные
+    if (citeriaObject.withAttractBuyers=1) { // Есть привлеченные
 	    set sql = sql _" and (Id in (select SuperBuyer from ent.Buyer))"
     }
     if (citeriaObject.sex]"") { // Пол
@@ -206,12 +236,18 @@ ClassMethod GetForGrid(query = "", accountId = "", citeriaObject = {{}}) As %Sta
 	    	set sql = sql _" and (Sex = '"_aSex_"')"
     	}
     }
-    	
+    if (citeriaObject.tel]"") { // Номер телефона
+	    set sql = sql _" and (Aka = '"_citeriaObject.tel_"')"
+    }
+    if (citeriaObject.daysNotPurchases]"") { // Дней не было покупок
+    	set onDate = $zd(+$H-citeriaObject.daysNotPurchases,3)
+	    set sql = sql _" and ( Id not in (select Buyer from doc.BonusOperation where DocDate > '"_onDate_"' and Buyer is not null))"
+    }	
     if query]"" {
 	 set sql = sql _" and "_query  
     }
 	set sql = sql _ " order by Aka"
-	// set ^a.sql = sql
+	set ^a.sql = sql
     // set ^a.sql(1) = citeriaObject.abcGroup
     do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,sql,,1000)
     quit st
@@ -260,6 +296,12 @@ Storage Default
 </Value>
 <Value name="11">
 <Value>accessCode</Value>
+</Value>
+<Value name="12">
+<Value>cityString</Value>
+</Value>
+<Value name="13">
+<Value>email</Value>
 </Value>
 </Data>
 <DataLocation>^ent.BuyerD</DataLocation>

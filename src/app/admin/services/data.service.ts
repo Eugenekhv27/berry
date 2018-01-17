@@ -71,13 +71,32 @@ export class DataService {
     return this.http.post(
       this.getFullUrl('filteredgrid'), criterionObject,
       this.getRequestOptionsArgs()
-    );
+    )
+    .map((resp: Response) => {
+      return resp.json();
+    });
   }
 
   private dateToString(d: Date) {
     return d.getFullYear() +
     '-' + ('00' + (d.getMonth() + 1)).slice(-2) +
     '-' + ('00' + (d.getDate())).slice(-2);
+  }
+  getYearBonusReport(startDate: any, endDate: any) {
+    return this.http.get(
+      this.getFullUrl('bonusreportyear', this.dateToString(startDate), this.dateToString(endDate)),
+      this.getRequestOptionsArgs()
+    )
+    .map((resp: Response) => {
+      if (!resp.ok) {
+        throw new Error('Отрицательный ответ сервера при сохранении объекта.');
+      }
+      return { rows: resp.json()[0].children, totals: resp.json()[1].totals[0] };
+    })
+    .catch((error: any) => {
+      console.log(error);
+      return  Observable.of(false);
+    });
   }
 
   getBonusReport(startDate: any, endDate: any) {
@@ -131,14 +150,6 @@ export class DataService {
     });
   }
   // АКБ
-  getParticipantsList(a: any) {
-    a.className = 'ent.Buyer';
-    return this.getFilteredGrid(a)
-      .map((resp: Response) => {
-        return resp.json().children.map(elem => new Participant(elem));
-      });
-  }
-
   getParticipantDetails(id: string) {
     return this.http.get(
       this.getFullUrl('getObject', 'ent.Buyer', id),
@@ -162,14 +173,14 @@ export class DataService {
   }
   // конец АКБ
 
-  // Транзакции (операции движения бонусов)
-  getTransactionsList(a: any) {
-    a.className = 'doc.BonusOperation';
-    return this.getFilteredGrid(a)
-      .map((resp: Response) => {
-        return resp.json().children.map(elem => new BonusAccountOperation(elem));
-      });
-  }
+  // // Транзакции (операции движения бонусов)
+  // getTransactionsList(a: any) {
+  //   a.className = 'doc.BonusOperation';
+  //   return this.getFilteredGrid(a)
+  //     .map((resp: Response) => {
+  //       return resp.json().children.map(elem => new BonusAccountOperation(elem));
+  //     });
+  // }
 
 
   getObjectData(className: string, id: string, phone?: string) {
@@ -291,6 +302,54 @@ export class DataService {
         return Observable.of(false);
       });
   }
+  sendSmscSetting(login: string, password: string): Observable<boolean> {
+    const request = {
+        'l1': login,
+        'p1': password
+      };
+
+    return this.http
+      .post(
+      this.getFullUrl('setsmscsetting'),
+      JSON.stringify(request),
+      this.getRequestOptionsArgs()
+      )
+      .map(resp => {
+        if (!resp.ok) {
+          throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
+        }
+        return true;
+      })
+      .catch(error => {
+        console.error(error);
+        return Observable.of(false);
+      });
+  }
+  circularCalcMoney(textToSend: string, criteria: string, type: string = 'sms'): Observable<boolean> {
+    const request = {
+      [type + 'Circular']: {
+        'text': textToSend,
+        'filter': criteria
+      }
+    };
+
+    return this.http
+      .post(
+      this.getFullUrl(type + '-circular-cost'),
+      JSON.stringify(request),
+      this.getRequestOptionsArgs()
+      )
+      .map(resp => {
+        if (!resp.ok) {
+          throw Error('Получен отрицательный ответ сервера: ' + resp.status.toString());
+        }
+        return true;
+      })
+      .catch(error => {
+        console.error(error);
+        return Observable.of(false);
+      });
+  }
 
   /**
    * Запрос на изменение баланса бонусных баллов
@@ -352,7 +411,6 @@ export class DataService {
   }
   /// Добавить бонусов из карточки клиента
   doPlusBonus(data: any) {
-    console.log(this.getFullUrl('doplusbonus'));
     return this.http
       .post(
         this.getFullUrl('doplusbonus'),
@@ -400,4 +458,33 @@ export class DataService {
         return  Observable.of(false);
       });
   }
+  daData(searchString: string, type: string, parentAdress?: any) {
+    // sendData = sendData.replace('"', '');
+    let bound = {};
+    if (type === 'city') {
+      bound = {
+        'from_bound': { 'value': 'city' },
+        'to_bound': { 'value': 'city' },
+        'restrict_value': false,
+        'query': searchString
+      };
+      type = 'address';
+    }
+    if (type === 'email') {
+      bound = {
+        'query': searchString
+      };
+      type = 'email';
+    }
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Authorization', 'Token e825e0cf5b258f135806224e54bda7666d7f01d1');
+
+    return this.http.post('https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/' + type, bound , { headers: headers })
+                    .map((resp: Response) => resp.json())
+                    .catch((error: any) => {
+                      return Observable.throw(error);
+                    });
+}
 }

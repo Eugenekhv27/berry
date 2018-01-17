@@ -7,10 +7,12 @@ export class DetailsRow {
   public comment: string;
 
   constructor(dataRow: any = {_id: '', DocDate: '', RubSum: '', PointsSum: '', Comment: ''}) {
-    this.id = String(dataRow._id).trim();
-    this.date = String(dataRow.DocDate).trim();
-    this.amount = parseFloat(String(dataRow.RubSum));
-    this.points = parseFloat(String(dataRow.PointsSum));
-    this.comment = String(dataRow.Comment).trim();
+    if (dataRow) {
+      this.id = String(dataRow._id).trim();
+      this.date = String(dataRow.DocDate).trim();
+      this.amount = parseFloat(String(dataRow.RubSum));
+      this.points = parseFloat(String(dataRow.PointsSum));
+      this.comment = String(dataRow.Comment).trim();
+    }
   }
 }

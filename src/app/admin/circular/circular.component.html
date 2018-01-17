@@ -1,64 +1,72 @@
 <div class="ui-g">
   <div class="ui-g-12">
     <div class="card">
-      <h2>Рассылка голосовых сообщений и SMS</h2>
-      <div class="ui-g">
-        <!-- левая секция: текст сообщения и кнопки -->
-        <div class="ui-g-12 ui-md-6 ui-lg-4 ui-fluid">
-          <div class="ui-g">
-            <div class="ui-g-12">
-              <ol style="font-size: 0.8em; color: navy;">
-                <li>Отметьте участников в табличной части</li>
-                <li>Напишите текст сообщения</li>
-                <li>Нажмите "Отправить SMS сообщение"<br>или "Отправить голосовое сообщение"</li>
-              </ol>
-              <label for="txt">Текст сообщения:</label>
-              <textarea pInputTextarea name="txt" [(ngModel)]="messageText" style="width:100%; min-height: 180px"></textarea>              </div>
+      <h2>Рассылка голосовых сообщений и SMS
+        <div style="float: right">
+         <button pButton type="button" icon="fa fa-cog" iconPos="right" (click)="displaySetting=true" ></button>
+        </div>
+      </h2>
+      <p-fieldset legend="1. Напишеите текст сообщения">
+        <textarea pInputTextarea name="txt" [(ngModel)]="messageText" style="width:100%; min-height: 50px"></textarea>
+        {{messageText.length}} символов
+      </p-fieldset>
+      <p-fieldset legend="2. Введите номер для тестирования">
+        <p-inputMask id="tel" [(ngModel)]="tel" mask="+7(999)9999999"></p-inputMask>
+        <button pButton type="button" icon="fa fa-envelope-o" label="Протестировать" (click)="testSms()"></button>
+        <button pButton type="button" icon="fa fa-money" label="Посчитать стоимость рассылки" (click)="calcMoney()"></button>
+      </p-fieldset>
+      <p-fieldset [toggleable]="true" [collapsed]="true">
+          <p-header>3. Посмотреть подготовленные контакты ({{receivers.length
+            }} контакт(ов))</p-header>
+          Критерии выбора: {{caption}}
+        <p-dataTable
+          [value]="receivers"
+          headerCheckboxToggleAllPages="true"
+          [(selection)]="selectedRows"
+          (onFilter)="refreshNumberOfSelectedRows()"
+          (onRowSelect)="refreshNumberOfSelectedRows()"
+          (onRowUnselect)="refreshNumberOfSelectedRows()"
+          (onHeaderCheckboxToggle)="refreshNumberOfSelectedRows()"
+          [loading]="loading"
+          loadingIcon="fa-spinner"
+          [paginator]="true"
+          [rows]="maxRowsPerPage"
+          [responsive]="true"
+          [globalFilter]="gb">
+          <p-column field="phone" header="Номер"></p-column>
+          <p-column field="comment" header="Коментарий"></p-column>
+          <p-column field="balance" header="Бонусы" [style]="{'text-align':'right'}">
+            <ng-template let-rd="rowData" pTemplate="body">
+              <span>{{ u.formatNumber(rd.balance) }}</span>
+            </ng-template>
+          </p-column>
+        </p-dataTable>
+      </p-fieldset>
+      <p-fieldset legend="4. Отправить">
+        <div class="ui-g">
+          <div class="ui-g-6">
+            <button pButton type="text" icon="fa fa-envelope-o" label="Отправить SMS сообщение" style="width:100%" (click)=" sendRequestForSmsCircular()"></button>
           </div>
-          <div class="ui-g">
-            <div class="ui-g-12">
-              <button pButton type="text" icon="fa fa-envelope-o" label="Отправить SMS сообщение" style="width:100%" (click)=" sendRequestForSmsCircular()"></button>
-            </div>
-          </div>
-          <div class="ui-g">
-            <div class="ui-g-12">
-              <button pButton type="text" icon="fa fa-bullhorn" label="Отправить голосовое сообщение" style="width:100%" (click)=" sendRequestForVoiceCircular()"></button>
-            </div>
+          <div class="ui-g-6">
+            <button pButton type="text" icon="fa fa-bullhorn" label="Отправить голосовое сообщение" style="width:100%" (click)=" sendRequestForVoiceCircular()"></button>
           </div>
         </div>
-        <!-- правая секция: таблица выбора списка рассылки -->
-        <div class="ui-g-8">
-          <div class="ui-widget-header" style="padding: 4px 10px 4px 70px; border-bottom: 0 none;">
-            <i class="fa fa-filter" style="margin:4px 4px 0 0"></i>
-            <input #gb type="text" pInputText size="50" placeholder="значение фильтра..." [(ngModel)]="filterValue">
-            <span style="padding-left: 4px">(выбрано: {{ numberOfSelectedRows }})</span>
-          </div>
-          <p-dataTable
-            [value]="receivers"
-            selectionMode="multiple"
-            headerCheckboxToggleAllPages="true"
-            [(selection)]="selectedRows"
-            (onFilter)="refreshNumberOfSelectedRows()"
-            (onRowSelect)="refreshNumberOfSelectedRows()"
-            (onRowUnselect)="refreshNumberOfSelectedRows()"
-            (onHeaderCheckboxToggle)="refreshNumberOfSelectedRows()"
-            [loading]="loading"
-            loadingIcon="fa-spinner"
-            [paginator]="true"
-            [rows]="maxRowsPerPage"
-            [responsive]="true"
-            [globalFilter]="gb">
-            <p-column selectionMode="multiple" [style]="{'width':'3.4em'}"></p-column>
-            <p-column field="phone" header="Номер"></p-column>
-            <p-column field="comment" header="Коментарий"></p-column>
-            <p-column field="balance" header="Бонусы" [style]="{'text-align':'right'}">
-              <ng-template let-rd="rowData" pTemplate="body">
-                <span>{{ u.formatNumber(rd.balance) }}</span>
-              </ng-template>
-            </p-column>
-          </p-dataTable>
-        </div>
-      </div>
+      </p-fieldset>
     </div>
   </div>
 </div>
+<p-dialog header="Настроить подключение" [(visible)]="displaySetting" [width]="220">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <label for="a">Логин на smsc.ru</label>
+        <input pInputText id="a" [(ngModel)]="smscLogin" style="width: 100%" />
+      </div>
+      <div class="ui-g-12">
+          <label for="a">Пароль на smsc.ru</label>
+          <input type="password" pPassword [(ngModel)]="smscPassword" style="width: 100%" />
+        </div>
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="fa-check" (click)="setSmscSetting();displaySetting=false" label="ОК"></button>
+    </p-footer>
+  </p-dialog>

@@ -1,4 +1,4 @@
-/// Настройки приложения
+/// Настройки приложения (Устарело. проверить и удалить)
 Class admin.AppSet Extends p6.Integrity [ ClassType = persistent ]
 {
 

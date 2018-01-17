@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Participant } from '../../shared/model/participant.model';
 import { DataService, NotifierService } from '../services/services';
-import {SelectItem} from 'primeng/primeng';
+import {SelectItem, MenuItem} from 'primeng/primeng';
 
 @Component({
   selector: 'app-participants',
@@ -36,9 +36,11 @@ export class ParticipantsComponent implements OnInit {
   beginBonusSum: number;
   endBonusSum: number;
   withOnePurchase: boolean;
+  moreOnePurchase: boolean;
   abcGroup: string;
   withAttractBuyers: boolean;
   sex: string;
+  daysNotPurchases: number;
 
   ru = {
       firstDayOfWeek: 1,
@@ -63,9 +65,10 @@ export class ParticipantsComponent implements OnInit {
 
   refreshParticipantsList(a: any ) {
     this.loading = true;
-    this.dataService.getParticipantsList(a)
-      .subscribe((freshList: Participant[]) => {
-        this.participantsList = freshList;
+    a.className = 'ent.Buyer';
+    this.dataService.getFilteredGrid(a)
+      .subscribe((data: any) => {
+        this.participantsList = data.children;
         this.loading = false;
       });
   }
@@ -84,10 +87,21 @@ export class ParticipantsComponent implements OnInit {
       'beginBonusSum': this.beginBonusSum,
       'endBonusSum': this.endBonusSum,
       'withOnePurchase': this.withOnePurchase,
+      'moreOnePurchase': this.moreOnePurchase,
       'abcGroup': this.abcGroup,
       'withAttractBuyers': this.withAttractBuyers,
-      'sex': this.sex
+      'sex': this.sex,
+      'daysNotPurchases': this.daysNotPurchases
     };
+    localStorage.setItem('SmsFilter', JSON.stringify(a));
+    localStorage.setItem('SmsFilterCaption', '');
     this.refreshParticipantsList(a);
   }
+  sendSms() {
+    this.router.navigate(['/circular']);
+  }
+  addBonuses() {
+    this.router.navigate(['/bonuses']);
+  }
+
  }

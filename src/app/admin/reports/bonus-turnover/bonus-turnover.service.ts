@@ -49,4 +49,22 @@ export class BonusTurnoverService {
         return reportData;
       });
   }
+  getYearReportData(startDate: Date, endDate: Date) {
+    return this.dataService.getYearBonusReport(startDate, endDate)
+      .map((data: any) => {
+        const reportData = {
+          tableRows: {},
+          tableTotals: {
+            plusBonus: 0,
+            minusBonus: 0
+          }
+        };
+
+        reportData.tableRows = data.rows.map(dataRow => new TableRow(dataRow));
+        reportData.tableTotals.plusBonus = appParseNumber(data.totals.PlusBonus);
+        reportData.tableTotals.minusBonus = appParseNumber(data.totals.MinusBonus);
+
+        return reportData;
+      });
+  }
 }

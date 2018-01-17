@@ -59,16 +59,21 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Route Method="GET" Url="/:encriptId/dashboard" Call="GetDashboardData" />
 
 <!-- Отчет по бонусам -->
+<Route Method="GET" Url="/:encriptId/bonusreportyear/:beginDate/:endDate" Call="GetBonusReportYear" />
 <Route Method="GET" Url="/:encriptId/bonusReport/:beginDate/:endDate" Call="GetBonusReport" />
 <Route Method="GET" Url="/:encriptId/bonusReportDetails/:onDate" Call="GetBonusReportDetails" />
 
 <!-- Сообщение в техподдержку -->
 <Route Method="POST" Url="/:encriptId/help-request" Call="SendToSupport" />
 
+<!-- Сохранить настройки для SMSC.RU -->
+<Route Method="POST" Url="/:encriptId/setsmscsetting" Call="SetSmscSetting" />
 <!-- Отправить SMS сообщения -->
 <Route Method="POST" Url="/:encriptId/sms-circular" Call="SendSms" />
 <!-- Отправить голосовое сообщения -->
 <Route Method="POST" Url="/:encriptId/voice-circular" Call="SendVoice" />
+<!-- Посчитать стоимость SMS сообщений -->
+<Route Method="POST" Url="/:encriptId/sms-circular-cost" Call="SmsCost" />
 
 <!-- Начислить бонусы -->
 <Route Method="POST" Url="/:encriptId/change-bonus" Call="ChangeBonus" />
@@ -173,7 +178,7 @@ ClassMethod PostData(encriptId As %String = "") As %Status
 			/// Отправляем SMS что списали только один раз в одном документе
 			if '$data(^smssend(buyerId,uuid)) {
 				set ^smssend(buyerId,uuid)=payByBonus
-				do ##class(p6.Sms).SendSms(userTel,"Списано бонусов: "_(payByBonus)_". Баланс на www.vapeko.ru") 
+				do ##class(p6.Sms).SendSms(accountId,,userTel,"Списано бонусов: "_(payByBonus)_". Баланс на www.vapeko.ru") 
 			}
  		}	
 	} else { // начисление бонусов
@@ -340,7 +345,7 @@ ClassMethod PayByPoints(encriptId As %String = "", userTel As %String = "", uuid
 	/// Отправляем SMS что списали только один раз в одном документе
 	if '$data(^smssend(buyerId,uuid)) {
 		set ^smssend(buyerId,uuid)=points
-		do ##class(p6.Sms).SendSms(userTel,"Списано бонусов: "_(-points)_". Баланс на www.vapeko.ru") 
+		do ##class(p6.Sms).SendSms(accountId,,userTel,"Списано бонусов: "_(-points)_". Баланс на www.vapeko.ru") 
 	}
  	write "{""data"":{"
  	write """userTel"":"""_userTel_""",""points"":"""_points_""",""status"":""OK"""
@@ -588,6 +593,15 @@ ClassMethod GetDashboardData(encriptId) As %Status
 	quit $$$OK
 }
 
+ClassMethod GetBonusReportYear(encriptId, beginDate, endDate) As %Status
+{
+	set accountId=$system.Encryption.Base32Decode(encriptId,1)
+	
+	$$$QuitOnError(##class(rep.BonusReport).JsonReportYear(accountId,$zdh(beginDate,3),$zdh(endDate,3)))
+	
+	quit $$$OK
+}
+
 ClassMethod GetBonusReport(encriptId, beginDate, endDate) As %Status
 {
 	set accountId=$system.Encryption.Base32Decode(encriptId,1)
@@ -640,6 +654,18 @@ ClassMethod SendToSupport(encriptId As %String = "") As %Status
     quit sc
 }
 
+ClassMethod SetSmscSetting(encriptId As %String = "") As %Status
+{
+	set sc=$$$OK
+   	set accountId=$system.Encryption.Base32Decode(encriptId,1)
+   	set content = ##class(%DynamicObject).%FromJSON(%request.Content)
+   	set login = $zconvert(content.l1,"I","UTF8")
+   	set password = $zconvert(content.p1,"I","UTF8")
+   	&sql(update ent.Shop set smscLogin=:login,smscPassword=:password where Id=:accountId)
+   	
+	quit $$$OK
+}
+
 ClassMethod SendSms(encriptId As %String = "") As %Status
 {
 	$$$QuitOnError(..DoSmsVoice(encriptId,"sms"))
@@ -652,6 +678,13 @@ ClassMethod SendVoice(encriptId As %String = "") As %Status
 	quit $$$OK
 }
 
+ClassMethod SmsCost(encriptId As %String = "") As %Status
+{
+	set isCost = 1
+	$$$QuitOnError(..DoSmsVoice(encriptId,"sms",isCost))
+	quit $$$OK
+}
+
 /// Отправить SMS - сообщение 
 /// {
 ///   "smsCircular": {
@@ -659,7 +692,7 @@ ClassMethod SendVoice(encriptId As %String = "") As %Status
 ///     "phones": ["+7(909)8250066", "+7(909)8523150", "+7(909)8554982"]
 ///   }
 /// }
-ClassMethod DoSmsVoice(encriptId As %String = "", type = "sms") As %Status
+ClassMethod DoSmsVoice(encriptId As %String = "", type = "sms", isCost = 0) As %Status
 {
 	
    set sc=$$$OK
@@ -690,8 +723,8 @@ ClassMethod DoSmsVoice(encriptId As %String = "", type = "sms") As %Status
 	
 	set ^a.sms("telString") = telString
 	set ^a.sms("message") = message
-	set result = "Тестовая заглушка. Телефоны:"_telString_" Сообщение: "_message
-	//set result = ##class(p6.Sms).SendSms(telString,message,format)
+	//set result = "Тестовая заглушка. Телефоны:"_telString_" Сообщение: "_message
+	set result = ##class(p6.Sms).SendSms(accountId,isCost,telString,message,format)
 	
 	
    
@@ -877,7 +910,7 @@ ClassMethod PayByPointsVAPEKO(userTel As %String = "", uuid As %String = "", poi
 	/// Отправляем SMS что списали только один раз в одном документе
 	if '$data(^smssend(buyerId,uuid)) {
 		set ^smssend(buyerId,uuid)=points
-		do ##class(p6.Sms).SendSms(userTel,"Списано бонусов: "_(-points)_". Баланс на www.vapeko.ru") 
+		do ##class(p6.Sms).SendSms(1,,userTel,"Списано бонусов: "_(-points)_". Баланс на www.vapeko.ru") 
 	}
  	write "{""data"":{"
  	write """userTel"":"""_userTel_""",""points"":"""_points_""",""status"":""OK"""
@@ -1020,7 +1053,8 @@ ClassMethod GetFilteredGrid(encriptId) As %Status
 ClassMethod GetReportData(encriptId) As %Status
 {
 	set status = "OK"
-	do ##class(Utils.JsonProvider).%ConvertJSONToObject(%request.Content,"",.clientObj,1)
+	//do ##class(Utils.JsonProvider).%ConvertJSONToObject(%request.Content,"",.clientObj,1)
+	set clientObj= ##class(%DynamicObject).%FromJSON(%request.Content)
 	set accountId=$system.Encryption.Base32Decode(encriptId,1)
 	// абс - анализ
 	if clientObj.reportName = "abc-analysis-report" {
@@ -1031,12 +1065,21 @@ ClassMethod GetReportData(encriptId) As %Status
 	} elseif clientObj.reportName = "incoming-by-week-day-report" {
 		// График выручка по дням неделям
 		$$$QuitOnError(##class(rep.IncomingByWeekDayReport).GetData(clientObj,.reportData))
+	} elseif clientObj.reportName = "incoming-by-month-report" {
+		// График выручка по месяцам
+		$$$QuitOnError(##class(rep.IncomingByMonthReport).GetData(clientObj,.reportData))
 	} elseif clientObj.reportName = "top-clients-report" {
 		// Топ клиентов
 		$$$QuitOnError(##class(rep.TopClientsReport).GetData(clientObj,.reportData))
 	} elseif clientObj.reportName = "sex-chart" {
 		// Пол диаграмма
 		$$$QuitOnError(##class(rep.SexChart).GetData(clientObj,.reportData))	
+	} elseif clientObj.reportName = "age-chart" {
+		// Возраст диаграмма
+		$$$QuitOnError(##class(rep.AgeChart).GetData(clientObj,.reportData))		
+	} elseif clientObj.reportName = "average-check-chart" {
+		// Средний чек диаграмма
+		$$$QuitOnError(##class(rep.AverageCheckChart).GetData(clientObj,.reportData))		
 	} else {
 		set status = "Нет такого отчета: "_	clientObj.reportName
 	}

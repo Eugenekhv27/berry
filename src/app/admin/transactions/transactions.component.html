@@ -61,18 +61,27 @@
               [value]="transactionsList"
               [paginator]="true"
               [rows]="maxRowsPerPage"
-             
+              (onRowDblclick)="onRowDblclick($event)"
               [loading]="loading"
               loadingIcon="fa-spinner"
               [globalFilter]="gb"
               sortMode="multiple">
-              <p-column field="date" header="Дата" [sortable]="true"></p-column>
+              <p-column field="docDate" header="Дата" [sortable]="true"></p-column>
               <p-column field="participantName" header="Клиент" [sortable]="true" [style]="{'width':'15%'}"></p-column>
               <p-column field="docNo" header="Номер чека"></p-column>
               <p-column field="money" header="Сумма чека" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
               <p-column field="plusPoints" header="Начисленных бонусов" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
               <p-column field="minusPoints" header="Списанных бонусов" [sortable]="true" [style]="{'text-align':'right'}"></p-column>
               <p-column field="comment" header="Коментарий"></p-column>
+              <p-footerColumnGroup>
+                  <p-row>
+                    <p-column footer="Всего:"[style]="totalsStyle" colspan="3"></p-column>
+                    <p-column footer="{{totals.rubSum }}" [style]="totalsStyle"></p-column>
+                    <p-column footer="{{ totals.plusPointsSum }}" [style]="totalsStyle"></p-column>
+                    <p-column footer="{{ totals.minusPointsSum }}" [style]="totalsStyle"></p-column>
+                    <p-column footer="-" [style]="totalsStyle"></p-column>
+                  </p-row>
+                </p-footerColumnGroup>
               
               <p-footer>
                 <div class="ui-g">

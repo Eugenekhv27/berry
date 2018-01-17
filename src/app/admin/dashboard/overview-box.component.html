@@ -9,7 +9,7 @@
         <i [ngClass]="setIconClasses()"></i>
       </div>
       <div class="ui-g-8">
-        <span class="overview-box-count">{{ value }}</span>
+        <span class="overview-box-count" [ngStyle]= "setFontSize()" >{{ value }}</span>
         <span class="overview-box-name">{{ label }}</span>
       </div>
     </div>

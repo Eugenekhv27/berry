@@ -25,7 +25,13 @@ export class CircularComponent implements OnInit {
   selectedRows: Participant[] = [];
   numberOfSelectedRows = 0;
   receivers: Participant[] = [];
-  messageText: string;
+  messageText = '';
+  tel = '';
+  caption = '';
+  displaySetting = false;
+
+  smscPassword = '';
+  smscLogin = '';
 
   constructor(
     private notifier: NotifierService,
@@ -34,15 +40,16 @@ export class CircularComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.refreshAddresseeList();
+    const criteria = localStorage.getItem('SmsFilter');
+    this.caption = localStorage.getItem('SmsFilterCaption');
+    this.refreshParticipantsList(JSON.parse(criteria));
   }
-
-  refreshAddresseeList() {
+  refreshParticipantsList(a: any ) {
     this.loading = true;
-
-    this.dataService.getParticipantsList({})
-      .subscribe((freshList: Participant[]) => {
-        this.receivers = freshList;
+    a.className = 'ent.Buyer';
+    this.dataService.getFilteredGrid(a)
+      .subscribe((data: any) => {
+        this.receivers = data.children;
         this.loading = false;
       });
   }
@@ -110,7 +117,6 @@ export class CircularComponent implements OnInit {
       .subscribe(sendSuccess => {
         if (sendSuccess) {
           this.notifier.success('Команда отправлена.', 'SMS-рассылка будет выполнена сервером в ближайшее время.');
-          this.messageText = '';
         } else {
           this.notifier.error('Ошибка!', 'Не удалось отправить командуна выполнение рассылки.');
         }
@@ -126,10 +132,43 @@ export class CircularComponent implements OnInit {
       .subscribe(sendSuccess => {
         if (sendSuccess) {
           this.notifier.success('Команда отправлена.', 'Голосовая рассылка будет выполнена сервером в ближайшее время.');
-          this.messageText = '';
         } else {
           this.notifier.error('Ошибка!', 'Не удалось отправить команду на выполнение рассылки.');
         }
       });
   }
+  calcMoney() {
+    const criteria = localStorage.getItem('SmsFilter');
+    this.dataService.circularCalcMoney(this.messageText, criteria, 'sms')
+      .subscribe(sendSuccess => {
+        if (sendSuccess) {
+          this.notifier.success('Выполнено.', '');
+          // this.messageText = '';
+        } else {
+          this.notifier.error('Ошибка!', 'Не удалось отправить команду.');
+        }
+      });
+  }
+  testSms() {
+    const tel = [this.tel];
+    this.dataService.sendRequestForCircular(this.messageText, tel, 'sms')
+    .subscribe(sendSuccess => {
+      if (sendSuccess) {
+        this.notifier.success('Команда отправлена.', 'Тестовое сообщение отправлено.');
+      } else {
+        this.notifier.error('Ошибка!', 'Не удалось отправить команду на выполнение рассылки.');
+      }
+    });
+  }
+  setSmscSetting() {
+    this.dataService.sendSmscSetting(this.smscLogin, this.smscPassword)
+    .subscribe(sendSuccess => {
+      if (sendSuccess) {
+        this.notifier.success('Сохранено.', '');
+      } else {
+        this.notifier.error('Ошибка!', 'Не удалось сохранить');
+      }
+    });
+  }
 }
+

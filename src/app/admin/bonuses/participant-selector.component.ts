@@ -42,19 +42,19 @@ export class ParticipantSelectorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.refreshParticipantsList();
+    // this.refreshParticipantsList();
   }
 
   setCalculationFunction(fn: any) {
     this.calculateRowChanges = fn;
   }
 
-  refreshParticipantsList() {
+  refreshParticipantsList(a: any ) {
     this.loading = true;
-
-    this.dataService.getParticipantsList({})
-      .subscribe((freshList: Participant[]) => {
-        this.tableRows = freshList.map(p => new TableRow(p));
+    a.className = 'ent.Buyer';
+    this.dataService.getFilteredGrid(a)
+      .subscribe((data: any) => {
+        this.tableRows = data.children.map(p => new TableRow(p));
         this.clearChanges();
         this.loading = false;
       });

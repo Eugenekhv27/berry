@@ -25,7 +25,8 @@ export class BonusAccountOperation {
   id: string; // "_id"
   participant: ParticipantLink; // "Buyer"
   participantName?: string; // Имя клиентов для гридов
-  date: string; // "DocDate"
+  participantId?: string; // ID клиентов для гридов
+  docDate: string; // "DocDate"
   docUUID: string;  // "ByDocUUID"
   money: number; // "RubSum"
   points: number; // "PointsSum"
@@ -40,12 +41,11 @@ export class BonusAccountOperation {
   constructor(op: any = {}) {
     this.id = String(op._id || '');
     this.participant = new ParticipantLink(op.Buyer);
-    this.date = String(op.DocDate || '');
     this.docUUID = String(op.ByDocUUID || '');
-    this.money = parseNumber(op.RubSum);
+    // this.money = parseNumber(op.RubSum);
     this.points = parseNumber(op.PointsSum);
-    this.plusPoints = parseNumber(op.PlusPointsSum);
-    this.minusPoints = parseNumber(op.MinusPointsSum);
+    // this.plusPoints = parseNumber(op.PlusPointsSum);
+    // this.minusPoints = parseNumber(op.MinusPointsSum);
     this.comment = String(op.Comment || '');
     this.docNo = String(op.DocNo || '');
     this.participantName = String(op.name || '');
@@ -74,9 +74,11 @@ export class Participant {
     date: 'RegDate',
     phone: 'Aka',
     name: 'Name',
-    age: 'age',
+    // age: 'age', - указываем только разные поля
     birthDate: 'BirthDate',
     sex: 'Sex',
+    // cityString: 'cityString',
+    // email: 'email',
     comment: 'Comment',
     referrer: 'SuperBuyer',
     referrals: 'BottomBuyers',
@@ -100,6 +102,8 @@ export class Participant {
   guestLevel: string;
   abcGroup: string;
   sex: string;
+  cityString: string;
+  email: string;
 
   constructor(serverObject: any = {}) {
     this.id = String(serverObject._id || serverObject.ID || '');
@@ -121,6 +125,8 @@ export class Participant {
     }
     this.balance = parseNumber(serverObject.BonusSum || serverObject.Bonus);
     this.shop = String(serverObject.Shop || '');
+    this.cityString = String(serverObject.cityString || '');
+    this.email = String(serverObject.email || '');
   }
 
   static replacePropertyName(o: any, oldName: string, newName: string): any {

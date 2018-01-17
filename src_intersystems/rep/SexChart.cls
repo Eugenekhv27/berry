@@ -5,7 +5,7 @@ Class rep.SexChart Extends %RegisteredObject
 /// Запрос: {"reportName":"sex-chart"}
 ClassMethod GetData(CriteriaReport, Output result) As %Status
 {
-	kill ^a.rep
+	//kill ^a.rep
 	kill array
 	
 	set beginDate =  ##class(p6.Date).DisplayToLogical(CriteriaReport.beginDate)
@@ -16,7 +16,7 @@ ClassMethod GetData(CriteriaReport, Output result) As %Status
             "labels": ["Женщины","Мужчины","Не указано"]
 		}
 	set data = []	
-            
+           
 	
 	&sql(declare rep cursor for
 			select count(c1),c2 into :c1,:c2 from 
@@ -25,12 +25,21 @@ ClassMethod GetData(CriteriaReport, Output result) As %Status
  		order by c2)
 	&sql(open rep)	
 	&sql(fetch rep)	
-	
+	set total = 0
 	while (SQLCODE=0) {
-		do data.%Push(c1)
+		// do data.%Push(c1)
+		set array(c2)=c1
+		set total = total + c1
 		&sql(fetch rep)	
 	}
 	&sql(close rep)	
+	
+	set key = $order(array(""))
+	while (key]"") {
+		do data.%Push($fnumber(array(key)*(100/total),"",1))
+		set key = $order(array(key))
+	}
+	
 	//merge ^a.rep = array
 	
 	set data1 = {}
@@ -47,6 +56,7 @@ ClassMethod GetData(CriteriaReport, Output result) As %Status
                     ]       
 	
 	set datasets = [].%Push(data1)
+	
     set result.datasets = datasets             
 	
 	quit $$$OK

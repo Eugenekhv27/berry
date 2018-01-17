@@ -12,9 +12,11 @@ import {SelectItem} from 'primeng/primeng';
 export class TransactionsComponent implements OnInit {
 
   transactionsList: BonusAccountOperation[] = [];
+  totals = {};
   selectedLine: BonusAccountOperation;
   maxRowsPerPage = 11;
   loading: boolean;
+  totalsStyle = {'text-align': 'right', 'background-color': '#D9E0E7', 'font-weight': 'bold'};
 //   abcGroupOptions =
 //    [
 //     {label: 'Не важно', value: null},
@@ -53,15 +55,13 @@ export class TransactionsComponent implements OnInit {
 
   refreshTransactionsList(a: any ) {
     this.loading = true;
-    this.dataService.getTransactionsList(a)
-      .subscribe((freshList: BonusAccountOperation[]) => {
-        this.transactionsList = freshList;
+    a.className = 'doc.BonusOperation';
+    this.dataService.getFilteredGrid(a)
+      .subscribe((data: any) => {
+        this.transactionsList = data[0].children;
+        this.totals = data[1].totals[0];
         this.loading = false;
       });
-  }
-
-  onRowDoubleClick() {
-    this.router.navigate(['/transaction/' + encodeURIComponent(this.selectedLine.id)]);
   }
 
   refreshTransactionsListByFilter() {
@@ -73,5 +73,9 @@ export class TransactionsComponent implements OnInit {
       'tel' : this.tel
     };
     this.refreshTransactionsList(a);
+  }
+  onRowDblclick(event) {
+    console.log(event);
+    this.router.navigate(['/participants/' + encodeURIComponent(this.selectedLine.participantId)]);
   }
  }

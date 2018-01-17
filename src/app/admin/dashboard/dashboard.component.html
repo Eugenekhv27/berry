@@ -11,10 +11,18 @@
     <app-overview-box color=4 icon="fa-rub" label="Средний чек" [value]="averagePurchaseAmount"></app-overview-box>
   </div>
   <div class="ui-g-6">
-      <h2>KPI продавцов</h2>
+    <div style="margin: auto">
+        <h2>Выручка по месяцам</h2>
+        <b>Период: {{incomingByMonthBeginDate}} - {{endDate}} </b>
+        <p-chart type="bar" [data]="incomingByMonth"></p-chart>
+      </div> 
+  </div>
+  <div class="ui-g-6">
+    <div style="margin: auto">
+      <h2>Выручка по дням недели</h2>
       <b>Период: </b>
       <p-calendar 
-        [(ngModel)]="kpiPeriod" 
+        [(ngModel)]="incomingByWeekDayPeriod" 
         selectionMode="range" 
         readonlyInput="true"
         [locale]="calendarLocale"
@@ -23,52 +31,60 @@
         >
       </p-calendar>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <button pButton type="button" icon="fa fa-refresh" iconPos="right" (click)="kpiDateOnClose()"></button>
-      <p-dataTable
-      [responsive]="true"
-      [value]="sellersKpiData.children"
-      [paginator]="true"
-      [rows]="100"
-      [loading]="loading"
-      loadingIcon="fa-spinner"
-      sortMode="multiple">
-        <p-column field="name" header="Продавец" [sortable]="false"></p-column>
-        <p-column field="attractedClients" header="Привлеченных клиентов" [sortable]="false"  [style]="{'text-align': 'right'}"></p-column>
-        <!--
-        <p-column field="saleSum" header="Сумма продаж" [sortable]="true" [style]="{'text-align': 'right'}"></p-column>
-        -->
-        <p-column field="averageCheck" header="Средний чек" [sortable]="false" [style]="{'text-align': 'right'}"></p-column>
-        <!--
-        <p-column field="qtyCheck" header="Количество чеков" [sortable]="true" [style]="{'text-align': 'right'}"></p-column>
-        -->
-        <p-footerColumnGroup>
-          <p-row>
-            <p-column footer="Всего:" colspan="1" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
-            <p-column footer="{{sellersKpiData.totals.attractedClients}}" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
-            <!--
-            <p-column footer="{{sellersKpiData.totals.saleSum}}" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
-            -->
-            <p-column footer="" colspan="1"></p-column>
-            <!--
-            <p-column footer="{{sellersKpiData.totals.qtyCheck}}" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
-            -->
-          </p-row>
-        </p-footerColumnGroup>
-      </p-dataTable>
-  </div>
-  <div class="ui-g-6">
-    <div style="margin: auto">
-      <h2>Выручка по дням недели</h2>
-      <b>Период с {{incomingByWeekDayBeginDate}} по {{endDate}}</b>
+      <button pButton type="button" icon="fa fa-refresh" iconPos="right" (click)="incomingByWeekDayUpate()"></button>
       <p-chart type="bar" [data]="incomingByWeekDay"></p-chart>
     </div> 
   </div>
   <div class="ui-g-6">
-
+    <h2>KPI продавцов</h2>
+    <b>Период: </b>
+    <p-calendar 
+      [(ngModel)]="kpiPeriod" 
+      selectionMode="range" 
+      readonlyInput="true"
+      [locale]="calendarLocale"
+      dateFormat="dd.mm.yy"
+      [showIcon]="true"
+      >
+    </p-calendar>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button pButton type="button" icon="fa fa-refresh" iconPos="right" (click)="kpiDateOnClose()"></button>
+    <p-dataTable
+    [responsive]="true"
+    [value]="sellersKpiData.children"
+    [paginator]="true"
+    [rows]="100"
+    [loading]="loading"
+    loadingIcon="fa-spinner"
+    sortMode="multiple">
+      <p-column field="name" header="Продавец" [sortable]="false"></p-column>
+      <p-column field="attractedClients" header="Привлеченных клиентов, шт." [sortable]="false"  [style]="{'text-align': 'right'}"></p-column>
+      <p-column field="averageCheck" header="Средний чек, руб." [sortable]="false" [style]="{'text-align': 'right'}"></p-column>
+      <p-column field="saleSum" header="Суммарные продажи, руб." [sortable]="false" [style]="{'text-align': 'right'}"></p-column>
+      <p-footerColumnGroup>
+        <p-row>
+          <p-column footer="Всего:" colspan="1" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
+          <p-column footer="{{sellersKpiData.totals.attractedClients}}" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
+          <p-column footer="" colspan="1"></p-column>
+          <p-column footer="{{sellersKpiData.totals.saleSum}}" [style]="{'text-align': 'right','font-weight': 'bold'}"></p-column>
+        </p-row>
+      </p-footerColumnGroup>
+    </p-dataTable>
   </div>
   <div class="ui-g-6">
       <h2>ТОП клиентов</h2>
-      <b>Период с {{beginDate}} по {{endDate}}</b>
+      <b>Период: </b>
+      <p-calendar 
+        [(ngModel)]="topClientsPeriod" 
+        selectionMode="range" 
+        readonlyInput="true"
+        [locale]="calendarLocale"
+        dateFormat="dd.mm.yy"
+        [showIcon]="true"
+        >
+      </p-calendar>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button pButton type="button" icon="fa fa-refresh" iconPos="right" (click)="topClientsUpdate()"></button>
       <p-dataTable
       [responsive]="true"
       [value]="topClientsData.children"
@@ -83,15 +99,79 @@
       </p-dataTable>
   </div>
   <div class="ui-g-4">
-      <h2 style="text-align:center">Пол</h2>
+      <h2 style="text-align:center">Пол, %</h2>
       <p-chart type="doughnut" [data]="sexData"></p-chart>
   </div>
   <div class="ui-g-4">
-      <h2 style="text-align:center">Возраст</h2>
-      <p-chart type="pie" [data]="sexData"></p-chart>
+      <h2 style="text-align:center">Возраст, % 
+        <div style="float: right">  
+            <button pButton type="button" icon="fa fa-cog" iconPos="right" (click)="ageDisplay=true"></button>
+        </div>
+      </h2>
+      <p-chart type="pie" [data]="ageData"></p-chart>
   </div>
   <div class="ui-g-4">
-      <h2 style="text-align:center">Средний чек</h2>
-      <p-chart type="doughnut" [data]="sexData"></p-chart>
+      <h2 style="text-align:center">Средний чек, %
+        <div style="float: right">
+          <button pButton type="button" icon="fa fa-cog" iconPos="right" (click)="averageDisplay=true"></button>
+        </div>
+      </h2>
+      <p-chart type="doughnut" [data]="averageCheckData"></p-chart>
   </div>
 </div>
+<p-dialog header="Настроить возраст" [(visible)]="ageDisplay">
+    <p-dataList [value]="ageSections" [paginator]="false" [rows]="5">
+        <p-header>
+            Секции диаграммы
+        </p-header>
+        <ng-template let-car pTemplate="item" let-i="index">
+            <div class="ui-g ui-fluid car-item">
+                <div class="ui-g-12 ui-md-3" style="text-align:center">
+                    <p-colorPicker [(ngModel)]="car.color"></p-colorPicker>
+                </div>
+                <div class="ui-g-12 ui-md-9">
+                   {{car.rangeValues[0] + ' - ' + car.rangeValues[1]}}
+                   <p-slider [(ngModel)]="car.rangeValues"  [range]="true" (onChange)="ageRangeValuesChange($event,i)" [animate]='true' ></p-slider>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataList>
+
+    <button pButton type="button" icon="fa fa-plus" iconPos="left" label="Добавить секцию" (click)="ageAddSection()"></button>
+    <button pButton type="button" icon="fa fa-times" iconPos="left" label="Удалить секцию" (click)="ageDeleteSection()"></button>
+    <button pButton type="button" iconPos="left" label="ОК" (click)="ageDisplay=false;ageUpdate()"></button>
+</p-dialog>
+<p-dialog header="Настроить средний чек" [(visible)]="averageDisplay">
+    <p-dataList [value]="averageCheckSections" [paginator]="false" [rows]="5">
+        <p-header>
+            Секции диаграммы
+        </p-header>
+        <ng-template let-sec2 pTemplate="item" let-i="index">
+            <div class="ui-g ui-fluid car-item">
+                <div class="ui-g-12 ui-md-3" style="text-align:center">
+                    <p-colorPicker [(ngModel)]="sec2.color"></p-colorPicker>
+                </div>
+                <div class="ui-g-12 ui-md-9">
+                   {{sec2.rangeValues[0] + ' - ' + sec2.rangeValues[1]}}
+                   <p-slider [(ngModel)]="sec2.rangeValues"  [range]="true" (onChange)="averageCheckRangeValuesChange($event,i)" [animate]='true' [max]="averageCheckMax" [step]="50" ></p-slider>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataList>
+    <div class="ui-g ui-fluid car-item">
+        <div class="ui-g-12 ui-md-3" style="text-align:center">
+            <p-colorPicker [(ngModel)]="color"></p-colorPicker>
+        </div>
+        <div class="ui-g-12 ui-md-3">
+           <p-spinner size="5" [(ngModel)]="averageCheckMax" [step]="100" thousandSeparator=" " (onChange)="averageCheckMaxChange()"></p-spinner>
+        </div>
+        <div class="ui-g-12 ui-md-6">
+          и более
+        </div>
+    </div>
+
+    <button pButton type="button" icon="fa fa-plus" iconPos="left" label="Добавить секцию" (click)="averageCheckAddSection()"></button>
+    <button pButton type="button" icon="fa fa-times" iconPos="left" label="Удалить секцию" (click)="averageCheckDeleteSection()"></button>
+    <button pButton type="button" iconPos="left" label="ОК" (click)="averageDisplay=false;averageCheckUpdate()"></button>
+</p-dialog>
+

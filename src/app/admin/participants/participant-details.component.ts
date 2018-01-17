@@ -32,7 +32,9 @@ export class ParticipantDetailsComponent implements OnInit {
     payRubSum: '',
     payBonus: '',
     attractedCount: '',
-    abcGroup: ''
+    abcGroup: '',
+    cityString: '',
+    email: ''
   };
 //  participant: Participant;
   isNew: false;
@@ -49,8 +51,9 @@ export class ParticipantDetailsComponent implements OnInit {
   toDoItems: MenuItem[];
   sexOptions: SelectItem[];
   displayPlusBonusDialog = false;
-  
   plusBonusEditor;
+  citySuggestions: string[];
+  emailSuggestions: string[];
   ru = {
     firstDayOfWeek: 1,
     dayNames: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
@@ -83,14 +86,17 @@ export class ParticipantDetailsComponent implements OnInit {
       this.detailsTable = [];
       this.loading = false;
       this.participantEditor.date = this.u.formatDate(new Date());
-      this.participantEditor.birthDate = this.u.formatDate(new Date());  
+      this.participantEditor.birthDate = this.u.formatDate(new Date());
     } else {
       this.getData(id);
     }
     this.operationEditor = new OperationEditor();
     this.toDoItems =
       [
-        {label: 'Начислить бонусы', icon: 'fa fa-plus-square', command: () => {
+        {label: 'Отправить SMS', icon: 'fa fa-envelope-o', command: () => {
+          this.sendSms();
+      }},
+        {label: 'Начислить', icon: 'fa fa-plus-square', command: () => {
           this.displayPlusBonusDialog = true;
       }},
         {label: 'Редактировать', icon: 'fa fa-pencil-square-o', command: () => {
@@ -121,7 +127,7 @@ export class ParticipantDetailsComponent implements OnInit {
 
     this.dataService.getParticipantDetails(id)
       .subscribe((data: any) => {
-
+        console.log(data.result);
         this.detailsTable = data.result.BonusOperations.map(dataRow => new DetailsRow(dataRow));
         this.participantEditor = {
           id: data.result._id || '',
@@ -137,7 +143,9 @@ export class ParticipantDetailsComponent implements OnInit {
           payRubSum: data.result.payRubSum || '',
           payBonus: data.result.payBonus || '',
           attractedCount: data.result.attractedCount || '',
-          abcGroup: data.result.abcGroup || ''
+          abcGroup: data.result.abcGroup || '',
+          cityString: data.result.cityString || '',
+          email: data.result.email || ''
         };
 
         console.log(this.participantEditor);
@@ -161,6 +169,8 @@ export class ParticipantDetailsComponent implements OnInit {
     p.referrals = [];
     p.operations = [];
     p.shop = 'GE';
+    p.cityString = pe.cityString;
+    p.email = pe.email;
 
     return p;
   }
@@ -254,6 +264,21 @@ export class ParticipantDetailsComponent implements OnInit {
           this.notifier.error('Ошибка!', 'Не удалось сохранить.');
         }
       });
-    
+  }
+  sendSms() {
+    const telString = {'tel': this.participantEditor.phone };
+    localStorage.setItem('SmsFilter', JSON.stringify(telString));
+    localStorage.setItem('SmsFilterCaption', 'Номер телефона: ' + this.participantEditor.phone );
+    this.router.navigate(['/circular']);
+  }
+  getCity(event) {
+    this.dataService.daData(event.query, 'city').subscribe(data => {
+        this.citySuggestions = data.suggestions.map(elem => String(elem.value));
+    });
+  }
+  getEmail(event) {
+    this.dataService.daData(event.query, 'email').subscribe(data => {
+        this.emailSuggestions = data.suggestions.map(elem => String(elem.value));
+    });
   }
 }

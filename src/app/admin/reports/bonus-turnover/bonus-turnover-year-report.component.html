@@ -3,30 +3,7 @@
   <div class="ui-g">
     <div class="ui-g-12">
       <div class="ui-g">
-        <div class="ui-g-2">
-          <button pButton type="button" icon = "fa-chevron-left" (click)="goBack()" label="Назад">
-            </button>
-        </div>
-        <div class="ui-g-3">
-          <label>С: </label>
-          <p-calendar
-            readonlyInput="true" [locale]="calendarLocale"
-            dateFormat="dd.mm.yy"
-            [(ngModel)]="startDate"
-            (onSelect)="getMainReport()"
-            [showIcon]="true"
-            [inputStyle]="{'width':'90px'}"></p-calendar>
-        </div>
-        <div class="ui-g-3">
-          <label>по: </label>
-          <p-calendar
-            readonlyInput="true" [locale]="calendarLocale"
-            dateFormat="dd.mm.yy"
-            [(ngModel)]="endDate"
-            (onSelect)="getMainReport()"
-            [showIcon]="true"
-            [inputStyle]="{'width':'90px'}"></p-calendar>
-        </div>
+        
       </div>
       <div class="ui-g">
         <div class="ui-g-12">
@@ -34,15 +11,15 @@
           #reportTable
           [value]="reportData.table"
           selectionMode="single"
-          (onRowDblclick)="getDetailedReport(reportTable.selection.date)"
+          (onRowDblclick)="getDetailedReport(reportTable.selection)"
           [responsive]="true"
           [paginator]="true"
           [loading]="loading"
           loadingIcon="fa-spinner"
           [rows]="maxRowsPerPage">
-          <p-column field="date" header="Дата" [style]="{'text-align':'center'}">
+          <p-column field="date" header="Месяц" [style]="{'text-align':'center'}">
             <ng-template let-rd="rowData" pTemplate="body">
-              <span>{{ rd.date | date: 'shortDate' }}</span>
+              <span>{{ rd.repMonth }}</span>
             </ng-template>
           </p-column>
           <p-column field="startBonus" header="Начальный баланс" [style]="{'text-align': 'right'}">

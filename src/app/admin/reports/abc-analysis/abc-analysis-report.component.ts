@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // import { TreeNode } from 'primeng/primeng';
+import { MenuItem} from 'primeng/primeng';
 
 import { russianCalendarLocale } from '../../../shared/locale';
 // import { ABCAnalysisService } from './abc-analysis.service';
@@ -30,6 +31,10 @@ export class ABCAnalysisReportComponent implements OnInit {
   reportData: Array<TableRow>;
   loading: boolean;
   displaySetting = false;
+  items = [
+    {label: 'Отправить SMS', icon: 'fa fa-fw fa-bullhorn', routerLink: ['/circular']},
+    {label: 'Начислить бонусы', icon: 'fa fa-fw fa-star', routerLink: ['/bonuses']}
+  ];
   /// Критерии отчета
   beginDate;
   endDate;
@@ -37,6 +42,11 @@ export class ABCAnalysisReportComponent implements OnInit {
   bPrecent = 15;
   cPrecent = 5;
   sex: string;
+  beginAge: number;
+  endAge: number;
+  abcPlus: string;
+  abcBalance: string;
+  abcMinus: string;
 
   sexOptions =
    [
@@ -61,7 +71,6 @@ export class ABCAnalysisReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
     const curDate = new Date();
     this.beginDate = this.dateToString(new Date(curDate.getFullYear(), curDate.getMonth(), 1)) ;
     this.endDate = this.dateToString(curDate) ;
@@ -69,7 +78,6 @@ export class ABCAnalysisReportComponent implements OnInit {
   }
 
   getMainReport(isFix = false): void {
-    console.log(this.beginDate);
     this.loading = true;
     this.reportData = [];
     const reportCriteria = {
@@ -79,7 +87,13 @@ export class ABCAnalysisReportComponent implements OnInit {
       'aPrecent': this.aPrecent,
       'bPrecent': this.bPrecent,
       'cPrecent': this.cPrecent,
-      'saveInBuyer': isFix
+      'saveInBuyer': isFix,
+      'sex': this.sex,
+      'beginAge': this.beginAge,
+      'endAge': this.endAge,
+      'abcPlus': this.abcPlus,
+      'abcBalance': this.abcBalance,
+      'abcMinus': this.abcMinus
     };
     this.dataService.getReportData(reportCriteria)
       .subscribe((repData) => {

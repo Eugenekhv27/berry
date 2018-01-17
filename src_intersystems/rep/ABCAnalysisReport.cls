@@ -47,17 +47,11 @@ ClassMethod GetData(CriteriaReport, Output result) As %Status
 	set balanceTotalA =balanceTotal * CriteriaReport.aPrecent/100
 	set balanceTotalB =balanceTotal * CriteriaReport.bPrecent/100
 	
-	//set array("gebug","balanceTotal")=balanceTotal
-	//set array("gebug","balanceTotalA")=balanceTotalA
-	//set array("gebug","balanceTotalB")=balanceTotalB
-	
 	set plusPointsTotalA =plusPointsTotal * CriteriaReport.aPrecent/100
 	set plusPointsTotalB =plusPointsTotal * CriteriaReport.bPrecent/100
 	
 	set minusPointsTotalA =minusPointsTotal * CriteriaReport.aPrecent/100
 	set minusPointsTotalB =minusPointsTotal * CriteriaReport.bPrecent/100
-	
-	
 	
 	set key = $order(array("balance",""),-1)
 	set keyTotal = 0
@@ -70,13 +64,10 @@ ClassMethod GetData(CriteriaReport, Output result) As %Status
 		
 			if keyTotal<balanceTotalA {
 				set array("report",buyerId,"balanceCaregory")="A"
-				//set array("report","abc",keyTotal,buyerId,"balanceCaregory")="A"
 			} elseif keyTotal<(balanceTotalB + balanceTotalA) {
 				set array("report",buyerId,"balanceCaregory")="B"
-				//set array("report","abc",keyTotal,buyerId,"balanceCaregory")="B"
 			} else {
 				set array("report",buyerId,"balanceCaregory")="C"
-				//set array("report","abc",keyTotal,buyerId,"balanceCaregory")="C"
 			}
 			set buyerId = $order(array("balance",key,"buyerId",buyerId),-1)
 		}
@@ -91,11 +82,14 @@ ClassMethod GetData(CriteriaReport, Output result) As %Status
 			set keyTotal = keyTotal + key
 			set array("report",buyerId,"plusPointsTotal")=keyTotal
 			if keyTotal<plusPointsTotalA {
-				set array("report",buyerId,"plusPointsCaregory")="A"	
+				set array("report",buyerId,"plusPointsCaregory")="A"
+				set array("order","A"_buyerId,$get(array("plusPoints",key),0))=buyerId
 			} elseif keyTotal<(plusPointsTotalB + plusPointsTotalA) {
-				set array("report",buyerId,"plusPointsCaregory")="B"	
+				set array("report",buyerId,"plusPointsCaregory")="B"
+				set array("order","B"_buyerId,$get(array("plusPoints",key),0))=buyerId
 			} else {
 				set array("report",buyerId,"plusPointsCaregory")="C"
+				set array("order","C"_buyerId,$get(array("plusPoints",key),0))=buyerId
 			}
 			set buyerId = $order(array("plusPoints",key,"buyerId",buyerId),-1)
 		}
@@ -125,30 +119,65 @@ ClassMethod GetData(CriteriaReport, Output result) As %Status
 	set onDate = +$H
 	set result = {}
 	set result.children = []
-	set buyerId = $order(array("report",""))
-	while (buyerId]"") {
-		set line= {}
-		set line.id = buyerId
-		set line.name = array("report",buyerId,"name")
-		set line.balance = array("report",buyerId,"balance")
-		set line.balanceCaregory = array("report",buyerId,"balanceCaregory")
-		
-		set line.plusPoints = array("report",buyerId,"plusPoints")
-		set line.plusPointsCaregory = array("report",buyerId,"plusPointsCaregory")
-		
-		set line.minusPoints = array("report",buyerId,"minusPoints")
-		set line.minusPointsCaregory = array("report",buyerId,"minusPointsCaregory")
-		
-		do result.children.%Push(line)
-		
-		// Фиксируем группу начислений, если необходимо
-		if (CriteriaReport.saveInBuyer) {
-			&sql(insert or update into ent.BuyerAbcGroup (buyer,onDate,groupName)
+	//set buyerId = $order(array("report",""))
+	set key = $order(array("order",""))
+	while (key]"") {
+		set key2 = ""
+		for {
+			set key2 = $order(array("order",key,key2))
+			quit:(key2 = "")
+			set buyerId = array("order",key,key2)
+			// Фиксируем группу начислений, если необходимо
+			if (CriteriaReport.saveInBuyer) {
+				&sql(insert or update into ent.BuyerAbcGroup (buyer,onDate,groupName)
 				values (:buyerId,:onDate,:array("report",:buyerId,"plusPointsCaregory")))	
+			}
+			/// подключаем дополнительные фильтры для отображения
+			set buyerObject = ##class(ent.Buyer).%OpenId(buyerId)
+			if (CriteriaReport.sex]"") { // Пол
+    			set aSex = $zconvert(CriteriaReport.sex,"I","UTF8")
+    			if aSex="Неизвестно" {
+	    			if '((buyerObject.Sex="") || (buyerObject.Sex="Неизвестно")) {
+		    			continue	
+	    			}
+    			} else {
+    				if buyerObject.Sex'=aSex continue
+    			}
+    			
+    		}
+    		if (CriteriaReport.beginAge]"") { // Возраст с 
+    			if CriteriaReport.beginAge>buyerObject.age continue
+    		}
+    		if (CriteriaReport.endAge]"") { // Возраст по
+    			if CriteriaReport.endAge<buyerObject.age continue
+    		}
+    		if (CriteriaReport.abcPlus]"") { // Группа накопления
+    			if CriteriaReport.abcPlus '= array("report",buyerId,"plusPointsCaregory") continue
+    		}
+    		if (CriteriaReport.abcBalance]"") { // Группа 
+    			if CriteriaReport.abcBalance '= array("report",buyerId,"balanceCaregory") continue
+    		}
+    		if (CriteriaReport.abcMinus]"") { // Группа 
+    			if CriteriaReport.abcMinus '= array("report",buyerId,"minusPointsCaregory") continue
+    		}
+    		kill buyerObject
+			set line= {}
+			set line.id = buyerId
+			set line.name = array("report",buyerId,"name")
+			set line.balance = array("report",buyerId,"balance")
+			set line.balanceCaregory = array("report",buyerId,"balanceCaregory")
+		
+			set line.plusPoints = array("report",buyerId,"plusPoints")
+			set line.plusPointsCaregory = array("report",buyerId,"plusPointsCaregory")
+		
+			set line.minusPoints = array("report",buyerId,"minusPoints")
+			set line.minusPointsCaregory = array("report",buyerId,"minusPointsCaregory")
 			
+			do result.children.%Push(line)
+		
 		}
 		
-		set buyerId = $order(array("report",buyerId))
+		set key = $order(array("order",key))
 	}
 	
 	quit $$$OK

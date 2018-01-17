@@ -19,7 +19,7 @@ export class NavComponent implements OnInit {
       {
         label: 'Отчеты', icon: 'fa fa-fw fa-pie-chart',
         items: [
-          { label: 'Оборот бонусов', icon: 'fa fa-fw fa-pie-chart', routerLink: ['/reports/bonuses'] },
+          { label: 'Оборот бонусов', icon: 'fa fa-fw fa-pie-chart', routerLink: ['/reports/bonusesyears'] },
           { label: 'Удовлетворенность', icon: 'fa fa-fw fa-bar-chart', routerLink: ['/reports/satisfaction'] },
           { label: 'ABC-анализ', icon: 'fa fa-fw fa-line-chart', routerLink: ['/reports/abc'] },
           { label: 'KPI продавцов', icon: 'fa fa-male', routerLink: ['/reports/sellerskpi'] },

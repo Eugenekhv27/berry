@@ -9,16 +9,16 @@ Property DocDate As p6.dt.Date [ InitialExpression = {+$H} ];
 Property DocNo As %String;
 
 /// Сумма покупок
-Property RubSum As p6.dt.Money;
+Property RubSum As %Decimal;
 
 /// Сумма бонусов
-Property PointsSum As p6.dt.Money;
+Property PointsSum As %Decimal;
 
 /// Начисление бонусов
-Property PlusPointsSum As p6.dt.Money [ Calculated, SqlComputeCode = { set {PlusPointsSum} = $select({PointsSum}>0:{PointsSum},1:"")}, SqlComputed ];
+Property PlusPointsSum As %Decimal [ Calculated, SqlComputeCode = { set {PlusPointsSum} = $select({PointsSum}>0:{PointsSum},1:"")}, SqlComputed ];
 
 /// Списание бонусов
-Property MinusPointsSum As p6.dt.Money [ Calculated, SqlComputeCode = { set {MinusPointsSum} = $select({PointsSum}<0:-{PointsSum},1:"")}, SqlComputed ];
+Property MinusPointsSum As %Decimal [ Calculated, SqlComputeCode = { set {MinusPointsSum} = $select({PointsSum}<0:-{PointsSum},1:"")}, SqlComputed ];
 
 /// Коментарий
 Property Comment As %String(MAXLEN = 2000);
@@ -49,47 +49,54 @@ Relationship seller As ent.Seller [ Cardinality = one, Inverse = bonusOperations
 
 ClassMethod GetForGrid(query = "", accountId = "", citeriaObject = {{}}) As %Status
 {
-     kill ^a.sql
-	//set ^a.citeriaObject = citeriaObject.%ToJSON()
-
+    kill ^a.sql
     set st = $$$OK
-    //set sql = "select top 1000 Id,DocDate,nvl(Buyer->Name,'') ||' '||Buyer->Aka as name,DocNo,"
-    set sql = "select top 1000 Id,DocDate,Buyer->Aka as name,DocNo,"
-    	_" RubSum, PlusPointsSum, MinusPointsSum"
+
+    set sql = "select top 1000 Id as id,DocDate as docDate,Buyer->Aka as participantName,DocNo as docNo,"
+    	_" RubSum as money, PlusPointsSum as plusPoints, MinusPointsSum as minusPoints,Buyer as participantId"
     	_" from doc.BonusOperation b"
     	_ " where Shop="_accountId 
-    	
+    
+    set filter = " "	
     if (citeriaObject.beginRegDate]"") {
 	 	set beginRegDate = ##class(p6.Date).DisplayToLogical(citeriaObject.beginRegDate)
 	 	set beginRegDate = $ZD(beginRegDate,3)
-	 	set sql = sql _" and DocDate>='"_beginRegDate_"'"
+	 	set filter = filter _" and DocDate>='"_beginRegDate_"'"
     }
     if (citeriaObject.endRegDate]"") {
 	 	set beginRegDate = ##class(p6.Date).DisplayToLogical(citeriaObject.endRegDate)
 	 	set beginRegDate = $ZD(beginRegDate,3)
-	 	set sql = sql _" and DocDate<='"_beginRegDate_"'"
+	 	set filter = filter _" and DocDate<='"_beginRegDate_"'"
     }
     if (citeriaObject.beginBonusSum]"") {
-	 	set sql = sql _" and PointsSum>="_citeriaObject.beginBonusSum
+	 	set filter = filter _" and PointsSum>="_citeriaObject.beginBonusSum
     }
     if (citeriaObject.endBonusSum]"") {
-	 	set sql = sql _" and PointsSum<="_citeriaObject.endBonusSum
+	 	set filter = filter _" and PointsSum<="_citeriaObject.endBonusSum
     }
     if (citeriaObject.tel]"") {
-	 	set sql = sql _" and Buyer->Aka='"_citeriaObject.tel_"'"
+	 	set filter = filter _" and Buyer->Aka='"_citeriaObject.tel_"'"
     }
     
-    //if (citeriaObject.abcGroup]"") { // Группа ABC
-	//    set sql = sql _" and (abcGroup = '"_citeriaObject.abcGroup_"')"
+    //if query]"" {
+	// set sql = sql _" and "_query  
     //}
-    	
-    if query]"" {
-	 set sql = sql _" and "_query  
-    }
-	set sql = sql _ " order by DocDate"
+	// set sql = sql _ " order by DocDate"
 	set ^a.sql = sql
     set ^a.sql(1) = citeriaObject.abcGroup
-    do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,sql,,1000)
+    write "["
+    do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,sql_filter_" order by DocDate",,1000)
+	write ","
+	set provider = ##class(%ZEN.Auxiliary.jsonSQLProvider).%New()
+	set provider.arrayName="totals"
+	set provider.sql="select"
+    	_" sum(RubSum) as rubSum, sum(PlusPointsSum) as plusPointsSum, sum(MinusPointsSum) as minusPointsSum"
+    	_" from doc.BonusOperation"
+    	_" where Shop="_accountId _ filter
+	set provider.maxRows = 1000
+	do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,,,,,provider)
+	write "]"
+    
     quit st
 }
 
