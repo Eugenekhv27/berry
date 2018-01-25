@@ -1,4 +1,4 @@
-/// Данные для приборной панели
+///  Данные для приборной панели
 Class rep.SexChart Extends %RegisteredObject
 {
 
@@ -13,7 +13,7 @@ ClassMethod GetData(CriteriaReport, Output result) As %Status
 	kill array
 	
 	set result = {
-            "labels": ["Женщины","Мужчины","Не указано"]
+            "labels": []
 		}
 	set data = []	
            
@@ -37,6 +37,7 @@ ClassMethod GetData(CriteriaReport, Output result) As %Status
 	set key = $order(array(""))
 	while (key]"") {
 		do data.%Push($fnumber(array(key)*(100/total),"",1))
+		do result.labels.%Push(key)
 		set key = $order(array(key))
 	}
 	

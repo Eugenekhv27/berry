@@ -8,7 +8,7 @@ Index IndexAka On (shop, aka) [ Data = aka, Unique ];
 
 Relationship bonusOperations As doc.BonusOperation [ Cardinality = many, Inverse = seller ];
 
-Relationship shop As ent.Shop [ Cardinality = one, Inverse = goodsName ];
+Relationship shop As ent.Shop(JSONIGNORE = 1) [ Cardinality = one, Inverse = goodsName ];
 
 ClassMethod getSellerId(accountId, sellerName, Output sc)
 {

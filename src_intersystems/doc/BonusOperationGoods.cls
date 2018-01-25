@@ -25,13 +25,13 @@ Property cost As %Float;
 ClassMethod updateGoods(accountId, bonusOperationId, goods) As %Status
 {
 	set sc=$$$OK
+	set ^a.updateGoods("goods")=goods
 	if '(goods.%Extends("%Library.ListOfObjects")) {
-		quit $$$ERROR(1000,"Нет товаров")	
+		// quit $$$ERROR(1000,"Нет товаров")	
 	}
 	&sql(delete from doc.BonusOperationGoods where shop=:accountId and  bonusOperation = :bonusOperationId)
-	set coutArray=goods.Count()
-   	for i=1:1:coutArray { 
-   		set goodsLine = goods.GetAt(i)
+	set iter = goods.%GetIterator()
+	while iter.%GetNext(.i , .goodsLine) {
    		set goodsNameId = ##class(ent.GoodsName).getGoodsNameId(accountId,goodsLine.goodsName,.sc)
    		set ^a.updateGoods(i)=sc
    		//if $$$ISERR(sc) quit
@@ -43,6 +43,11 @@ ClassMethod updateGoods(accountId, bonusOperationId, goods) As %Status
    		set ^a.updateGoods(i,"shop")=accountId
    		set ^a.updateGoods(i,"bonusOperationId")=bonusOperationId
    		set ^a.updateGoods(i,"goodsNameId")=goodsNameId
+   		
+   		set ^a.updateGoods(i,"groupName")=goodsLine.goodsGroup.groupName
+   		set ^a.updateGoods(i,"parentGroup")=goodsLine.goodsGroup.goodsGroup
+   		set ^a.updateGoods(i,"parentGroup.groupName")=goodsLine.goodsGroup.goodsGroup.groupName
+   		
    		&sql(INSERT OR UPDATE into doc.BonusOperationGoods (shop,bonusOperation,goodsName,qty,unit,price,cost) 
  										values (:accountId,:bonusOperationId,:goodsNameId,:qty,:unit,:price,:cost))
  										

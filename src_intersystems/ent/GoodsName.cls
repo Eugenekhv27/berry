@@ -5,9 +5,13 @@ Property aka As %String(MAXLEN = 300);
 
 Index IndexAka On (shop, aka) [ Data = aka, Unique ];
 
+Index goodsGroupIndex On goodsGroup;
+
 Relationship bonusOperationGoods As doc.BonusOperationGoods [ Cardinality = many, Inverse = goodsName ];
 
 Relationship shop As ent.Shop [ Cardinality = one, Inverse = goodsName ];
+
+Relationship goodsGroup As ent.GoodsGroup [ Cardinality = one, Inverse = goodsName ];
 
 ClassMethod getGoodsNameId(accountId, goodsName, Output sc)
 {
@@ -32,6 +36,9 @@ Storage Default
 </Value>
 <Value name="3">
 <Value>shop</Value>
+</Value>
+<Value name="4">
+<Value>goodsGroup</Value>
 </Value>
 </Data>
 <DataLocation>^ent.GoodsNameD</DataLocation>

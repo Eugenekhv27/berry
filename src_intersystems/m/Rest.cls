@@ -123,9 +123,8 @@ ClassMethod PostData(encriptId As %String = "") As %Status
 {
 	set sc=$$$OK
    	set accountId=$system.Encryption.Base32Decode(encriptId,1)
-    do ##class(Utils.JsonProvider).%ConvertJSONToObject(%request.Content,"",.clientObj,1)
-    
-    
+    //do ##class(Utils.JsonProvider).%ConvertJSONToObject(%request.Content,"",.clientObj,1)
+    set clientObj = ##class(%DynamicObject).%FromJSON(%request.Content)
     
     set ^a.resttest($h,"buyerTel1")=clientObj.buyerTel
 	set ^a.resttest($h,"checkDateTime")=clientObj.checkDateTime
